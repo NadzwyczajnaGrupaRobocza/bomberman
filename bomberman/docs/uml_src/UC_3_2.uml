@@ -1,0 +1,18 @@
+@startuml
+
+participant GameWorld
+participant HumanPlayer
+participant Bomberman
+participant PhysicsEngine
+participant RenderingEngine
+
+GameWorld --> Bomberman : update(deltaTime)
+Bomberman --> HumanPlayer : getInput() 
+Bomberman --> PhysicsEngine : setPosition()
+GameWorld --> PhysicsEngine : calculateCollisionAndMoveColliders()
+GameWorld --> Bomberman :  move()
+Bomberman --> PhysicsEngine : getPosition()
+GameWorld --> RenderingEngine : render()
+
+
+@enduml

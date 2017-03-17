@@ -1,0 +1,19 @@
+@startuml
+
+
+
+
+cos --> Player : update
+/'alt Player is HumanPlayer
+Player --> Keyboard : get_input
+else Player is CpuPlayer
+Player --> AI_Unit : get_computed_move
+end'/
+Player --> InputSource : get_input
+Player --> Bomberman : do_stuff(move|drop_bomb)
+
+
+
+
+
+@enduml

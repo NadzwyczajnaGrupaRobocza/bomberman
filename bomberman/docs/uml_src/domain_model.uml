@@ -1,0 +1,41 @@
+@startuml
+
+object Tile
+object Grass
+object Bonus
+object Bomberman
+object Monster
+object Explosion
+object HumanPlayer
+object DestructibleWall
+object GameRules
+object CpuPlayer
+object ExitGate
+object Time
+
+Tile "1" -- "1" Grass
+Bonus "*" -- "1" Bomberman
+Bonus "1" -- "1" Grass
+Bomberman "1" -- "1" Grass
+Bomberman "1" -- "*" Bomb
+Bomb "1"-- "1" Explosion
+HumanPlayer "1" -- "1" Bomberman
+HumanPlayer "1" -- "1" GameWorld
+Tile "1" -- "1" SolidWall
+Tile "*" -- "1" Map
+Map "1" -- "1" GameWorld
+GameRules "1" -- "1" GameWorld
+Time "1" -- "1" GameWorld
+CpuPlayer "*" -- "1" GameWorld
+CpuPlayer "1" -- "1" Bomberman
+Monster "*" -- "*" Bomberman
+Monster "*" -- "*" Explosion
+ExitGate "1" -- "1" Tile
+DestructibleWall "1" -- "1" Grass
+DestructibleWall "1" -- "1" ExitGate
+DestructibleWall "*" -- "*" Explosion
+Bomberman -- BombLauncher
+BombLauncher -- Bomb
+
+
+@enduml
