@@ -1,0 +1,6 @@
+@startuml
+
+GameWorld --> Monster : create
+Monster --> RenderingEngine : register_sprite
+
+@enduml

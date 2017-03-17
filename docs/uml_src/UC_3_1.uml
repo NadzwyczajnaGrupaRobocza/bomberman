@@ -1,0 +1,18 @@
+@startuml
+
+participant main
+participant GameWorld
+participant Map
+participant HumanPlayer
+participant Bomberman
+participant PhysicsEngine
+
+main --> PhysicsEngine : create
+main -> GameWorld : create
+GameWorld --> Map : create
+Map --> PhysicsEngine : register_all_bounding_boxes
+GameWorld --> HumanPlayer : create
+HumanPlayer --> Bomberman : create
+Bomberman --> PhysicsEngine : register_bounding_box
+
+@enduml

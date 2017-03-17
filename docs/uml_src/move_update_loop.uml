@@ -1,0 +1,17 @@
+@startuml
+
+ComputeMove --> ValidateMove
+ComputeMove:  compute next position independent of surroundings
+
+ValidateMove --> UpdatePosition
+ValidateMove: trim displacement vector taking other entities into account
+
+UpdatePosition --> Draw
+UpdatePosition: set current position to next
+
+Draw --> [*]
+Draw: draw graphical representation at current position
+
+
+
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+
+main --> GameWorld : update
+GameWorld --> HumanPlayer : update
+/'HumanPlayer --> Keyboard : get_input'/
+HumanPlayer --> Bomberman : update_pos
+main --> RenderingEngine : redraw
+
+@enduml

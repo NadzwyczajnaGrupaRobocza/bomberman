@@ -1,0 +1,12 @@
+@startuml
+
+title Explosion
+
+(*) --> "create in game world by bomb class"
+"create in game world by bomb class" --> "get_available_area_for_exploding"
+"get_available_area_for_exploding" --> compute_sprite_size
+compute_sprite_size --> register_in_physics
+register_in_physics --> register_in_rendering
+register_in_rendering --> (*)
+
+@enduml

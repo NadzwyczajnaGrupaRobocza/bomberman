@@ -1,0 +1,17 @@
+@startuml
+
+Bomberman "1" -- "1" Sprite
+Bomberman "1" -- "1" "Bounding Box"
+"Ghosts and Ghouls" "1" -- "1" Sprite
+"Ghosts and Ghouls" "1" -- "1" "Bounding Box"
+Grass "1" -- "1" Sprite
+"Destructible Wall" "1" -- "1" Sprite
+"Indestructible Wall" "1" -- "1" Sprite
+Bonus "1" -- "1" Sprite
+Bonus "1" -- "1" "Bounding Box"
+"Indestructible Wall" "1" -- "1" "Bounding Box"
+"Destructible Wall" "1" -- "1" "Bounding Box"
+RenderingEngine -- Sprite
+
+
+@enduml

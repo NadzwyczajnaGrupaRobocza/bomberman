@@ -1,0 +1,16 @@
+@startuml
+
+title Bomb
+
+"update(t) was invoked" --> time_to_explode - dt
+if "time_to_explode <= 0"
+  --> [yes] "create explosion"
+else
+  --> [no] (*)
+endif
+
+"create explosion" --> "deregister self from bomb laucher"
+"deregister self from bomb laucher" --> "deregister from GameWorld"
+"deregister from GameWorld" --> (*)
+
+@enduml

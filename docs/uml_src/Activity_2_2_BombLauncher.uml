@@ -1,0 +1,9 @@
+@startuml
+
+title Bomb laucher
+
+(*) --> notify_exploded
+notify_exploded --> "number_of_placed_bombs--"
+"number_of_placed_bombs--" --> (*)
+
+@enduml
