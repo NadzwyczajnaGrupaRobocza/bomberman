@@ -1,0 +1,42 @@
+sudo: required
+dist: trusty
+language: cpp
+
+matrix:
+  include:
+    - compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
+            - libsfml-dev
+      env:
+      - C_COMPILER=gcc-6
+      - CXX_COMPILER=g++-6
+    # - compiler: clang
+    #   addons:
+    #     apt:
+    #       sources:
+    #         - ubuntu-toolchain-r-test
+    #         - llvm-toolchain-trusty-3.8
+    #       packages:
+    #         - clang-3.8
+    #   env:
+    #   - C_COMPILER=clang-3.8
+    #   - CXX_COMPILER=clang++-3.8
+
+# Build steps
+script:
+  - mkdir boost-dl; cd boost-dl
+  - wget https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.bz2
+  - tar --bzip2 -xf ./boost_1_62_0.tar.bz2
+  - sudo mv ./boost_1_62_0/boost /usr/include
+  - cd ..
+  - mkdir build
+  - cd build
+  - env CC=${C_COMPILER} CXX=${CXX_COMPILER} cmake .. 
+  - echo "We have" `nproc` "cores here"
+  - make -j `nproc`
+  - ctest -j `nproc` -V
