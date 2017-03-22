@@ -5,14 +5,13 @@ alt internal timer expired
 Bomb --> BombLauncher : notify_exploded
 Bomb --> Explosion : create
 Bomb --> PhysicalEngine : deregister_entity
+Bomb --> RenderingEngine : deregister_sprite
 GameWorld <-- Bomb : deregister_entity
 
 Explosion --> GameWorld : register_entity
 Explosion --> Map : get_available_area_for_exploding
 Explosion --> RenderingEngine : register_sprites
-Explosion --> PhysicsEngine : register_self
-
-Bomb --> RenderingEngine : deregister_sprite
+Explosion --> PhysicalEngine : register_self
 
 else internal timer not expired
 end

@@ -1,0 +1,17 @@
+@startuml
+
+GameWorld --|> Bomb : 1. update(unsiged delta_time)
+
+Bomb -up-> Bomb : 1.1. shouldExplode() -> bool
+Bomb --> BombLauncher : [shouldExplode] 1.2 expoded()
+Bomb -down-> Explosion : 1.2.1 create(GameWorld, RenderingEngine, PhysicalEngine)
+Bomb --> PhysicalEngine : 1.2.2 deregister(this)
+Bomb --> RenderingEngine : 1.2.3 deregister(this)
+Bomb -left-> GameWorld : 1.2.4 deregister(this)
+
+Explosion -left-> GameWorld : 1.2.1.1 register(this)
+Explosion --> Map : 1.2.1.2 getExplosionRange(unsigned x, unsinged y)  -> ExplosionRange
+Explosion --> RenderingEngine : 1.2.1.3. register(this)
+Explosion --> PhysicalEngine : 1.2.1.4. register(this)
+
+@enduml
