@@ -49,7 +49,8 @@ build_script:
   - mkdir build
   - cd build
   - cmake .. -GNinja -DCMAKE_BUILD_TYPE=%Configuration% -DCMAKE_CXX_COMPILER=clang-cl -DCMAKE_C_COMPILER=clang-cl -DBUILD_SHARED_LIBS:BOOL=OFF
-  - cmake --build . --target %Build%/all
+    #  - cmake --build . --target %Build%/all
+  - cmake --build . --target gtest
 
 test_script:
   - ps: |
