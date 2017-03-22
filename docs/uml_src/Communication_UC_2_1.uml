@@ -1,0 +1,15 @@
+@startuml
+
+(GameWorld) --> (HumanPlayer) : "1: update"
+(HumanPlayer) --> (Bomberman) : "1.1: spawn_bomb"
+(Bomberman) --> (BombLauncher) : "1.1.1: try_spawn_bomb"
+(BombLauncher) --> (Bomb) : "1.1.1.1a: create [can spawn]"
+(BombLauncher) --> (Bomb) : "1.1.1.1b: no op [cannot spawn]"
+
+(Bomb) --> (PhysicsEngine) :   "1.1.1.1.1: register_entity(position, size) : physId"
+(Bomb) --> (RenderingEngine) : "1.1.1.1.2: register_visible(texture_box) : visibleId"
+
+(Bomb) --> (GameWorld) : "1.1.1.1.3: register_bomb [?]"
+(Bomb) --> (Bomb) :      "1.1.1.1.4: start_timer [?]"
+
+@enduml
