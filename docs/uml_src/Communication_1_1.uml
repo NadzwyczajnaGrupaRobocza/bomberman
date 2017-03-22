@@ -1,0 +1,20 @@
+@startuml
+
+:main: --> (RenderingEngine) : "1: create"
+:main: --> (PhysicsEngine) : "2: create"
+:main: --> (GameWorld) : "3: create(RenderingEngine, PhysicsEngine)"
+:main: --> (RenderingEngine) : "4: redraw"
+
+(GameWorld) --> (Map) : "3.1: create(PhysicsEngine, RenderingEngine)"
+(Map) --> (Map) : "3.1.1*: createTile"
+(Map) --> (PhysicsEngine) : "3.1.1.1: register_entity(position, size) : physId"
+(Map) --> (RenderingEngine) : "3.1.1.2: register_visible(texture_box) : visibleId"
+
+(GameWorld) --> (HumanPlayer) : "3.2: create"
+(GameWorld) --> (Bomberman) : "3.3: create(HumanPlayer, PhysicsEngine, RenderingEngine)"
+(Bomberman) --> (PhysicsEngine) : "3.3.1: register_entity(position, size) : physId"
+(Bomberman) --> (RenderingEngine) : "3.3.2: register_visible(texture_box) : visibleID"
+
+
+@enduml
+    
