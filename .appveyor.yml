@@ -52,10 +52,10 @@ build_script:
     #  - cmake --build . --target %Build%/all
   - cmake --build . --target gtest
 
-test_script:
-  - ps: |
-      if ($env:CONFIGURATION -eq "Debug")
-      {
-          & ctest -V -R $env:Build
-      }
+    #test_script:
+    #- ps: |
+    #if ($env:CONFIGURATION -eq "Debug")
+    #{
+    #& ctest -V -R $env:Build
+    #}
 
