@@ -1,1 +1,0 @@
-# Bomberman desing process documentation
