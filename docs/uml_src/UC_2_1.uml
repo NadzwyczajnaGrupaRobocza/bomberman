@@ -8,8 +8,7 @@ alt can spawn
 BombLauncher --> Bomb : create
 Bomb --> PhysicsEngine : register_entity
 Bomb --> RenderingEngine : register_visible
-Bomb --> GameWorld : register_bomb
-Bomb --> Bomb : start_timer?
+BombLauncher --> GameWorld : register_bomb
 else cannot spawn
 end
 
