@@ -6,10 +6,11 @@ Bomb --> BombLauncher : notify_exploded
 Bomb --> Explosion : create
 Bomb --> PhysicalEngine : deregister_entity
 Bomb --> RenderingEngine : deregister_sprite
-GameWorld <-- Bomb : deregister_entity
+Bomb --> GameWorld : register_explosion
+
 
 Explosion --> GameWorld : register_entity
-Explosion --> Map : get_available_area_for_exploding
+Explosion --> Map : get_explosion_range
 Explosion --> RenderingEngine : register_sprites
 Explosion --> PhysicalEngine : register_self
 

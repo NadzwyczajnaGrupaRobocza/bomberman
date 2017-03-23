@@ -1,17 +1,17 @@
 @startuml
 
-:GameWorld: -down-|> (Bomb) : 1. update(unsiged delta_time)
+:GameWorld: -down-> (Bomb) : 1. update(double delta_time)
 
 (Bomb) -up-> (Bomb) : 1.1. should_explode() -> bool
 (Bomb) --> (BombLauncher) : [should_explode] 1.2 expoded()
-(Bomb) -left-> (Explosion) : 1.2.1 create(GameWorld, RenderingEngine, PhysicalEngine)
-(Bomb) -down-> (PhysicalEngine) : 1.2.2 deregister(this)
-(Bomb) -down-> (RenderingEngine) : 1.2.3 deregister(this)
+(Bomb) -left-> (Explosion) : 1.2.1 create(RenderingEngine, PhysicalEngine)
+(Bomb) -down-> (PhysicalEngine) : 1.2.2 deregister(physId)
+(Bomb) -down-> (RenderingEngine) : 1.2.3 deregister(visibleId)
 (Bomb) -up-> (GameWorld) : 1.2.4 deregister(this)
+(Bomb) -up-> (GameWorld) : 1.2.5 register_explosion(Explosion)
 
-(Explosion) -up-> (GameWorld) : 1.2.1.1 register(this)
 (Explosion) --> (Map) : 1.2.1.2 get_explosion_range(unsigned x, unsinged y)  -> ExplosionRange
-(Explosion) -down-> (RenderingEngine) : 1.2.1.3. register(this)
-(Explosion) -down-> (PhysicalEngine) : 1.2.1.4. register(this)
+(Explosion) -down-> (RenderingEngine) : 1.2.1.3. register(textureBox) -> visibleId
+(Explosion) -down-> (PhysicalEngine) : 1.2.1.4. register(position, size) -> phyId
 
 @enduml
