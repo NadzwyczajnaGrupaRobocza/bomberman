@@ -4,7 +4,7 @@
 (GameWorld) --> (Bomberman) : "1.1: update(delta_time)"
 (Bomberman) --> (HumanPlayer) : "1.1.1: get_direction() : Vector2D"
 (Bomberman) --> (Bomberman) : "1.1.2: calculate_position()"
-(Bomberman) --> (RenderingEngine) : "1.1.3: set_position() [via shared internal state]"
+(Bomberman) --> (RenderingEngine) : "1.1.3: set_position(physId, new_pos)"
 :main: --> (RenderingEngine) : "2: redraw()"
 
 @enduml

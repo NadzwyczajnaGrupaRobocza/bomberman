@@ -1,7 +1,7 @@
 @startuml
 
 GameWorld --> Bomberman   : update
-HumanPlayer <-- Bomberman : wants_bomb()
+HumanPlayer <-- Bomberman : wants_bomb
 Bomberman --> BombLauncher : try_spawn_bomb
 BombLauncher --> GameWorld : is_bomb_at_pos
 alt can spawn
