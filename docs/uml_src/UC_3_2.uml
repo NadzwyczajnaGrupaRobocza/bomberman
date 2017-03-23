@@ -6,13 +6,18 @@ participant Bomberman
 participant PhysicsEngine
 participant RenderingEngine
 
-GameWorld --> Bomberman : update(deltaTime)
-Bomberman --> HumanPlayer : getInput() 
-Bomberman --> PhysicsEngine : setPosition()
-GameWorld --> PhysicsEngine : calculateCollisionAndMoveColliders()
-GameWorld --> Bomberman :  move()
-Bomberman --> PhysicsEngine : getPosition()
-GameWorld --> RenderingEngine : render()
+GameWorld --> Bomberman : update
+Bomberman --> HumanPlayer : get_direction 
+Bomberman --> PhysicsEngine : set_next_position
+
+GameWorld --> PhysicsEngine : solve_collision
+PhysicsEngine --> PhysicsEngine : calculate_collision_and_set_position
+
+GameWorld --> Bomberman : update_position
+Bomberman --> PhysicsEngine : get_position
+Bomberman --> RenderingEngine : set_position
+
+GameWorld --> RenderingEngine : render
 
 
 @enduml
