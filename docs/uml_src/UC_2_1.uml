@@ -1,13 +1,14 @@
 @startuml
 
-GameWorld --> HumanPlayer : update
-HumanPlayer --> Bomberman : spawn_bomb
+GameWorld --> Bomberman   : update
+HumanPlayer <-- Bomberman : wants_bomb()
 Bomberman --> BombLauncher : try_spawn_bomb
+BombLauncher --> GameWorld : is_bomb_at_pos
 alt can spawn
 BombLauncher --> Bomb : create
 Bomb --> PhysicsEngine : register_entity
 Bomb --> RenderingEngine : register_visible
-Bomb --> GameWorld : register_bomb?
+Bomb --> GameWorld : register_bomb
 Bomb --> Bomb : start_timer?
 else cannot spawn
 end
