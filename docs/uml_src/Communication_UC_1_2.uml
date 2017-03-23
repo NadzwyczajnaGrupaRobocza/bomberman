@@ -1,0 +1,8 @@
+@startuml
+
+:main: --> (GameWorld) : "1: update(delta_time)"
+(GameWorld) --> (Bomberman) : "1.1: update(delta_time)"
+(Bomberman) --> (HumanPlayer) : "1.1.1: get_direction() : Vector2D"
+
+
+@enduml

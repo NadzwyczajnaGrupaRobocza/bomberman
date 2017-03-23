@@ -2,8 +2,7 @@
 
 main --> GameWorld : update
 GameWorld --> Bomberman : update
-/'HumanPlayer --> Keyboard : get_input'/
-HumanPlayer <-- Bomberman : get_input
+HumanPlayer <-- Bomberman : get_direction
 Bomberman --> RenderingEngine : update_position
 main --> RenderingEngine : redraw
 
