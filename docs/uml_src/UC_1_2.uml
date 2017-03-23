@@ -1,9 +1,10 @@
 @startuml
 
 main --> GameWorld : update
-GameWorld --> HumanPlayer : update
+GameWorld --> Bomberman : update
 /'HumanPlayer --> Keyboard : get_input'/
-HumanPlayer --> Bomberman : update_pos
+HumanPlayer <-- Bomberman : get_input
+Bomberman --> RenderingEngine : update_position
 main --> RenderingEngine : redraw
 
 @enduml
