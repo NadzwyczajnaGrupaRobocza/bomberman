@@ -3,7 +3,8 @@
 main --> GameWorld : update
 GameWorld --> Bomberman : update
 HumanPlayer <-- Bomberman : get_direction
-Bomberman --> RenderingEngine : update_position
+Bomberman --> Bomberman : calculate_position
+Bomberman --> RenderingEngine : set_position
 main --> RenderingEngine : redraw
 
 @enduml
