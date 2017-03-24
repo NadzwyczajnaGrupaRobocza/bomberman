@@ -1,4 +1,4 @@
-os: Visual Studio 2017
+os: Visual Studio 2015
 
 build:
   verbosity: detailed
@@ -31,11 +31,13 @@ install:
   - set SFML_URL="https://www.sfml-dev.org/files/SFML-2.4.2-windows-vc14-64-bit.zip"
   - appveyor DownloadFile %SFML_URL% -FileName sfml.zip
   - 7z x sfml.zip -oC:\projects\deps\sfml > nul
-  - ls -al C:\projects\deps\sfml
   #- set PATH=C:\projects\deps\sfml;%PATH%
+  - ls -al C:\projects\deps\sfml\SFML-2.4.2
 
   # Setup the path to Clang-cl
   - set PATH="C:\Program Files\LLVM\bin";%PATH%
+  - ls -al "C:\Program Files\LLVM\bin"
+  - clang -v
   - clang-cl -v
 
   # Setup the path to Boost
