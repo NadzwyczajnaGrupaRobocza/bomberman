@@ -32,12 +32,13 @@ install:
   - appveyor DownloadFile %SFML_URL% -FileName sfml.zip
   - 7z x sfml.zip -oC:\projects\deps\sfml > nul
   - set PATH=C:\projects\deps\sfml\SFML-2.4.2\bin;%PATH%
-  - ls -al C:\projects\deps\sfml\SFML-2.4.2\bin
 
   # Setup the path to Clang-cl
   - ls -l "C:\Program Files (x86)"
   - set PATH="C:\Program Files\LLVM\bin";%PATH%
-  - ls -al "C:\Program Files\LLVM\bin"
+  - ls -l "C:\Program Files"
+  - ls -l "C:\Program Files\LLVM"
+  - ls -l "C:\Program Files\LLVM\bin"
   - clang -v
   - clang-cl -v
 
