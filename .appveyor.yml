@@ -9,7 +9,7 @@ environment:
     Configuration: Debug
 
 cache:
-  - '%APPVEYOR_BUILD_FOLDER%/external'
+  - '%APPVEYOR_BUILD_FOLDER%/build'
   - c:\projects\deps -> appveyor.yml
   
 platform:
