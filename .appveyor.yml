@@ -35,6 +35,7 @@ install:
   - ls -al C:\projects\deps\sfml\SFML-2.4.2\bin
 
   # Setup the path to Clang-cl
+  - ls -l "C:\Program Files (x86)"
   - set PATH="C:\Program Files\LLVM\bin";%PATH%
   - ls -al "C:\Program Files\LLVM\bin"
   - clang -v
