@@ -7,6 +7,10 @@ environment:
   matrix:
   - Build: bomberman
     Configuration: Debug
+
+cache:
+  - %APPVEYOR_BUILD_FOLDER%/external
+  - c:\projects\deps -> appveyor.yml
   
 platform:
 - x64
