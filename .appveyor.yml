@@ -18,17 +18,17 @@ install:
 
   # Install Ninja
   - IF NOT EXIST C:\projects\ninja (
-  set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip"
-  appveyor DownloadFile %NINJA_URL% -FileName ninja.zip
-  7z x ninja.zip -oC:\projects\deps\ninja > nul
-  set PATH=C:\projects\deps\ninja;%PATH%
+  set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip" &&
+  appveyor DownloadFile %NINJA_URL% -FileName ninja.zip &&
+  7z x ninja.zip -oC:\projects\deps\ninja > nul &&
+  set PATH=C:\projects\deps\ninja;%PATH% &&
   ninja --version
   )
 
   # Instal SFML
   -IF NOT EXIST C:\projects\sfml (
-  set SFML_URL="https://www.sfml-dev.org/files/SFML-2.4.2-windows-vc14-64-bit.zip"
-  appveyor DownloadFile %SFML_URL% -FileName sfml.zip
+  set SFML_URL="https://www.sfml-dev.org/files/SFML-2.4.2-windows-vc14-64-bit.zip" &&
+  appveyor DownloadFile %SFML_URL% -FileName sfml.zip &&
   7z x sfml.zip -oC:\projects\deps\sfml > nul
   )
   #- set PATH=C:\projects\deps\sfml;%PATH%
