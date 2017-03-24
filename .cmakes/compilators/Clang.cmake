@@ -9,7 +9,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything -Werror\
  -Wno-unknown-pragmas -Wno-missing-prototypes -Wno-undef\
  -Wno-language-extension-token -Wno-missing-noreturn -Wno-missing-noreturn\
  -Wno-language-extension-token -Wno-used-but-marked-unused\
- -Wno-shift-sign-overflow -Wno-deprecated\
+ -Wno-shift-sign-overflow -Wno-deprecated -Wno-documentation-deprecated-sync\
  -Wno-weak-vtables -Wno-sign-conversion -Wno-padded -Wno-covered-switch-default")
 
 target_compile_options(gtest PRIVATE "-Wno-deprecated-declarations")
