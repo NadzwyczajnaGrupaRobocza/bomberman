@@ -20,3 +20,10 @@ target_include_directories(bomberman PUBLIC
 
 
 target_link_libraries(bomberman physics-lib ${SFML_LIBRARIES})
+
+add_executable(dummy_test
+  Dummy_UT/dummy_class.cpp
+  Dummy_UT/dummy_class_test.cpp)
+
+target_link_libraries(dummy_test gtest_main gmock)
+add_test(dummy_test ${EXECUTABLE_OUTPUT_PATH}/dummy_test)

@@ -1,4 +1,4 @@
-os: Visual Studio 2015
+os: Visual Studio 2017
 
 build:
   verbosity: detailed
@@ -9,35 +9,37 @@ environment:
     Configuration: Debug
   
 platform:
-- x64
+- x86
 
 install:
-  ############################################################################
   # All external dependencies are installed in C:\projects\deps
-  ############################################################################
   - mkdir C:\projects\deps
   - cd C:\projects\deps
 
-  ############################################################################
   # Install Ninja
-  ############################################################################
-  - set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip"
-  - appveyor DownloadFile %NINJA_URL% -FileName ninja.zip
-  - 7z x ninja.zip -oC:\projects\deps\ninja > nul
-  - set PATH=C:\projects\deps\ninja;%PATH%
-  - ninja --version
+  - IF NOT EXIST C:\projects\ninja (
+  set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip"
+  appveyor DownloadFile %NINJA_URL% -FileName ninja.zip
+  7z x ninja.zip -oC:\projects\deps\ninja > nul
+  set PATH=C:\projects\deps\ninja;%PATH%
+  ninja --version
+  )
 
-  ############################################################################
+  # Instal SFML
+  -IF NOT EXIST C:\projects\sfml (
+  set SFML_URL="https://www.sfml-dev.org/files/SFML-2.4.2-windows-vc14-64-bit.zip"
+  appveyor DownloadFile %SFML_URL% -FileName sfml.zip
+  7z x sfml.zip -oC:\projects\deps\sfml > nul
+  )
+  #- set PATH=C:\projects\deps\sfml;%PATH%
+
   # Setup the path to Clang-cl
-  ############################################################################
   - set PATH="C:\Program Files\LLVM\bin";%PATH%
   - clang-cl -v
 
-  ############################################################################
   # Setup the path to Boost
-  ############################################################################
-  - set INCLUDE=%INCLUDE%;C:\Libraries\boost_1_62_0
-  - set LIB=%LIB%;C:\Libraries\boost_1_62_0
+  - set INCLUDE=%INCLUDE%;C:\Libraries\boost_1_63_0
+  - set LIB=%LIB%;C:\Libraries\boost_1_63_0
 
 before_build:
   - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
@@ -49,13 +51,10 @@ build_script:
   - mkdir build
   - cd build
   - cmake .. -GNinja -DCMAKE_BUILD_TYPE=%Configuration% -DCMAKE_CXX_COMPILER=clang-cl -DCMAKE_C_COMPILER=clang-cl -DBUILD_SHARED_LIBS:BOOL=OFF
-    #  - cmake --build . --target %Build%/all
-  - cmake --build . --target gtest
+  - cmake --build .
 
-    #test_script:
-    #- ps: |
-    #if ($env:CONFIGURATION -eq "Debug")
-    #{
-    #& ctest -V -R $env:Build
-    #}
+test_script:
+  - ps: |
+      & ctest -V
+
 
