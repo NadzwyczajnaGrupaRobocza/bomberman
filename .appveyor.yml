@@ -9,8 +9,9 @@ environment:
     Configuration: Debug
 
 cache:
+  - '%APPVEYOR_BUILD_FOLDER%\build\CMakeCache.txt'
   - '%APPVEYOR_BUILD_FOLDER%\build\bin'
-  - c:\projects\deps -> appveyor.yml
+  - c:\projects\deps -> .appveyor.yml
   
 platform:
 - x64
@@ -21,7 +22,7 @@ install:
   - cd C:\projects\deps
 
   # Install Ninja
-  - set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip"
+  #- set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip"
 
   - if not exist C:\projects\deps\ninja (
       set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip" &&
