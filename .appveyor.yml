@@ -28,7 +28,7 @@ install:
       7z x ninja.zip -oC:\projects\deps\ninja > nul)
 
   - if not exist C:\projects\deps\sfml (
-     appveyor DownloadFile %SFML_URL% -FileName sfml.zip
+     appveyor DownloadFile %SFML_URL% -FileName sfml.zip &&
      7z x sfml.zip -oC:\projects\deps\sfml > nul)
      
   - set PATH=C:\projects\deps\ninja;%PATH%
