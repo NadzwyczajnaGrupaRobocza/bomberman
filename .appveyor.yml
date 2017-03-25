@@ -21,7 +21,6 @@ install:
   - cd C:\projects\deps
 
   # Install Ninja
-  
   - set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip"
 
   - if not exist C:\projects\deps\ninja (
@@ -32,12 +31,14 @@ install:
   - ninja --version
 
   # Instal SFML
-  # - IF NOT EXIST C:\projects\sfml (
   - set SFML_URL="https://www.sfml-dev.org/files/SFML-2.4.2-windows-vc14-64-bit.zip"
-  - appveyor DownloadFile %SFML_URL% -FileName sfml.zip
-  - 7z x sfml.zip -oC:\projects\deps\sfml > nul
+  
+  - if not exist C:\projects\deps\sfml (
+     appveyor DownloadFile %SFML_URL% -FileName sfml.zip
+     7z x sfml.zip -oC:\projects\deps\sfml > nul)
+  
   - set PATH=C:\projects\deps\sfml\SFML-2.4.2\bin;%PATH%
-
+     
   # Setup the path to Clang-cl
   - set PATH="C:\Program Files\LLVM\bin";%PATH%
   - clang-cl -v
