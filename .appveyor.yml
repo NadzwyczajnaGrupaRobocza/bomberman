@@ -24,7 +24,7 @@ install:
   
   - set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip"
 
-  - if not exist C:\projects\ninja (
+  - if not exist C:\projects\deps\ninja (
       appveyor DownloadFile %NINJA_URL% -FileName ninja.zip &&
       7z x ninja.zip -oC:\projects\deps\ninja > nul)
 
