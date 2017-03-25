@@ -9,28 +9,23 @@ environment:
     Configuration: Debug
 
 cache:
-  - '%APPVEYOR_BUILD_FOLDER%\build\CMakeCache.txt'
-  - '%APPVEYOR_BUILD_FOLDER%\build\bin'
   - c:\projects\deps -> .appveyor.yml
   
 platform:
 - x64
 
 install:
-  - if not exist C:\projects\deps mkdir C:\projects\deps
-  - cd C:\projects\deps
-
   - set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip"
   - set SFML_URL="https://www.sfml-dev.org/files/SFML-2.4.2-windows-vc14-64-bit.zip"
 
-  - if not exist C:\projects\deps\ninja (
+  - if not exist C:\projects\deps (
+      mkdir C:\projects\deps &&
+      cd C:\projects\deps &&
       appveyor DownloadFile %NINJA_URL% -FileName ninja.zip &&
-      7z x ninja.zip -oC:\projects\deps\ninja > nul)
-
-  - if not exist C:\projects\deps\sfml (
-     appveyor DownloadFile %SFML_URL% -FileName sfml.zip &&
-     7z x sfml.zip -oC:\projects\deps\sfml > nul)
-     
+      appveyor DownloadFile %SFML_URL% -FileName sfml.zip &&
+      7z x ninja.zip -oC:\projects\deps\ninja > nul &&
+      7z x sfml.zip -oC:\projects\deps\sfml > nul)
+    
   - set PATH=C:\projects\deps\ninja;%PATH%
   - set PATH=C:\projects\deps\sfml\SFML-2.4.2\bin;%PATH%
   - set PATH="C:\Program Files\LLVM\bin";%PATH%
