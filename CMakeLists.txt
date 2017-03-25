@@ -10,13 +10,11 @@ find_package(SFML 2 COMPONENTS system window graphics network audio)
 if(SFML_FOUND)
   enable_testing()
 
-  set(GOOGLETEST_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/googletest/googletest/include/")
-  set(GOOGLEMOCK_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/googletest/googlemock/include/")
+  set(FAKEIT_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/fakeit/single_header/gtest/")
   set(GSL_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/external/GSL/include")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGSL_THROW_ON_CONTRACT_VIOLATION")
-  set(COMMON_INCLUDES ${GOOGLETEST_INCLUDE_DIR} ${GOOGLEMOCK_INCLUDE_DIR})
 
-  add_subdirectory(external/googletest)
+  add_subdirectory(external/googletest/googletest)
 
   if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
     include(${CMAKE_SOURCE_DIR}/.cmakes/platforms/Windows.cmake)

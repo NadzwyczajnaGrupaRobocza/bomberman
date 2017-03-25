@@ -42,13 +42,13 @@ before_build:
   - git submodule update
 
 build_script:
-  - if not exist build mkdir build
+  - mkdir build
   - cd build
   - cmake .. -GNinja -DCMAKE_BUILD_TYPE=%Configuration% -DCMAKE_CXX_COMPILER=clang-cl -DCMAKE_C_COMPILER=clang-cl -DBUILD_SHARED_LIBS:BOOL=OFF
   - cmake --build .
 
 test_script:
   - ps: |
-      & ctest -V
+      & ctest -j `nproc` -V
 
 

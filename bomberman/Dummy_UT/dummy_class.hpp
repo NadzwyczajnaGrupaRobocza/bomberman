@@ -1,20 +1,26 @@
 #pragma once
 
-class DummyClass
+class DummyInterface
 {
 public:
-    virtual ~DummyClass() = default;
-    virtual int dummyFunction(int) const;
+    virtual ~DummyInterface() = default;
+    virtual int dummyFunction(int) const = 0;
+};
+
+class DummyClass : public DummyInterface
+{
+public:
+    int dummyFunction(int) const override;
 };
 
 class DummyClass2
 {
 public:
-    DummyClass2(DummyClass& d)
+    DummyClass2(DummyInterface& d)
         : dummy{d}{}
 
     int get(int i) const;
 
 private:
-    DummyClass& dummy;
+    DummyInterface& dummy;
 };

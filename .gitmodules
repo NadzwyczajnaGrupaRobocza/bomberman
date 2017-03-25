@@ -4,3 +4,6 @@
 [submodule "GSL"]
 	path = external/GSL
 	url = https://github.com/Microsoft/GSL.git
+[submodule "external\\fakeit"]
+	path = external\\fakeit
+	url = https://github.com/eranpeer/FakeIt.git
