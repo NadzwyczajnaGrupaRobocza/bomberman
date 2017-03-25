@@ -17,37 +17,28 @@ platform:
 - x64
 
 install:
-  # All external dependencies are installed in C:\projects\deps
   - if not exist C:\projects\deps mkdir C:\projects\deps
   - cd C:\projects\deps
 
-  # Install Ninja
-  #- set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip"
+  - set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip"
+  - set SFML_URL="https://www.sfml-dev.org/files/SFML-2.4.2-windows-vc14-64-bit.zip"
 
   - if not exist C:\projects\deps\ninja (
-      set "NINJA_URL=https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip" &&
-      call appveyor DownloadFile %^NINJA_URL% -FileName ninja.zip &&
+      appveyor DownloadFile %NINJA_URL% -FileName ninja.zip &&
       7z x ninja.zip -oC:\projects\deps\ninja > nul)
 
-  - set PATH=C:\projects\deps\ninja;%PATH%
-  - ninja --version
-
-  # Instal SFML
-  - set SFML_URL="https://www.sfml-dev.org/files/SFML-2.4.2-windows-vc14-64-bit.zip"
-  
   - if not exist C:\projects\deps\sfml (
      appveyor DownloadFile %SFML_URL% -FileName sfml.zip
      7z x sfml.zip -oC:\projects\deps\sfml > nul)
-  
-  - set PATH=C:\projects\deps\sfml\SFML-2.4.2\bin;%PATH%
      
-  # Setup the path to Clang-cl
+  - set PATH=C:\projects\deps\ninja;%PATH%
+  - set PATH=C:\projects\deps\sfml\SFML-2.4.2\bin;%PATH%
   - set PATH="C:\Program Files\LLVM\bin";%PATH%
-  - clang-cl -v
-
-  # Setup the path to Boost
   - set INCLUDE=%INCLUDE%;C:\Libraries\boost_1_63_0
   - set LIB=%LIB%;C:\Libraries\boost_1_63_0
+     
+  - ninja --version
+  - clang-cl -v
 
 before_build:
   - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
