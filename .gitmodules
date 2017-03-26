@@ -7,3 +7,6 @@
 [submodule "fakeit"]
 	path = external/fakeit
 	url = https://github.com/eranpeer/FakeIt.git
+[submodule "range-v3"]
+	path = external/range-v3
+	url = https://github.com/ericniebler/range-v3.git
