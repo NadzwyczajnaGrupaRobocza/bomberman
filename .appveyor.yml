@@ -3,6 +3,14 @@ os: Visual Studio 2015
 build:
   verbosity: detailed
 
+skip_commits:
+  message: /\[skip ci\]/
+  files:
+    - README.md
+    - .gitignore
+    - .clang-tidy
+    - .clang-format
+
 environment:
   matrix:
   - Build: bomberman
@@ -44,11 +52,14 @@ before_build:
 build_script:
   - mkdir build
   - cd build
-  - cmake .. -GNinja -DCMAKE_BUILD_TYPE=%Configuration% -DCMAKE_CXX_COMPILER=clang-cl -DCMAKE_C_COMPILER=clang-cl -DBUILD_SHARED_LIBS:BOOL=OFF
+  - cmake .. -GNinja -DCMAKE_BUILD_TYPE=%Configuration%
+                     -DCMAKE_CXX_COMPILER=clang-cl
+                     -DCMAKE_C_COMPILER=clang-cl
+                     -DBUILD_SHARED_LIBS:BOOL=OFF
   - cmake --build .
 
 test_script:
   - ps: |
-      & ctest -V -j `nproc`
+      & ctest -V -j nproc
 
 
