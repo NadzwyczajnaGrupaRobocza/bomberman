@@ -4,7 +4,7 @@ build:
   verbosity: detailed
 
 skip_commits:
-  message: /\[skip ci\]/
+  message: /\[ci skip\]/
   files:
     - README.md
     - .gitignore
