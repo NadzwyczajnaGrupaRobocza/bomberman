@@ -20,8 +20,5 @@ Bomb should appear when proper key is pressed.
 
 # [UC:3] As player I want my bomberman to detect collision with walls other game entities
 
-## [UC:3.1] As system I want PhysicsEngine to be initialized and all required objects to register with it
-![UC:3.1](./img/UC_3_1.png)
-
 ## [UC:3.2] As player I want PhysicsEngine to detect colisions of Bomberman with other entities
 ![UC:3.2](./img/UC_3_2.png)
