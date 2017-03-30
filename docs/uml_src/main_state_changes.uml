@@ -1,0 +1,16 @@
+@startuml
+
+[*] --> Initialize
+Initialize: UC 1_1
+
+Initialize --> Play
+Play: UC 1_2
+Play: UC 2_*
+
+Play --> Destroy : F5
+
+Destroy --> Initialize
+
+Play --> [*] : ESC
+
+@enduml
