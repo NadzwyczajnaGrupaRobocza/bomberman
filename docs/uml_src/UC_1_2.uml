@@ -1,10 +1,22 @@
 @startuml
 
-main --> GameWorld : update
+participant GameWorld
+participant HumanPlayer
+participant Bomberman
+participant PhysicsEngine
+participant RenderingEngine
+
 GameWorld --> Bomberman : update
-HumanPlayer <-- Bomberman : get_direction
-Bomberman --> Bomberman : calculate_position
+Bomberman --> HumanPlayer : get_direction
+Bomberman --> PhysicsEngine : set_next_position
+
+GameWorld --> PhysicsEngine : solve_collision
+PhysicsEngine --> PhysicsEngine : calculate_collision_and_set_position
+
+GameWorld --> Bomberman : update_position
+Bomberman --> PhysicsEngine : get_position
 Bomberman --> RenderingEngine : set_position
-main --> RenderingEngine : redraw
+
+GameWorld --> RenderingEngine : render
 
 @enduml

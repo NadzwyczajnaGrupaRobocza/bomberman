@@ -17,8 +17,3 @@ Bomb should appear when proper key is pressed.
 
 ## [UC:2.3] As player I want explosions of my bombs to last a prededined time interval
 ![UC:2.3](./img/UC_2_3.png)
-
-# [UC:3] As player I want my bomberman to detect collision with walls other game entities
-
-## [UC:3.2] As player I want PhysicsEngine to detect colisions of Bomberman with other entities
-![UC:3.2](./img/UC_3_2.png)
