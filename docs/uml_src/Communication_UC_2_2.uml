@@ -7,11 +7,11 @@
 (Bomb) -left-> (Explosion) : 1.2.1 create(RenderingEngine, PhysicalEngine)
 (Bomb) -down-> (PhysicalEngine) : 1.2.2 deregister(physId)
 (Bomb) -down-> (RenderingEngine) : 1.2.3 deregister(visibleId)
-(Bomb) -up-> (GameWorld) : 1.2.4 deregister(this)
+(Bomb) -up-> (GameWorld) : 1.2.4 deregister(this) obsolete?
 (Bomb) -up-> (GameWorld) : 1.2.5 register_explosion(Explosion)
 
 (Explosion) --> (Map) : 1.2.1.2 get_explosion_range(unsigned x, unsinged y)  -> ExplosionRange
-(Explosion) -down-> (RenderingEngine) : 1.2.1.3. register(textureBox) -> visibleId
-(Explosion) -down-> (PhysicalEngine) : 1.2.1.4. register(position, size) -> phyId
+(Explosion) -down-> (RenderingEngine) : 1.2.1.3. register(textureBox) -> render_id
+(Explosion) -down-> (PhysicalEngine) : 1.2.1.4. register(position, size) -> phys_id
 
 @enduml

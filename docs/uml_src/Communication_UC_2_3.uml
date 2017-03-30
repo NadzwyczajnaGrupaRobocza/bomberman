@@ -6,7 +6,7 @@
 (PhysicalEngine) as (PE)
 
 (GW) ---> (E) : 1 update(delta_time)
-(E) ---> (GW) : [timer expired] 2.1 deregister_entity(this)
+(E) ---> (GW) : [timer expired] 2.1 deregister_entity(this) obsolete?
 (E) ---> (RE) : [timer expired] 2.2 deregister_sprites(visible_id)
 (E) ---> (PE) : [timer expired] 2.3 deregister_entity(physic_id)
 

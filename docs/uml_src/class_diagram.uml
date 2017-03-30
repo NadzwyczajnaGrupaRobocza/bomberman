@@ -1,0 +1,65 @@
+@startuml
+
+interface Entity {
++ update(delta_time)
++ bool areYouDead()
+}
+
+class Bomberman {
+- physics_component : PhysicsComponent
+- render_component : RenderComponent
+- human_player : HumanPlayer
+- bomb_launcher : BombLauncher
+}
+
+class GameWorld {
+- bomberman : Entity
+- map : Map
+- physics_engine : std::unique_ptr<PhysicsEngine>
+- render_engine : jw
+- bombs : std::vector<Entity>
+- explosions : std::vector<Entity>
++ bool is_bomb_at_pos(Vector2D position)
++ create_bomb(Vector2D position, int timeToExplode)
++ create_explosion(Vector2D position)
++ deregister(Bomb* bomb_handle)
+}
+
+class PhysicsComponent {
++ phys_id : int
++ physics_engine : PhysicsEngine&
+}
+
+class RenderComponent {
++ render_id : int
++ render_engine : RenderEngine&
+}
+
+class HumanPlayer {
++ Vector2D get_direction()
++ bool wants_bomb()
+}
+
+class BombLauncher {
+- game_world : GameWorld
+- max_bombs_count : int
+- max_bombs_count : int
++ bool try_spawn_bomb(Vector2D position)
++ notify_exploded()
+}
+
+class Map {
+
+}
+
+Bomberman --|> Entity
+
+PhysicsComponent --* Bomberman
+RenderComponent --* Bomberman
+HumanPlayer --* Bomberman
+
+BombLauncher --> GameWorld
+
+Entity --o GameWorld
+
+@enduml

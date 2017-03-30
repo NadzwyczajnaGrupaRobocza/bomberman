@@ -6,8 +6,8 @@
 
 (GameWorld) --> (Map) : "3.1: create(PhysicsEngine, RenderingEngine)"
 (Map) --> (Map) : "3.1.1*: create_tiles"
-(Map) --> (PhysicsEngine) : "3.1.1.1: register_entity(position, size) : physId"
-(Map) --> (RenderingEngine) : "3.1.1.2: register_visible(texture_box) : visibleId"
+(Map) --> (PhysicsEngine) : "3.1.1.1: register_entity(position, size) : phys_id"
+(Map) --> (RenderingEngine) : "3.1.1.2: register_visible(texture_box) : render_id"
 
 (GameWorld) --> (HumanPlayer) : "3.2: create"
 (GameWorld) --> (Bomberman) : "3.3: create(HumanPlayer, PhysicsEngine, RenderingEngine)"
