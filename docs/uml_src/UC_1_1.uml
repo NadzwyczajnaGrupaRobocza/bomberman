@@ -14,12 +14,12 @@ main --> PhysicsEngine : create
 main --> GameWorld : create
 GameWorld --> Map : create
 Map --> Map : create_tiles
-Map --> PhysicsEngine : register_entity
-Map --> RenderingEngine : register_visible
+Map --> PhysicsEngine : register
+Map --> RenderingEngine : register
 
 GameWorld --> HumanPlayer : create
 GameWorld --> Bomberman : create
-Bomberman --> PhysicsEngine : register_entity
-Bomberman --> RenderingEngine : register_visible
+Bomberman --> PhysicsEngine : register
+Bomberman --> RenderingEngine : register
 
 @enduml

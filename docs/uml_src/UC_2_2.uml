@@ -9,10 +9,10 @@ Bomb --> RenderingEngine : deregister_sprite
 Bomb --> GameWorld : register_explosion
 
 
-Explosion --> GameWorld : register_entity
+Explosion --> GameWorld : register
 Explosion --> Map : get_explosion_range
-Explosion --> RenderingEngine : register_sprites
-Explosion --> PhysicalEngine : register_self
+Explosion --> RenderingEngine : register
+Explosion --> PhysicalEngine : register
 
 else internal timer not expired
 end

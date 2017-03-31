@@ -6,13 +6,13 @@
 
 (GameWorld) --> (Map) : "3.1: create(PhysicsEngine, RenderingEngine)"
 (Map) --> (Map) : "3.1.1*: create_tiles"
-(Map) --> (PhysicsEngine) : "3.1.1.1: register_entity(position, size) : phys_id"
-(Map) --> (RenderingEngine) : "3.1.1.2: register_visible(texture_box) : render_id"
+(Map) --> (PhysicsEngine) : "3.1.1.1: register(position, size) : phys_id"
+(Map) --> (RenderingEngine) : "3.1.1.2: register(texture_box) : render_id"
 
 (GameWorld) --> (HumanPlayer) : "3.2: create"
 (GameWorld) --> (Bomberman) : "3.3: create(HumanPlayer, PhysicsEngine, RenderingEngine)"
-(Bomberman) --> (PhysicsEngine) : "3.3.1: register_entity(position, size) : physId"
-(Bomberman) --> (RenderingEngine) : "3.3.2: register_visible(texture_box) : visibleID"
+(Bomberman) --> (PhysicsEngine) : "3.3.1: register(position, size) : physId"
+(Bomberman) --> (RenderingEngine) : "3.3.2: register(texture_box) : visibleID"
 
 
 @enduml
