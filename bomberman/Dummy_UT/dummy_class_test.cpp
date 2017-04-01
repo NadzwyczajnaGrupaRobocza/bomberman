@@ -59,5 +59,5 @@ TEST(Rangev3, range)
 
 TEST_F(DummyClassTest, CanUseHamcrestNotation)
 {
-  ASSERT_THAT(5, ::testing::Eq(DummyClass{}.returnAlways5()));
+  ASSERT_THAT(DummyClass{}.returnAlways5(), ::testing::Eq(5));
 }
