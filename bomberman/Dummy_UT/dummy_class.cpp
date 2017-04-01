@@ -9,8 +9,3 @@ int DummyClass2::get(int i) const
 {
     return dummy.dummyFunction(i);
 }
-
-int DummyClass::returnAlways5() const
-{
-  return 5;
-}
