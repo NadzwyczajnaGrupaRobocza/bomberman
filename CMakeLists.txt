@@ -15,7 +15,7 @@ if(SFML_FOUND)
   set(GSL_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/external/GSL/include")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGSL_THROW_ON_CONTRACT_VIOLATION")
 
-  add_subdirectory(external/googletest)
+  add_subdirectory(external/googletest/googletest)
 
   if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
     include(${CMAKE_SOURCE_DIR}/.cmakes/platforms/Windows.cmake)
