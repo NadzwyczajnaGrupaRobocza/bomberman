@@ -11,7 +11,6 @@ class DummyClass : public DummyInterface
 {
 public:
     int dummyFunction(int) const override;
-    int returnAlways5() const;
 };
 
 class DummyClass2

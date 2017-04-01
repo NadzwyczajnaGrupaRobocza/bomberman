@@ -1,13 +1,12 @@
 #include <iostream>
 #include <iterator>
 #include <gtest/gtest.h>
-#include <gmock/gmock-matchers.h>
 #include <fakeit.hpp>
 #include <range/v3/all.hpp>
 
 #include "dummy_class.hpp"
 
-using ::testing::Test;
+using namespace ::testing;
 using namespace ::fakeit;
 
 class DummyClassTest : public Test
@@ -16,7 +15,8 @@ public:
     void SetUp() override
     {
         When(Method(mock, dummyFunction)).Return(56);
-    } 
+    }
+
     Mock<DummyInterface> mock;
     DummyClass2 dummy{mock.get()};
 };
@@ -55,9 +55,4 @@ TEST(Rangev3, range)
                  ranges::ostream_iterator<int>(std::cout, " "));
 
     std::cout << '\n';
-}
-
-TEST_F(DummyClassTest, CanUseHamcrestNotation)
-{
-  ASSERT_THAT(5, ::testing::Eq(DummyClass{}.returnAlways5()));
 }
