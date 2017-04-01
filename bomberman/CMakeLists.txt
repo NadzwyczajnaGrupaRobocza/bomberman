@@ -26,6 +26,7 @@ add_executable(dummy_test
 
 target_include_directories(dummy_test SYSTEM PRIVATE
   ${FAKEIT_INCLUDE_DIR}
+  ${GMOCK_INCLUDE_DIR}
   )
 
 target_link_libraries(dummy_test gtest_main)

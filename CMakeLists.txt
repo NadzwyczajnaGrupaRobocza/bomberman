@@ -13,9 +13,10 @@ if(SFML_FOUND)
   set(RANGEV3_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/range-v3/include/")
   set(FAKEIT_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/fakeit/single_header/gtest/")
   set(GSL_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/external/GSL/include")
+  set(GMOCK_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/external/googletest/googlemock/include")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGSL_THROW_ON_CONTRACT_VIOLATION")
 
-  add_subdirectory(external/googletest/googlemock)
+  add_subdirectory(external/googletest/googletest)
 
   if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
     include(${CMAKE_SOURCE_DIR}/.cmakes/platforms/Windows.cmake)
