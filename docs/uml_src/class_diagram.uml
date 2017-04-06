@@ -6,8 +6,10 @@ interface Entity {
 }
 
 class Bomberman {
-- physics_component : PhysicsComponent
-- render_component : RenderComponent
+- phys_id : PhysId
+- physics_engine : PhysicsEngine&
+- render_id : RenderId
+- render_engine : RenderEngine&
 - human_player : HumanPlayer
 - bomb_launcher : BombLauncher
 }
@@ -16,23 +18,12 @@ class GameWorld {
 - bomberman : Entity
 - map : Map
 - physics_engine : std::unique_ptr<PhysicsEngine>
-- render_engine : jw
-- bombs : std::vector<Entity>
-- explosions : std::vector<Entity>
+- render_engine : std::unique_ptr<RenderEngine>
+- bombs : std::vector<Bomb>
+- explosions : std::vector<Explosion>
 + bool is_bomb_at_pos(Vector2D position)
 + create_bomb(Vector2D position, int timeToExplode)
 + create_explosion(Vector2D position)
-+ deregister(Bomb* bomb_handle)
-}
-
-class PhysicsComponent {
-+ phys_id : int
-+ physics_engine : PhysicsEngine&
-}
-
-class RenderComponent {
-+ render_id : int
-+ render_engine : RenderEngine&
 }
 
 class HumanPlayer {
@@ -43,23 +34,60 @@ class HumanPlayer {
 class BombLauncher {
 - game_world : GameWorld
 - max_bombs_count : int
-- max_bombs_count : int
+- current_bombs_count : int
 + bool try_spawn_bomb(Vector2D position)
 + notify_exploded()
 }
 
 class Map {
+- background : RenderId
+- static_element : std::vector<PhysId>
+- render_engine : RenderEngine&
+- physics_engine : PhysicsEngine&
+}
 
+class PhysicsEngine{
++ void set_position(PhysId id, Vector2D position)
++ Vector2D get_position(PhysId id)
++ void solve_collisions()
+}
+
+class RenderEngine{
++ void set_position(RenderId id, Vector2D position)
++ void render()
+}
+
+class Bomb {
+- phys_id : PhysId
+- render_id : RenderId
+- render_engine : RenderEngine&
+- physics_engine : PhysicsEngine&
+}
+
+class Explosion {
+- phys_ids : std::vector<PhysId>
+- render_ids : std::vector<RenderId>
+- render_engine : RenderEngine&
+- physics_engine : PhysicsEngine&
 }
 
 Bomberman --|> Entity
+Bomb --|> Entity
+Explosion --|> Entity
 
-PhysicsComponent --* Bomberman
-RenderComponent --* Bomberman
+Bomberman --* GameWorld
+Bomb --* GameWorld
+Explosion --* GameWorld
+
 HumanPlayer --* Bomberman
 
 BombLauncher --> GameWorld
+BombLauncher --* Bomberman
 
-Entity --o GameWorld
+
+Map --* GameWorld
+
+RenderEngine --* GameWorld
+PhysicsEngine --* GameWorld
 
 @enduml
