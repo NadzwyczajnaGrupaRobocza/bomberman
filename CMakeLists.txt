@@ -15,6 +15,7 @@ if(SFML_FOUND)
   set(RANGEV3_INCLUDE_DIR "${EXTERNAL_INCLUDE_DIR}/range-v3/include/")
   set(FAKEIT_INCLUDE_DIR "${EXTERNAL_INCLUDE_DIR}/fakeit/single_header/gtest/")
   set(GSL_INCLUDE_DIR "${EXTERNAL_INCLUDE_DIR}/GSL/include")
+  set(GMOCK_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/external/googletest/googlemock/include")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGSL_THROW_ON_CONTRACT_VIOLATION")
 
   add_subdirectory(external/googletest/googletest)
