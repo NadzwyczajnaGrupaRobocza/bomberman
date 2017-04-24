@@ -17,6 +17,7 @@ if(SFML_FOUND)
   set(GSL_INCLUDE_DIR "${EXTERNAL_INCLUDE_DIR}/GSL/include")
   set(GMOCK_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/external/googletest/googlemock/include")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGSL_THROW_ON_CONTRACT_VIOLATION")
+  set(GTEST_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/googletest/googletest/include")
 
   add_subdirectory(external/googletest/googletest)
 
@@ -38,5 +39,7 @@ if(SFML_FOUND)
   include_directories(SYSTEM ${SFML_INCLUDE_DIR})
   include_directories(SYSTEM ${GSL_INCLUDE_DIR})
   include_directories(SYSTEM ${GLM_INCLUDE_DIR})
+  include_directories(SYSTEM ${GTEST_INCLUDE_DIR})
+
   add_subdirectory(bomberman)
 endif()
