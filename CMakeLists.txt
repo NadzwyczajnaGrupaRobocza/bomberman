@@ -40,6 +40,5 @@ if(SFML_FOUND)
   include_directories(SYSTEM ${GSL_INCLUDE_DIR})
   include_directories(SYSTEM ${GLM_INCLUDE_DIR})
 
-  add_subdirectory(bomberman)
   add_subdirectory(src)
 endif()
