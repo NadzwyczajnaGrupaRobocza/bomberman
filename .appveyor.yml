@@ -10,7 +10,7 @@ skip_commits:
     - .gitignore
     - .clang-tidy
     - .clang-format
-    - docs/*
+    - docs/
 
 environment:
   matrix:
