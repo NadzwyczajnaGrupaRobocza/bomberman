@@ -11,7 +11,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything -Werror\
  -Wno-language-extension-token -Wno-used-but-marked-unused\
  -Wno-shift-sign-overflow -Wno-deprecated -Wno-documentation-deprecated-sync\
  -Wno-weak-vtables -Wno-sign-conversion -Wno-padded -Wno-covered-switch-default\
- -Wextra-semi")                 #TODO: it should be removed as soon as boost 1.64 will be available (appveyor)
+ -Wno-extra-semi")                 #TODO: it should be removed as soon as boost 1.64 will be available (appveyor)
 
 target_compile_options(gtest PRIVATE "-Wno-deprecated-declarations")
 target_compile_options(gtest_main PRIVATE "-Wno-deprecated-declarations")
