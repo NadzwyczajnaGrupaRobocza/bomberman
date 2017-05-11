@@ -6,6 +6,8 @@ public:
     void update(std::chrono::milliseconds) override;
     bool areYouDead() const override;
     bool hasExploded() const;
+private:
+    bool exploded{false};
 };
 
 

@@ -1,7 +1,12 @@
 #include "Bomb.hpp"
 
-void Bomb::update(std::chrono::milliseconds)
+void Bomb::update(std::chrono::milliseconds dt)
 {
+    using namespace std::chrono_literals;
+    if (dt > 3s)
+    {
+        exploded = true;
+    }
 }
 
 bool Bomb::areYouDead() const
@@ -11,5 +16,5 @@ bool Bomb::areYouDead() const
 
 bool Bomb::hasExploded() const
 {
-    return false;
+    return exploded;
 }
