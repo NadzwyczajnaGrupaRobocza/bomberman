@@ -14,3 +14,9 @@ TEST_F(BombTest, BombIsNotDead)
 {
     ASSERT_FALSE(bomb.areYouDead());
 }
+
+TEST_F(BombTest, AfterDeltaTimeSmallerThenBombTimer_shouldDoNoting)
+{
+    using namespace std::chrono_literals;
+    bomb.update(1ms);
+}
