@@ -26,16 +26,24 @@ TEST_F(BombTest, AfterCreation_shouldHasntExploded)
     ASSERT_FALSE(bomb.hasExploded());
 }
 
-TEST_F(BombTest, AfterDeltaTimeBiggerThenBombTimer_shouldHasNotExploded)
+TEST_F(BombTest, AfterDeltaTimeBiggerThenBombTimer_shouldExplode)
 {
     using namespace std::chrono_literals;
     bomb.update(3100ms);
     ASSERT_TRUE(bomb.hasExploded());
 }
 
-TEST_F(BombTest, AfterDeltaTimeEqualToBombTimer_shouldHasNotExploded)
+TEST_F(BombTest, AfterDeltaTimeEqualToBombTimer_shouldExplode)
 {
     using namespace std::chrono_literals;
     bomb.update(3s);
+    ASSERT_TRUE(bomb.hasExploded());
+}
+
+TEST_F(BombTest, AfterSumOfDeltaTimesEqualToBombTimer_shouldExplode)
+{
+    using namespace std::chrono_literals;
+    bomb.update(2s);
+    bomb.update(1s);
     ASSERT_TRUE(bomb.hasExploded());
 }

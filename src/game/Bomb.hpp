@@ -9,6 +9,7 @@ public:
 private:
     bool exploded{false};
     const std::chrono::seconds bombTimer{3};
+    std::chrono::milliseconds timeElapsed{};
 };
 
 
