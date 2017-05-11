@@ -1,5 +1,6 @@
 add_library(game
   TimeBomb.cpp
+  HumanPlayerSfml.cpp
   )
 
 add_executable(game_test
