@@ -11,6 +11,10 @@ private:
     bool exploded{false};
     const std::chrono::seconds bombTimer{3};
     std::chrono::milliseconds timeElapsed{};
+
+    bool shouldExplode() const;
+    void updateElapsedTime(std::chrono::milliseconds);
+    void markExploded();
 };
 
 

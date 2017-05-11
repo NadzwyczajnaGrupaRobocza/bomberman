@@ -2,11 +2,26 @@
 
 void TimeBomb::update(std::chrono::milliseconds dt)
 {
-    timeElapsed += dt;
-    if (timeElapsed >= bombTimer)
+    updateElapsedTime(dt);
+    if (shouldExplode())
     {
-        exploded = true;
+        markExploded();
     }
+}
+
+void TimeBomb::updateElapsedTime(std::chrono::milliseconds dt )
+{
+    timeElapsed += dt;
+}
+
+bool TimeBomb::shouldExplode() const
+{
+    return timeElapsed >= bombTimer;
+}
+
+void TimeBomb::markExploded()
+{
+    exploded = true;
 }
 
 bool TimeBomb::areYouDead() const
