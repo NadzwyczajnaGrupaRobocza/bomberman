@@ -1,6 +1,6 @@
-#include "Bomb.hpp"
+#include "TimeBomb.hpp"
 
-void Bomb::update(std::chrono::milliseconds dt)
+void TimeBomb::update(std::chrono::milliseconds dt)
 {
     timeElapsed += dt;
     if (timeElapsed >= bombTimer)
@@ -9,12 +9,12 @@ void Bomb::update(std::chrono::milliseconds dt)
     }
 }
 
-bool Bomb::areYouDead() const
+bool TimeBomb::areYouDead() const
 {
     return false;
 }
 
-bool Bomb::hasExploded() const
+bool TimeBomb::hasExploded() const
 {
     return exploded;
 }

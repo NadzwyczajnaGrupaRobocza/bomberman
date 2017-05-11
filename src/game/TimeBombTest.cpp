@@ -1,46 +1,46 @@
 #include "gtest/gtest.h"
 
-#include "Bomb.hpp"
+#include "TimeBomb.hpp"
 
 using namespace ::testing;
 
-class BombTest : public ::Test
+class TimeBombTest : public ::Test
 {
 public:
-    Bomb bomb;
+    TimeBomb bomb;
 };
 
-TEST_F(BombTest, BombIsNotDead)
+TEST_F(TimeBombTest, TimeBombIsNotDead)
 {
     ASSERT_FALSE(bomb.areYouDead());
 }
 
-TEST_F(BombTest, AfterDeltaTimeSmallerThenBombTimer_shouldHasNotExploded)
+TEST_F(TimeBombTest, AfterDeltaTimeSmallerThenTimeBombTimer_shouldHasNotExploded)
 {
     using namespace std::chrono_literals;
     bomb.update(1ms);
 }
 
-TEST_F(BombTest, AfterCreation_shouldHasntExploded)
+TEST_F(TimeBombTest, AfterCreation_shouldHasntExploded)
 {
     ASSERT_FALSE(bomb.hasExploded());
 }
 
-TEST_F(BombTest, AfterDeltaTimeBiggerThenBombTimer_shouldExplode)
+TEST_F(TimeBombTest, AfterDeltaTimeBiggerThenTimeBombTimer_shouldExplode)
 {
     using namespace std::chrono_literals;
     bomb.update(3100ms);
     ASSERT_TRUE(bomb.hasExploded());
 }
 
-TEST_F(BombTest, AfterDeltaTimeEqualToBombTimer_shouldExplode)
+TEST_F(TimeBombTest, AfterDeltaTimeEqualToTimeBombTimer_shouldExplode)
 {
     using namespace std::chrono_literals;
     bomb.update(3s);
     ASSERT_TRUE(bomb.hasExploded());
 }
 
-TEST_F(BombTest, AfterSumOfDeltaTimesEqualToBombTimer_shouldExplode)
+TEST_F(TimeBombTest, AfterSumOfDeltaTimesEqualToTimeBombTimer_shouldExplode)
 {
     using namespace std::chrono_literals;
     bomb.update(2s);
