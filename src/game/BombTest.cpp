@@ -4,7 +4,13 @@
 
 using namespace ::testing;
 
-TEST(BombTest, BombIsNotDead)
+class BombTest : public ::Test
 {
-    ASSERT_FALSE(Bomb{}.areYouDead());
+public:
+    Bomb bomb;
+};
+
+TEST_F(BombTest, BombIsNotDead)
+{
+    ASSERT_FALSE(bomb.areYouDead());
 }
