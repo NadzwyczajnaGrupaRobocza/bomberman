@@ -1,5 +1,3 @@
-cmake_minimum_required (VERSION 2.8.11)
-
 message(STATUS "Detected Windows system.")
 
 if("${BUILD_SHARED_LIBS}" STREQUAL "ON")

@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8.11)
+message(STATUS "Detected system with Msvc compiler.")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc /Wall\
  /wd4251 /wd4265 /wd4350 /wd4371 /wd4514 /wd5031 /wd5026 /wd5027\
