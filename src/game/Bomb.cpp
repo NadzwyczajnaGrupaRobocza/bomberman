@@ -2,8 +2,7 @@
 
 void Bomb::update(std::chrono::milliseconds dt)
 {
-    using namespace std::chrono_literals;
-    if (dt > 3s)
+    if (dt >= bombTimer)
     {
         exploded = true;
     }

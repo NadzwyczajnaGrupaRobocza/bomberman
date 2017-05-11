@@ -8,6 +8,7 @@ public:
     bool hasExploded() const;
 private:
     bool exploded{false};
+    const std::chrono::seconds bombTimer{3};
 };
 
 
