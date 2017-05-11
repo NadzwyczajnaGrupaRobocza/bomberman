@@ -20,3 +20,8 @@ TEST_F(BombTest, AfterDeltaTimeSmallerThenBombTimer_shouldDoNoting)
     using namespace std::chrono_literals;
     bomb.update(1ms);
 }
+
+TEST_F(BombTest, AfterCreation_shouldHasntExploded)
+{
+    ASSERT_FALSE(bomb.hasExploded());
+}
