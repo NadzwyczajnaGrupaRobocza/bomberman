@@ -5,8 +5,6 @@
 class HumanPlayerSfml : public HumanPlayer
 {
 public:
-    HumanPlayerSfml();
-
-    VectorInt2D get_direction();
-    bool wants_bomb();
+    VectorInt2D get_direction() const override;
+    bool wants_bomb() const override;
 };

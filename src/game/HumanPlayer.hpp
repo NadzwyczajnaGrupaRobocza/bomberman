@@ -10,6 +10,6 @@ class HumanPlayer
 public:
     virtual ~HumanPlayer() = default;
 
-    virtual VectorInt2D get_direction() = 0;
-    virtual bool wants_bomb() = 0;
+    virtual VectorInt2D get_direction() const = 0;
+    virtual bool wants_bomb() const = 0;
 };

@@ -3,11 +3,7 @@
 #include <SFML/Graphics.hpp>
 using kbd_access = sf::Keyboard;
 
-HumanPlayerSfml::HumanPlayerSfml()
-{
-}
-
-VectorInt2D HumanPlayerSfml::get_direction()
+VectorInt2D HumanPlayerSfml::get_direction() const
 {
     VectorInt2D direction{0, 0};
 
@@ -30,7 +26,7 @@ VectorInt2D HumanPlayerSfml::get_direction()
     return direction;
 }
 
-bool HumanPlayerSfml::wants_bomb()
+bool HumanPlayerSfml::wants_bomb() const
 {
     return kbd_access::isKeyPressed(kbd_access::Space);
 }
