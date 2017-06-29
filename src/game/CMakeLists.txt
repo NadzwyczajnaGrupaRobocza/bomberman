@@ -4,8 +4,8 @@ add_library(game
   )
 
 add_executable(game_test
-  EntityInterfaceTest.cpp
   TimeBomb.ut.cpp
+  Entity.ut.cpp
   )
 
 target_include_directories(game_test SYSTEM PRIVATE
