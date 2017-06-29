@@ -1,5 +1,5 @@
 add_executable(game_test
-  EntityInterfaceTest.cpp
+  Entity.ut.cpp
   )
 
 target_include_directories(game_test SYSTEM PRIVATE
