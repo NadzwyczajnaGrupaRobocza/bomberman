@@ -19,6 +19,7 @@ TEST_F(TimeBombTest, AfterDeltaTimeSmallerThenTimeBombTimer_shouldHasNotExploded
 {
     using namespace std::chrono_literals;
     bomb.update(1ms);
+    ASSERT_FALSE(bomb.hasExploded());
 }
 
 TEST_F(TimeBombTest, AfterCreation_shouldHasntExploded)
