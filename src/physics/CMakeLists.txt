@@ -1,5 +1,6 @@
 add_executable(physics_ut
   PhysicsId.ut.cpp
+  PhysicsEngine.ut.cpp
   )
 
 target_include_directories(physics_ut SYSTEM PRIVATE
