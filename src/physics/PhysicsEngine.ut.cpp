@@ -13,11 +13,16 @@ public:
 
     Position get_position(physics::PhysicsId) const override
     {
-        return Position{};
+        return {};
     }
 
     void solve_colisions() override
     {
+    }
+
+    physics::PhysicsId register_colider(const Position&, const Position&) override
+    {
+        return {};
     }
 };
 
@@ -55,6 +60,15 @@ TEST_F(PhysicsEngineInterfaceTest, ShouldHaveSolveColisionsFunction)
 {
     auto testFunction = [](physics::PhysicsEngine& engineTested) {
         engineTested.solve_colisions();
+    };
+    testFunction(engine);
+}
+
+TEST_F(PhysicsEngineInterfaceTest, ShouldHaveRegisterColiderFunction)
+{
+    auto testFunction = [](physics::PhysicsEngine& engineTested) {
+        engineTested.register_colider(physics::PhysicsEngine::Position{},
+                                      physics::PhysicsEngine::Position{});
     };
     testFunction(engine);
 }
