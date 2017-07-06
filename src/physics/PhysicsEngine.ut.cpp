@@ -7,8 +7,13 @@
 class ConcretePhysicsEngine : public physics::PhysicsEngine
 {
 public:
-    void set_position(physics::PhysicsId, const glm::vec2&) override
+    void set_position(physics::PhysicsId, const Position&) override
     {
+    }
+
+    Position get_position(physics::PhysicsId) const override
+    {
+        return Position{};
     }
 };
 
@@ -30,6 +35,14 @@ TEST_F(PhysicsEngineInterfaceTest, ShouldHaveSetPositionFunction)
 {
     auto testFunction = [](physics::PhysicsEngine& engineTested) {
         engineTested.set_position(physics::PhysicsId{}, glm::vec2{});
+    };
+    testFunction(engine);
+}
+
+TEST_F(PhysicsEngineInterfaceTest, ShouldHaveGetPositionFunction)
+{
+    auto testFunction = [](physics::PhysicsEngine& engineTested) {
+        engineTested.get_position(physics::PhysicsId{});
     };
     testFunction(engine);
 }
