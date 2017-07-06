@@ -15,6 +15,10 @@ public:
     {
         return Position{};
     }
+
+    void solve_colisions() override
+    {
+    }
 };
 
 using namespace ::testing;
@@ -43,6 +47,14 @@ TEST_F(PhysicsEngineInterfaceTest, ShouldHaveGetPositionFunction)
 {
     auto testFunction = [](physics::PhysicsEngine& engineTested) {
         engineTested.get_position(physics::PhysicsId{});
+    };
+    testFunction(engine);
+}
+
+TEST_F(PhysicsEngineInterfaceTest, ShouldHaveSolveColisionsFunction)
+{
+    auto testFunction = [](physics::PhysicsEngine& engineTested) {
+        engineTested.solve_colisions();
     };
     testFunction(engine);
 }

@@ -15,5 +15,6 @@ public:
 
     virtual void set_position(physics::PhysicsId, const Position&) = 0;
     virtual Position get_position(physics::PhysicsId) const = 0;
+    virtual void solve_colisions() = 0;
 };
 }
