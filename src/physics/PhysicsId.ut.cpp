@@ -4,5 +4,5 @@
 
 TEST(PhysicsIdTest, ShouldCreate)
 {
-    physics::Id{};
+    physics::PhysicsId{};
 }

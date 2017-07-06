@@ -4,5 +4,5 @@
 
 namespace physics
 {
-BOOST_STRONG_TYPEDEF(std::uint32_t, Id)
+BOOST_STRONG_TYPEDEF(std::uint32_t, PhysicsId)
 }
