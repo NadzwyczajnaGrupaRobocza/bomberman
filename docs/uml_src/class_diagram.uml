@@ -23,7 +23,7 @@ class GameWorld {
 - explosions : std::vector<Explosion>
 + bool is_bomb_at_pos(Vector2D position)
 + create_bomb(Vector2D position, int timeToExplode)
-+ create_explosion(Vector2D position)
++ create_explosion(Vector2D povesition)
 }
 
 class HumanPlayer {
@@ -50,11 +50,13 @@ class PhysicsEngine{
 + void set_position(PhysId id, Vector2D position)
 + Vector2D get_position(PhysId id)
 + void solve_collisions()
++ PhysicId register_colider(const math::vec2d&, const math::vec2d&)
 }
 
 class RenderEngine{
 + void set_position(RenderId id, Vector2D position)
 + void render()
++ RenderId register_rendarable(const math::vec2d&, const math:::vec2d&)
 }
 
 class Bomb {
