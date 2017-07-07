@@ -1,8 +1,10 @@
 add_executable(graphics_ut
   RenderEngine.ut.cpp
+  RendererSfml.ut.cpp
   )
 
 target_include_directories(graphics_ut SYSTEM PRIVATE
+  ${LIBS_INCLUDE_PATH}
   ${UT_INCLUDES}
   )
 
