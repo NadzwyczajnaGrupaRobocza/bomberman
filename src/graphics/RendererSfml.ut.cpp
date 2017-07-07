@@ -2,14 +2,14 @@
 
 #include <gtest/gtest.h>
 
-using namespace ::testing::Test;
+using ::testing::Test;
 
 namespace graphics
 {
 class RendererSfmlTest : public Test
 {
 public:
-    //RendererSfml renderer;
+    RendererSfml renderer;
 };
 
 TEST_F(RendererSfmlTest, test)

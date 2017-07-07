@@ -10,13 +10,13 @@ namespace graphics
 class RendererEngineUt : public RenderEngine, public ::testing::Test
 {
 public:
-    void set_position(const RenderId&, const glm::vec2&) override
+    void set_position(const RenderId&, const math::Position2&) override
     {
         ASSERT_TRUE(true);
     }
 
-    RenderId register_renderable(const glm::vec2&,
-                                 const glm::vec2&) override
+    RenderId register_renderable(const math::Size&,
+                                 const math::Position2&) override
     {
         return RenderId{0};
     }
@@ -34,8 +34,8 @@ public:
 
 TEST_F(RendererEngineUt, register_deregister_renderable)
 {
-    const glm::vec2 size{1, 1};
-    const glm::vec2 position{0, 0};
+    const math::Size size{1, 1};
+    const math::Position2 position{0, 0};
 
     RenderEngine& r = *this;
     const auto ob = r.register_renderable(size, position);
@@ -47,7 +47,7 @@ TEST_F(RendererEngineUt, set_position)
     const RenderId id{546};
     ASSERT_FALSE(id == 56);
     ASSERT_TRUE(id == 546);
-    const glm::vec2 v2{34, 12};
+    const math::Position2 v2{34, 12};
 
     RenderEngine& r = *this;
     r.set_position(id, v2);
