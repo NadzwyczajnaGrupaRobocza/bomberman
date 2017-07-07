@@ -1,15 +1,13 @@
 #include "RenderEngine.hpp"
 
 #include <gtest/gtest.h>
-#include <gmock/gmock-matchers.h>
-
 #include <glm/vec2.hpp>
 
 #include "RenderId.hpp"
 
 namespace graphics
 {
-class TestRenderer : public RenderEngine, public ::testing::Test
+class RendererEngineUt : public RenderEngine, public ::testing::Test
 {
 public:
     void set_position(const RenderId&, const glm::vec2&) override
@@ -34,7 +32,7 @@ public:
     }
 };
 
-TEST_F(TestRenderer, register_deregister_renderable)
+TEST_F(RendererEngineUt, register_deregister_renderable)
 {
     const glm::vec2 size{1, 1};
     const glm::vec2 position{0, 0};
@@ -44,7 +42,7 @@ TEST_F(TestRenderer, register_deregister_renderable)
     r.deregister(ob);
 }
 
-TEST_F(TestRenderer, set_position)
+TEST_F(RendererEngineUt, set_position)
 {
     const RenderId id{546};
     ASSERT_FALSE(id == 56);
@@ -55,7 +53,7 @@ TEST_F(TestRenderer, set_position)
     r.set_position(id, v2);
 }
 
-TEST_F(TestRenderer, render)
+TEST_F(RendererEngineUt, render)
 {
     RenderEngine& r = *this;
     r.render();
