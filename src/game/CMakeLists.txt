@@ -14,7 +14,7 @@ target_include_directories(game_test SYSTEM PRIVATE
   )
 
 target_include_directories(game_test PRIVATE
-  ${GRAPHICS_INCLUDE_PATH}
+  ${INTERNAL_LIBS_INCLUDE_PATH}
   )
 
 target_link_libraries(game_test gtest_main game)
