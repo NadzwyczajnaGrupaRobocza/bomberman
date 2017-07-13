@@ -14,8 +14,11 @@ main --> PhysicsEngine : create
 main --> GameWorld : create
 GameWorld --> Map : create
 Map --> Map : create_tiles
-Map --> PhysicsEngine : register
-Map --> RenderingEngine : register
+
+loop tiles
+  Map --> PhysicsEngine : register
+  Map --> RenderingEngine : register
+end
 
 GameWorld --> HumanPlayer : create
 GameWorld --> Bomberman : create
