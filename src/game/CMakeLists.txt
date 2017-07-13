@@ -1,5 +1,6 @@
 add_library(game
   TimeBomb.cpp
+  BasicMap.cpp
   HumanPlayerSfml.cpp
   )
 
@@ -7,6 +8,7 @@ add_executable(game_test
   TimeBomb.ut.cpp
   Entity.ut.cpp
   Map.ut.cpp
+  BasicMap.ut.cpp
   )
 
 target_include_directories(game_test SYSTEM PRIVATE
