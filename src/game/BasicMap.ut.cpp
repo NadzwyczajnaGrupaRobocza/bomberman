@@ -1,8 +1,12 @@
 #include "gtest/gtest.h"
 
+#include "BasicMap.hpp"
+
 using namespace ::testing;
 
-TEST(BasicMapTest, Dummy)
+TEST(BasicMapTest, BasicMapShouldInheritFromMap)
 {
-    ASSERT_TRUE(true);
+    auto testFunction = [](const Map& ) {};
+    BasicMap map;
+    testFunction(map);
 }
