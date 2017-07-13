@@ -13,11 +13,16 @@ main --> RenderingEngine : create
 main --> PhysicsEngine : create
 main --> GameWorld : create
 GameWorld --> Map : create
-Map --> Map : create_tiles
 
+Map --> Map : create_tiles
 loop tiles
-  Map --> PhysicsEngine : register
   Map --> RenderingEngine : register
+end
+
+Map --> Map : create_walls
+loop walls
+  Map --> RenderingEngine : register
+  Map --> PhysicsEngine : register
 end
 
 GameWorld --> HumanPlayer : create
