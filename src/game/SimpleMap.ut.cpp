@@ -11,11 +11,16 @@ class SimpleMap
 public:
     SimpleMap(physics::PhysicsEngine& pEngine) : physicsEngine(pEngine)
     {
-        physicsEngine.register_colider({}, {});
+        for (int i = 0; i < wallsCount; ++i)
+        {
+            physicsEngine.register_colider({}, {});
+        }
     }
 
 private:
     physics::PhysicsEngine& physicsEngine;
+    std::vector<physics::PhysicsEngine> walls;
+    const int wallsCount = 36;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////TEST
@@ -29,7 +34,10 @@ public:
     SimpleMapConstructorExpectations()
     {
         When(Method(physicsEngine, register_colider))
-            .Return(physics::PhysicsId{1});
+            .AlwaysDo([](const auto&, const auto&) {
+                static unsigned id = 0;
+                return physics::PhysicsId{id++};
+            });
     }
 
     Mock<physics::PhysicsEngine> physicsEngine;
@@ -39,9 +47,10 @@ class SimpleMapTest : public SimpleMapConstructorExpectations
 {
 public:
     SimpleMap map{physicsEngine.get()};
+    const int wallsCount = 36;
 };
 
-TEST_F(SimpleMapTest, Dummy)
+TEST_F(SimpleMapTest, ShouldCreateWalls)
 {
-    Verify(Method(physicsEngine, register_colider));
+    Verify(Method(physicsEngine, register_colider)).Exactly(wallsCount);
 }
