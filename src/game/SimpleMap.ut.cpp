@@ -60,8 +60,8 @@ public:
                 wallsSizes.push_back(size);
                 return physics::PhysicsId{id++};
             });
-        When(Method(wallPosGenerator, generateBoundaryWallsPosition)
-                 .Using(boundarySize, wallSize));
+        Method(wallPosGenerator, generateBoundaryWallsPosition)
+                 .Using(boundarySize, wallSize) = generatedWallsPositions;
     }
 
     const int boundarySize = 10;
