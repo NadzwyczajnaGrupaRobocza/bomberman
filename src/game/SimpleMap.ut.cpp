@@ -14,7 +14,7 @@ public:
     {
         for (int i = 0; i < wallsCount; ++i)
         {
-            physicsEngine.register_colider({}, wallSize);
+            physicsEngine.register_colider({i, 0}, wallSize);
         }
     }
 
@@ -59,10 +59,22 @@ public:
     {
         ASSERT_THAT(wallsSizes, ::testing::Each(wallSize));
     }
+
+    void verifyAllWallsArePlacedInDifferentPlace()
+    {
+        std::sort(wallsPositions.begin(), wallsPositions.end(), [](const auto &lhs, const auto &rhs)
+                  {
+                      return std::tie(lhs.x, lhs.y) < std::tie(rhs.x, rhs.y);
+                  });
+        const auto oldEnd = wallsPositions.end();
+        const auto newEnd = std::unique(wallsPositions.begin(), wallsPositions.end());
+        ASSERT_THAT(newEnd, ::testing::Eq(oldEnd));
+    }
 };
 
 TEST_F(SimpleMapTest, DuringConstruction_ShouldCreateWalls)
 {
     Verify(Method(physicsEngine, register_colider)).Exactly(wallsCount);
     verifyAllWallsHasTheSameSize();
+    verifyAllWallsArePlacedInDifferentPlace();
 }
