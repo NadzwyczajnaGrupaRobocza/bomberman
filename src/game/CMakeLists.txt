@@ -1,6 +1,7 @@
 add_library(game
   TimeBomb.cpp
   HumanPlayerSfml.cpp
+  GameWorld.cpp
   )
 
 add_executable(game_test
@@ -14,6 +15,10 @@ target_include_directories(game_test SYSTEM PRIVATE
   )
 
 target_include_directories(game_test PRIVATE
+  ${GRAPHICS_INCLUDE_PATH}
+  )
+
+target_include_directories(game PRIVATE
   ${GRAPHICS_INCLUDE_PATH}
   )
 
