@@ -14,9 +14,9 @@ main --> PhysicsEngine : create
 main --> GameWorld : create
 GameWorld --> Map : create
 
-Map --> Map : create_tiles
+Map --> Map : create_background
 loop tiles
-  Map --> RenderingEngine : register
+  Map --> RenderingEngine : register_background
 end
 
 Map --> Map : create_walls

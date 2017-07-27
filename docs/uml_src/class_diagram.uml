@@ -57,6 +57,7 @@ class RenderEngine{
 + void set_position(RenderId id, Vector2D position)
 + void render()
 + RenderId register_rendarable(const math::vec2d&, const math:::vec2d&)
++ RenderId register_background(const math::vec2d&)
 }
 
 class Bomb {
