@@ -13,6 +13,10 @@ target_include_directories(game_test SYSTEM PRIVATE
   ${UT_INCLUDES}
   )
 
+target_include_directories(game PRIVATE
+  ${INTERNAL_LIBS_INCLUDE_PATH}
+  )
+
 target_include_directories(game_test PRIVATE
   ${INTERNAL_LIBS_INCLUDE_PATH}
   )
