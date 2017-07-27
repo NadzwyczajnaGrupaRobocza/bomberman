@@ -14,7 +14,7 @@ public:
     {
         for (int i = 0; i < wallsCount; ++i)
         {
-            physicsEngine.register_colider({}, {5, 5});
+            physicsEngine.register_colider({}, wallSize);
         }
     }
 
@@ -22,6 +22,7 @@ private:
     physics::PhysicsEngine& physicsEngine;
     std::vector<physics::PhysicsEngine> walls;
     const int wallsCount = 36;
+    physics::PhysicsEngine::Position wallSize{5, 5};
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////TEST
@@ -53,10 +54,15 @@ public:
     SimpleMap map{physicsEngine.get()};
     const int wallsCount = 36;
     physics::PhysicsEngine::Position wallSize{5, 5};
+
+    void verifyAllWallsHasTheSameSize()
+    {
+        ASSERT_THAT(wallsSizes, ::testing::Each(wallSize));
+    }
 };
 
 TEST_F(SimpleMapTest, DuringConstruction_ShouldCreateWalls)
 {
     Verify(Method(physicsEngine, register_colider)).Exactly(wallsCount);
-    ASSERT_THAT(wallsSizes, ::testing::Each(wallSize));
+    verifyAllWallsHasTheSameSize();
 }
