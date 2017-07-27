@@ -11,20 +11,29 @@ class WallPositionsGenerator
 {
 public:
     using PositionInSpace = std::pair<float, float>;
+    using WallSize = std::pair<float, float>;
+    using BoundarySize = int;
     using WallsPositions = std::vector<PositionInSpace>;
 
     virtual ~WallPositionsGenerator() = default;
-    virtual  WallsPositions generateBoundaryWallsPosition() const = 0;
+    virtual WallsPositions generateBoundaryWallsPosition(BoundarySize,
+                                                         WallSize) const = 0;
 };
 
 class SimpleMap
 {
 public:
-    SimpleMap(physics::PhysicsEngine& pEngine, const WallPositionsGenerator &) : physicsEngine(pEngine)
+    SimpleMap(physics::PhysicsEngine& pEngine,
+              const WallPositionsGenerator& wall_positions_generator)
+        : physicsEngine(pEngine)
     {
-        for (int i = 0; i < wallsCount; ++i)
+        for (const auto wall_position :
+             wall_positions_generator.generateBoundaryWallsPosition(10,
+                                                                    wallSize))
         {
-            physicsEngine.register_colider({i, 0}, wallSize);
+            physicsEngine.register_colider(
+                {wall_position.first, wall_position.second},
+                {wallSize.first, wallSize.second});
         }
     }
 
@@ -32,7 +41,7 @@ private:
     physics::PhysicsEngine& physicsEngine;
     std::vector<physics::PhysicsEngine> walls;
     const int wallsCount = 36;
-    physics::PhysicsEngine::Position wallSize{5, 5};
+    const WallPositionsGenerator::WallSize wallSize{5, 5};
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////TEST
@@ -51,8 +60,13 @@ public:
                 wallsSizes.push_back(size);
                 return physics::PhysicsId{id++};
             });
+        When(Method(wallPosGenerator, generateBoundaryWallsPosition)
+                 .Using(boundarySize, wallSize));
     }
 
+    const int boundarySize = 10;
+    WallPositionsGenerator::WallSize wallSize{5, 5};
+    WallPositionsGenerator::WallsPositions generatedWallsPositions;
     Mock<physics::PhysicsEngine> physicsEngine;
     Mock<WallPositionsGenerator> wallPosGenerator;
     std::vector<physics::PhysicsEngine::Position> wallsPositions;
@@ -63,7 +77,6 @@ class SimpleMapTest : public SimpleMapConstructorExpectations
 {
 public:
     SimpleMap map{physicsEngine.get(), wallPosGenerator.get()};
-    const int wallsCount = 36;
     physics::PhysicsEngine::Position wallSize{5, 5};
 
     void verifyAllWallsHasTheSameSize()
@@ -86,7 +99,9 @@ public:
 
 TEST_F(SimpleMapTest, DuringConstruction_ShouldCreateWalls)
 {
-    Verify(Method(physicsEngine, register_colider)).Exactly(wallsCount);
+    Verify(Method(physicsEngine, register_colider))
+        .Exactly(static_cast<int>(generatedWallsPositions.size()));
+    Verify(Method(wallPosGenerator, generateBoundaryWallsPosition));
     verifyAllWallsHasTheSameSize();
     verifyAllWallsArePlacedInDifferentPlace();
 }
