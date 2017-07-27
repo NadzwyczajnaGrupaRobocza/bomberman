@@ -14,9 +14,9 @@ public:
 
     using Explosion = std::size_t;
 
-    virtual bool is_bomb_at_pos(BombPosition) const = 0;
-    virtual std::unique_ptr<Bomb> create_bomb(BombPosition, TimeToExplode) const = 0;
-    virtual std::unique_ptr<Explosion> create_explosion(ExplosionPosition) const = 0;
+    virtual bool is_bomb_at_pos(const BombPosition&) const = 0;
+    virtual std::unique_ptr<Bomb> create_bomb(const BombPosition&, const TimeToExplode) const = 0;
+    virtual std::unique_ptr<Explosion> create_explosion(const ExplosionPosition&) const = 0;
 
     virtual ~GameWorld() = default;
 };
