@@ -15,8 +15,10 @@ public:
     }
 
 private:
-    physics::PhysicsEngine physicsEngine;
+    physics::PhysicsEngine& physicsEngine;
 };
+
+//////////////////////////////////////////////////////////////////////////////////////////TEST
 
 using namespace ::testing;
 using namespace ::fakeit;
@@ -36,7 +38,7 @@ public:
 class SimpleMapTest : public SimpleMapConstructorExpectations
 {
 public:
-    SimpleMap map{physicsEngine};
+    SimpleMap map{physicsEngine.get()};
 };
 
 TEST_F(SimpleMapTest, Dummy)
