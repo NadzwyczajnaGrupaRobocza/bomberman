@@ -7,10 +7,20 @@
 
 #include "physics/PhysicsEngine.hpp"
 
+class WallPositionsGenerator
+{
+public:
+    using PositionInSpace = std::pair<float, float>;
+    using WallsPositions = std::vector<PositionInSpace>;
+
+    virtual ~WallPositionsGenerator() = default;
+    virtual  WallsPositions generateBoundaryWallsPosition() const = 0;
+};
+
 class SimpleMap
 {
 public:
-    SimpleMap(physics::PhysicsEngine& pEngine) : physicsEngine(pEngine)
+    SimpleMap(physics::PhysicsEngine& pEngine, const WallPositionsGenerator &) : physicsEngine(pEngine)
     {
         for (int i = 0; i < wallsCount; ++i)
         {
@@ -44,6 +54,7 @@ public:
     }
 
     Mock<physics::PhysicsEngine> physicsEngine;
+    Mock<WallPositionsGenerator> wallPosGenerator;
     std::vector<physics::PhysicsEngine::Position> wallsPositions;
     std::vector<physics::PhysicsEngine::Position> wallsSizes;
 };
@@ -51,7 +62,7 @@ public:
 class SimpleMapTest : public SimpleMapConstructorExpectations
 {
 public:
-    SimpleMap map{physicsEngine.get()};
+    SimpleMap map{physicsEngine.get(), wallPosGenerator.get()};
     const int wallsCount = 36;
     physics::PhysicsEngine::Position wallSize{5, 5};
 
@@ -62,12 +73,13 @@ public:
 
     void verifyAllWallsArePlacedInDifferentPlace()
     {
-        std::sort(wallsPositions.begin(), wallsPositions.end(), [](const auto &lhs, const auto &rhs)
-                  {
+        std::sort(wallsPositions.begin(), wallsPositions.end(),
+                  [](const auto& lhs, const auto& rhs) {
                       return std::tie(lhs.x, lhs.y) < std::tie(rhs.x, rhs.y);
                   });
         const auto oldEnd = wallsPositions.end();
-        const auto newEnd = std::unique(wallsPositions.begin(), wallsPositions.end());
+        const auto newEnd =
+            std::unique(wallsPositions.begin(), wallsPositions.end());
         ASSERT_THAT(newEnd, ::testing::Eq(oldEnd));
     }
 };
