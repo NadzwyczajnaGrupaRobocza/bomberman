@@ -1,6 +1,5 @@
 add_library(game
   TimeBomb.cpp
-  Dummy.cpp
   HumanPlayerSfml.cpp
   )
 
