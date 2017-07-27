@@ -1,12 +1,45 @@
 #include "gtest/gtest.h"
 
-using namespace ::testing;
+#include "glm/glm.hpp"
 
-class SimpleMapTest : public Test
+#include "fakeit.hpp"
+
+#include "physics/PhysicsEngine.hpp"
+
+class SimpleMap
 {
+public:
+    SimpleMap(physics::PhysicsEngine& pEngine) : physicsEngine(pEngine)
+    {
+        physicsEngine.register_colider({}, {});
+    }
+
+private:
+    physics::PhysicsEngine physicsEngine;
+};
+
+using namespace ::testing;
+using namespace ::fakeit;
+
+class SimpleMapConstructorExpectations : public Test
+{
+public:
+    SimpleMapConstructorExpectations()
+    {
+        When(Method(physicsEngine, register_colider))
+            .Return(physics::PhysicsId{1});
+    }
+
+    Mock<physics::PhysicsEngine> physicsEngine;
+};
+
+class SimpleMapTest : public SimpleMapConstructorExpectations
+{
+public:
+    SimpleMap map{physicsEngine};
 };
 
 TEST_F(SimpleMapTest, Dummy)
 {
-    ASSERT_TRUE(true);
+    Verify(Method(physicsEngine, register_colider));
 }
