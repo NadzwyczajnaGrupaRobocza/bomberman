@@ -1,22 +1,37 @@
+########################### VARIABLES ###########################
+set(SFML_LIBS sfml-main
+  sfml-graphics
+  sfml-window
+  sfml-system
+  # sfml-audio
+  # sfml-network
+  )
+
+########################### GRAPHICS ###########################
+
 add_library(graphics
-  RendererSfml.cpp
+  RendererPoolSfml.cpp
+  SfmlRenderTarget.cpp
+  DrawableFactory.cpp
   )
 
 target_include_directories(graphics SYSTEM PRIVATE
   ${LIBS_INCLUDE_PATH}
   )
 
-############################### UT ###############################
+############################## UT ##############################
 
 add_executable(graphics_ut
-  RenderEngine.ut.cpp
-  RendererSfml.ut.cpp
+  RendererPool.ut.cpp
+  RendererPoolSfml.ut.cpp
+  SfmlRenderTarget.ut.cpp
   )
 
-target_include_directories(graphics_ut SYSTEM PRIVATE
+target_include_directories(graphics_ut SYSTEM BEFORE INTERFACE PRIVATE
   ${LIBS_INCLUDE_PATH}
   ${UT_INCLUDES}
   )
 
-target_link_libraries(graphics_ut graphics gtest_main)
+target_compile_options(graphics_ut PRIVATE "-Wno-disabled-macro-expansion")
+target_link_libraries(graphics_ut graphics ${SFML_LIBS} gmock_main)
 add_test(graphics_ut ${EXECUTABLE_OUTPUT_PATH}/graphics_ut --gtest_color=yes)
