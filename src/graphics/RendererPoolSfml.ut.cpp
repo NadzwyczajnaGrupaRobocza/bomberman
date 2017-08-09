@@ -76,6 +76,8 @@ TEST_F(RendererPoolSfmlTest, renderAll)
 
     Fake(Method(context_renderer, clear));
     When(Method(context_renderer, draw)).AlwaysDo([&](const auto& shape) {
+        std::clog << "?" << __FUNCTION__ << "? " << shape.getSize().x << ","
+                  << shape.getSize().y << "\n";
         shapes.push_back(shape);
     });
 
@@ -95,6 +97,10 @@ TEST_F(RendererPoolSfmlTest, renderAll)
 
     for (auto i = 0U; i < expected_shapes.size(); ++i)
     {
+        std::clog << __FUNCTION__ << " " << shapes[i].getSize().x << ","
+                  << shapes[i].getSize().y << "\n";
+        std::clog << __FUNCTION__ << " " << expected_shapes[i].getSize().x
+                  << "," << expected_shapes[i].getSize().y << "\n";
         EXPECT_EQ(expected_shapes[i].getSize().x, shapes[i].getSize().x);
         EXPECT_EQ(expected_shapes[i].getSize().y, shapes[i].getSize().y);
     }
