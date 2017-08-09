@@ -1,5 +1,5 @@
 ########################### VARIABLES ###########################
-set(SFML_LIBS sfml-main
+set(SFML_LIBS
   sfml-graphics
   sfml-window
   sfml-system
@@ -11,8 +11,8 @@ set(SFML_LIBS sfml-main
 
 add_library(graphics
   RendererPoolSfml.cpp
-  SfmlRenderTarget.cpp
-  DrawableFactory.cpp
+  RenderTarget.cpp
+  RendererIdGenerator.cpp
   )
 
 target_include_directories(graphics SYSTEM PRIVATE
@@ -22,9 +22,9 @@ target_include_directories(graphics SYSTEM PRIVATE
 ############################## UT ##############################
 
 add_executable(graphics_ut
-  RendererPool.ut.cpp
   RendererPoolSfml.ut.cpp
-  SfmlRenderTarget.ut.cpp
+  RenderTarget.ut.cpp
+  SfmlRectangleShape.ut.cpp
   )
 
 target_include_directories(graphics_ut SYSTEM BEFORE INTERFACE PRIVATE

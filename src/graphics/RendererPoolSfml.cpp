@@ -2,44 +2,54 @@
 
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
+#include <boost/range/algorithm/for_each.hpp>
 
-#include <iostream>
+#include <boost/uuid/uuid_io.hpp>
 
 namespace graphics
 {
-RendererPoolSfml::~RendererPoolSfml()
+
+RendererPoolSfml::RendererPoolSfml(
+    std::unique_ptr<ContextRenderer> renderer,
+    std::unique_ptr<RendererIdGenerator> generator)
+    : context_renderer{std::move(renderer)}, renderer_id_generator{
+                                                 std::move(generator)}
 {
-    std::cout << "dupa destr\n";
-}
-RendererPoolSfml::RendererPoolSfml(std::unique_ptr<SfmlRenderTarget> renderer,
-                                   std::unique_ptr<DrawableFactory> factory)
-    : window_renderer{std::move(renderer)}, drawable_factory{std::move(factory)}
-{
-    window_renderer->initialize();
+    context_renderer->initialize();
 }
 
-RenderId RendererPoolSfml::take(const math::Size&, const math::Position2&)
+RendererId RendererPoolSfml::take(const math::Size& size,
+                                  const math::Position2&)
 {
-    return RenderId{};
+    auto id = renderer_id_generator->generate();
+    std::clog << __FUNCTION__ << " " << shapes.size() << " : "
+              << boost::uuids::to_string(id) << '\n';
+    shapes.emplace(id, sf::Vector2f{size.width, size.height});
+    std::clog << __FUNCTION__ << " " << shapes.size() << " : " << id << '\n';
+    return id;
 }
 
-void RendererPoolSfml::give_back(const RenderId&)
+void RendererPoolSfml::give_back(const RendererId&)
 {
 }
 
-void RendererPoolSfml::set_position(const RenderId&, const math::Position2&)
+void RendererPoolSfml::cleanup_unused()
 {
 }
 
 void RendererPoolSfml::render_all()
 {
-    window_renderer->clear(sf::Color::Black);
+    context_renderer->clear(sf::Color::Black);
 
-    //auto shape = drawable_factory->create_rectangle(sf::Vector2f{19, 100});
-    auto shape = std::make_unique<sf::RectangleShape>(sf::Vector2f{19, 100});
-    shape->setPosition(100, 100);
-    std::cout << "dupa 2--" << (shape != nullptr) << "\n";
-    window_renderer->draw(*shape);
-    std::cout << "dupa 3--" << (shape != nullptr) << "\n";
+    std::clog << "DUPA: " << shapes.size() << "\n";
+    boost::for_each(shapes, [&](const auto& shape) {
+        std::clog << __FUNCTION__ << " " << shape.second.getSize().x << ","
+                  << shape.second.getSize().y << "\n";
+        context_renderer->draw(shape.second);
+    });
+}
+
+void RendererPoolSfml::set_position(const RendererId&, const math::Position2&)
+{
 }
 }

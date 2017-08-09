@@ -4,30 +4,34 @@
 
 #include <vector>
 #include <memory>
+#include <unordered_map>
+#include <boost/functional/hash.hpp>
 
-#include "SfmlRenderTarget.hpp"
+#include "ContextRenderer.hpp"
 #include "DrawableFactory.hpp"
+#include "RendererIdGenerator.hpp"
 
 namespace graphics
 {
 class RendererPoolSfml : public RendererPool
 {
 public:
-    RendererPoolSfml(std::unique_ptr<SfmlRenderTarget>,
-                     std::unique_ptr<DrawableFactory>);
+    RendererPoolSfml(std::unique_ptr<ContextRenderer>,
+                     std::unique_ptr<RendererIdGenerator>);
 
-    ~RendererPoolSfml() override;
-
-    RenderId take(const math::Size& size,
-                  const math::Position2& position) override;
-    void give_back(const RenderId&) override;
-    void set_position(const RenderId&,
-                      const math::Position2& position) override;
+    RendererId take(const math::Size& size,
+                    const math::Position2& position) override;
+    void give_back(const RendererId&) override;
+    void cleanup_unused() override;
     void render_all() override;
 
+    void set_position(const RendererId&,
+                      const math::Position2& position) override;
+
 private:
-    std::unique_ptr<SfmlRenderTarget> window_renderer;
-    std::unique_ptr<DrawableFactory> drawable_factory;
-    std::vector<RenderId> objects;
+    std::unique_ptr<ContextRenderer> context_renderer;
+    std::unique_ptr<RendererIdGenerator> renderer_id_generator;
+    std::unordered_map<RendererId, SfmlRectangleShape, boost::hash<RendererId>>
+        shapes;
 };
 }
