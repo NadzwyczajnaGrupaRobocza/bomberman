@@ -6,7 +6,6 @@
 #include <boost/range/algorithm/for_each.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Window.hpp>
-
 #include <boost/uuid/uuid_io.hpp>
 
 #include "SfmlRectangleShape.hpp"
@@ -60,7 +59,6 @@ TEST_F(RendererPoolSfmlTest, take)
 
 TEST_F(RendererPoolSfmlTest, renderAll)
 {
-    std::clog << "__________________\n";
     When(Method(renderer_id_generator, generate)).AlwaysDo([]() {
         return RendererIdGenerator{}.generate();
     });
@@ -72,35 +70,23 @@ TEST_F(RendererPoolSfmlTest, renderAll)
         SfmlRectangleShape{sf::Vector2f{107, 180}},
         SfmlRectangleShape{sf::Vector2f{60, 30}}};
 
-    std::vector<SfmlRectangleShape> shapes(expected_shapes.size());
+    std::vector<SfmlRectangleShape> shapes;
+    shapes.reserve(expected_shapes.size());
 
     Fake(Method(context_renderer, clear));
     When(Method(context_renderer, draw)).AlwaysDo([&](const auto& shape) {
-        std::clog << "?" << __FUNCTION__ << "? " << shape.getSize().x << ","
-                  << shape.getSize().y << "\n";
         shapes.push_back(shape);
     });
 
     boost::for_each(expected_shapes, [&](const auto& shape) {
         renderer_pool->take(to_math(shape.getSize()), dummy_position);
     });
-
-    // const auto& size = another_dummy_size;
-    // SfmlRectangleShape rectangle(sf::Vector2f{size.width, size.height});
-    // SfmlRectangleShape rectangle(sf::Vector2f{10, 100});
-    // const auto id1 = renderer_pool->take(dummy_size, dummy_position);
-    // renderer_pool->take(another_dummy_size, dummy_position);
     renderer_pool->render_all();
 
     boost::sort(expected_shapes);
     boost::sort(shapes);
-
     for (auto i = 0U; i < expected_shapes.size(); ++i)
     {
-        std::clog << __FUNCTION__ << " " << shapes[i].getSize().x << ","
-                  << shapes[i].getSize().y << "\n";
-        std::clog << __FUNCTION__ << " " << expected_shapes[i].getSize().x
-                  << "," << expected_shapes[i].getSize().y << "\n";
         EXPECT_EQ(expected_shapes[i].getSize().x, shapes[i].getSize().x);
         EXPECT_EQ(expected_shapes[i].getSize().y, shapes[i].getSize().y);
     }
@@ -109,26 +95,4 @@ TEST_F(RendererPoolSfmlTest, renderAll)
     Verify(Method(context_renderer, draw))
         .Exactly(static_cast<int>(expected_shapes.size()));
 }
-
-// TEST_F(RendererPoolSfmlTest, test)
-// {
-//     sf::Window window{sf::VideoMode(window_size.x, window_size.y), "My
-//     window"};
-
-//     while (window.isOpen())
-//     {
-//         sf::Event event;
-//         while (window.pollEvent(event))
-//         {
-//             if (event.type == sf::Event::Closed)
-//                 window.close();
-//         }
-
-//         renderer_pool->render_all();
-
-//         window.display();
-//     }
-
-//     ASSERT_TRUE(true);
-// }
 }

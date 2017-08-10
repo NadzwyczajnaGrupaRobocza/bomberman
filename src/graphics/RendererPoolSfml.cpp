@@ -19,13 +19,11 @@ RendererPoolSfml::RendererPoolSfml(
 }
 
 RendererId RendererPoolSfml::take(const math::Size& size,
-                                  const math::Position2&)
+                                  const math::Position2& position)
 {
     auto id = renderer_id_generator->generate();
-    std::clog << __FUNCTION__ << " " << shapes.size() << " : "
-              << boost::uuids::to_string(id) << '\n';
-    shapes.emplace(id, sf::Vector2f{size.width, size.height});
-    std::clog << __FUNCTION__ << " " << shapes.size() << " : " << id << '\n';
+    auto shape = shapes.emplace(id, sf::Vector2f{size.width, size.height});
+    shape.first->second.setPosition(sf::Vector2f(position.x, position.y));
     return id;
 }
 
@@ -41,10 +39,7 @@ void RendererPoolSfml::render_all()
 {
     context_renderer->clear(sf::Color::Black);
 
-    std::clog << "DUPA: " << shapes.size() << "\n";
     boost::for_each(shapes, [&](const auto& shape) {
-        std::clog << __FUNCTION__ << " " << shape.second.getSize().x << ","
-                  << shape.second.getSize().y << "\n";
         context_renderer->draw(shape.second);
     });
 }
