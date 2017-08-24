@@ -61,7 +61,7 @@ private:
     physics::PhysicsEngine& physicsEngine;
     std::vector<physics::PhysicsEngine> walls;
     const int wallsCount = 36;
-    const WallPositionsGenerator::WallSize wallSize{5, 5};
+    const WallPositionsGenerator::WallSize wallSize{1, 1};
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////TEST
@@ -81,11 +81,11 @@ public:
                 return physics::PhysicsId{id++};
             });
         Method(wallPosGenerator, generateBoundaryWallsPosition)
-            .Using(boundarySize, wallSize) = generatedWallsPositions;
+            .Using(boundarySize, expectedWallSize) = generatedWallsPositions;
     }
 
     const int boundarySize = 10;
-    WallPositionsGenerator::WallSize wallSize{5, 5};
+    WallPositionsGenerator::WallSize expectedWallSize{1, 1};
     WallPositionsGenerator::WallsPositions generatedWallsPositions;
     Mock<physics::PhysicsEngine> physicsEngine;
     Mock<WallPositionsGenerator> wallPosGenerator;
@@ -97,11 +97,11 @@ class SimpleMapTest : public SimpleMapConstructorExpectations
 {
 public:
     SimpleMap map{physicsEngine.get(), wallPosGenerator.get()};
-    physics::PhysicsEngine::Position wallSize{5, 5};
+    physics::PhysicsEngine::Position expectedWallSize{1.0, 1.0};
 
     void verifyAllWallsHasTheSameSize()
     {
-        ASSERT_THAT(wallsSizes, ::testing::Each(wallSize));
+        ASSERT_THAT(wallsSizes, ::testing::Each(expectedWallSize));
     }
 
     void verifyAllWallsArePlacedInDifferentPlace()
