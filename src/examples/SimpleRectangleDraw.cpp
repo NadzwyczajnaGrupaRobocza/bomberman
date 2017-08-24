@@ -3,21 +3,18 @@
 #include <SFML/Window/Window.hpp>
 #include <memory>
 
-#include "graphics/SfmlRectangleShape.hpp"
-#include "graphics/RenderTarget.hpp"
-#include "graphics/RendererIdGenerator.hpp"
-#include "graphics/RendererPoolSfml.hpp"
+#include "graphics/RendererPoolSfmlFactory.hpp"
 #include "math/Size.hpp"
 #include "math/Position.hpp"
 
 int main()
 {
-    const sf::Vector2u window_size{800, 600};
-    graphics::RendererPoolSfml renderer_pool(
-        std::make_unique<graphics::RenderTarget>(window_size),
-        std::make_unique<graphics::RendererIdGenerator>());
+    const math::Size window_size{800, 600};
+    auto renderer_pool =
+        graphics::RendererPoolSfmlFactory{}.create(window_size);
 
-    sf::Window window(sf::VideoMode(window_size.x, window_size.y),
+    sf::Window window(sf::VideoMode(static_cast<unsigned>(window_size.width),
+                                    static_cast<unsigned>(window_size.height)),
                       "My window ");
 
     while (window.isOpen())
@@ -29,9 +26,9 @@ int main()
                 window.close();
         }
 
-        renderer_pool.render_all();
-        renderer_pool.take(math::Size{20.0f, 30.0f},
-                           math::Position2{100.0f, 200.0f});
+        renderer_pool->render_all();
+        renderer_pool->take(math::Size{20.0f, 30.0f},
+                            math::Position2{100.0f, 200.0f});
 
         window.display();
     }

@@ -14,6 +14,8 @@ add_library(graphics
   RenderTarget.cpp
   RendererIdGenerator.cpp
   SfmlRectangleShape.cpp
+  RendererPoolSfmlFactory.cpp
+  Conversion.cpp
   )
 
 target_include_directories(graphics SYSTEM PRIVATE

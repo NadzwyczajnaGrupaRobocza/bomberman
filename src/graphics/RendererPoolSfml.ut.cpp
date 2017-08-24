@@ -9,6 +9,7 @@
 #include <boost/uuid/uuid_io.hpp>
 
 #include "SfmlRectangleShape.hpp"
+#include "Conversion.hpp"
 
 using namespace ::testing;
 using namespace ::fakeit;
@@ -30,11 +31,6 @@ public:
             std::unique_ptr<RendererIdGenerator>(&renderer_id_generator.get()));
 
         Verify(Method(context_renderer, initialize));
-    }
-
-    math::Size to_math(sf::Vector2f size)
-    {
-        return math::Size{size.x, size.y};
     }
 
     Mock<RendererIdGenerator> renderer_id_generator;
@@ -79,7 +75,8 @@ TEST_F(RendererPoolSfmlTest, renderAll)
     });
 
     boost::for_each(expected_shapes, [this](const auto& shape) {
-        this->renderer_pool->take(to_math(shape.getSize()), dummy_position);
+        this->renderer_pool->take(utils::to_math(shape.getSize()),
+                                  dummy_position);
     });
     renderer_pool->render_all();
 

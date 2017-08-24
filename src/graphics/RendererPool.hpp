@@ -9,7 +9,7 @@ namespace graphics
 class RendererPool
 {
 public:
-    virtual ~RendererPool() = default;
+    virtual ~RendererPool() noexcept = default;
 
     virtual RendererId take(const math::Size& size,
                             const math::Position2& position) = 0;
