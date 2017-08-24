@@ -6,22 +6,21 @@ bool BombermanGameWorld::is_bomb_at_pos(const BombPosition&) const
     return true;
 }
 
-std::unique_ptr<Bomb> BombermanGameWorld::create_bomb(const BombPosition&, const TimeToExplode) const
+void BombermanGameWorld::register_bomb(BombPosition p, std::unique_ptr<Bomb> bomb)
 {
-
-    return nullptr;
+    bombs[p] = std::move(bomb);
 }
 
-std::unique_ptr<Explosion> BombermanGameWorld::create_explosion(const ExplosionPosition&) const
+void BombermanGameWorld::register_explosion(ExplosionPosition p, std::unique_ptr<Explosion> explosion)
 {
-
-    return nullptr;
+    explosions[p] = std::move(explosion);
 }
 
-void BombermanGameWorld::update(ElapsedTime)
+void BombermanGameWorld::update(ElapsedTime dt)
 {
+    for(const auto& b : bombs)
+        b.second->update(dt);
 
-    return;
+//    for(const auto& e : explosions)
+//        e.second->
 }
-
-
