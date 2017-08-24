@@ -28,6 +28,11 @@ void BombermanGameWorld::update(ElapsedTime dt)
         e->update(dt);
     }
 
-//    for(const auto& e : explosions)
-//        e.second->
+    //TODO: Uncomment me when explision are present
+   /*
+    for(const auto& e : explosions)
+    {
+        e.second->update(dt);
+    }
+    */
 }

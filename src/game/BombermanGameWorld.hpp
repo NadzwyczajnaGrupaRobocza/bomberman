@@ -6,12 +6,7 @@
 #include "Bomb.hpp"
 #include <map>
 #include <vector>
-#include "BombPosition.hpp"
-#include "ElapsedTime.hpp"
-#include "ExplosionPosition.hpp"
 #include "GameWorld.hpp"
-
-using Explosion = std::size_t; //temporary, remove and destroy when Exp added
 
 class BombermanGameWorld : public GameWorld
 {

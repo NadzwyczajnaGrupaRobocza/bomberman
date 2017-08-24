@@ -1,5 +1,10 @@
 #pragma once
 
+#include "BombPosition.hpp"
+#include "ElapsedTime.hpp"
+#include "ExplosionPosition.hpp"
+
+using Explosion = std::size_t; //temporary, remove and destroy when Exp added
 class GameWorld
 {
 public:
