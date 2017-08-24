@@ -8,7 +8,6 @@
 #include <boost/functional/hash.hpp>
 
 #include "ContextRenderer.hpp"
-#include "DrawableFactory.hpp"
 #include "RendererIdGenerator.hpp"
 
 namespace graphics
