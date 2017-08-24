@@ -1,4 +1,4 @@
-#include "GameWorld.hpp"
+#include "BombermanGameWorld.hpp"
 
 
 bool BombermanGameWorld::is_bomb_at_pos(const BombPosition&) const
