@@ -5,6 +5,7 @@
 #include <boost/serialization/strong_typedef.hpp>
 #include "Bomb.hpp"
 #include <map>
+#include <vector>
 #include "BombPosition.hpp"
 #include "ElapsedTime.hpp"
 #include "ExplosionPosition.hpp"
@@ -35,6 +36,7 @@ public:
     virtual void update(ElapsedTime) override;
 
 private:
+    std::vector<std::unique_ptr<Entity>> entity;
     std::map<BombPosition, std::unique_ptr<Bomb>> bombs;
     std::map<ExplosionPosition, std::unique_ptr<Explosion>> explosions;
 };

@@ -19,7 +19,14 @@ void BombermanGameWorld::register_explosion(ExplosionPosition p, std::unique_ptr
 void BombermanGameWorld::update(ElapsedTime dt)
 {
     for(const auto& b : bombs)
+    {
         b.second->update(dt);
+    }
+
+    for(const auto& e : entity)
+    {
+        e->update(dt);
+    }
 
 //    for(const auto& e : explosions)
 //        e.second->
