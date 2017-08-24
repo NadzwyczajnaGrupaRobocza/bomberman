@@ -78,7 +78,7 @@ TEST_F(RendererPoolSfmlTest, renderAll)
         shapes.push_back(shape);
     });
 
-    boost::for_each(expected_shapes, [&](const auto& shape) {
+    boost::for_each(expected_shapes, [this](const auto& shape) {
         renderer_pool->take(to_math(shape.getSize()), dummy_position);
     });
     renderer_pool->render_all();
