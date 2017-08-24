@@ -7,6 +7,21 @@
 
 #include "physics/PhysicsEngine.hpp"
 
+struct ExplosionRange
+{
+    int left;
+    int right;
+    int up;
+    int down;
+};
+
+bool operator==(const ExplosionRange& lhs, const ExplosionRange& rhs);
+bool operator==(const ExplosionRange& lhs, const ExplosionRange& rhs)
+{
+    return std::tie(lhs.left, lhs.right, lhs.up, lhs.down) ==
+           std::tie(rhs.left, rhs.right, rhs.up, rhs.down);
+}
+
 class WallPositionsGenerator
 {
 public:
@@ -37,6 +52,11 @@ public:
         }
     }
 
+    ExplosionRange get_explosion_range(std::pair<int, int>, int)
+    {
+        return {1, 1, 1, 1};
+    }
+
 private:
     physics::PhysicsEngine& physicsEngine;
     std::vector<physics::PhysicsEngine> walls;
@@ -61,7 +81,7 @@ public:
                 return physics::PhysicsId{id++};
             });
         Method(wallPosGenerator, generateBoundaryWallsPosition)
-                 .Using(boundarySize, wallSize) = generatedWallsPositions;
+            .Using(boundarySize, wallSize) = generatedWallsPositions;
     }
 
     const int boundarySize = 10;
@@ -104,4 +124,12 @@ TEST_F(SimpleMapTest, DuringConstruction_ShouldCreateWalls)
     Verify(Method(wallPosGenerator, generateBoundaryWallsPosition));
     verifyAllWallsHasTheSameSize();
     verifyAllWallsArePlacedInDifferentPlace();
+}
+
+TEST_F(SimpleMapTest,
+       get_explosion_range_shouldReturnMaxExplosionWhenNoBoundaryWallHit)
+{
+    ExplosionRange expectedRange{1, 1, 1, 1};
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(2, 2), 1),
+                ::testing::Eq(expectedRange));
 }
