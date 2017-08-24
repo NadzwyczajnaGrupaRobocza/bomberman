@@ -39,7 +39,7 @@ install:
   - set PATH=C:\projects\deps\sfml\SFML-2.4.2\bin;%PATH%
   - set PATH="C:\Program Files\LLVM\bin";%PATH%
   - set INCLUDE=%INCLUDE%;C:\Libraries\boost_1_63_0
-  - set LIB=%LIB%;C:\Libraries\boost_1_63_0
+  - set LIB=%LIB%;C:\Libraries\boost_1_63_0;C:\projects\deps\sfml\SFML-2.4.2\lib
      
   - ninja --version
   - clang-cl -v
