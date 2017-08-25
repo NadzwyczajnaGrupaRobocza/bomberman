@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RendererPool.hpp"
+#include "../RendererPool.hpp"
 
 #include <vector>
 #include <memory>
@@ -26,6 +26,8 @@ public:
 
     void set_position(const RendererId&,
                       const math::Position2& position) override;
+
+    void get_position(const RendererId&) override;
 
 private:
     std::unique_ptr<ContextRenderer> context_renderer;

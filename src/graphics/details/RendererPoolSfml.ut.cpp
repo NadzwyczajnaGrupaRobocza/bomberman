@@ -1,12 +1,12 @@
 #include "RendererPoolSfml.hpp"
 
 #include <gtest/gtest.h>
-#include <boost/range/algorithm/sort.hpp>
 #include <fakeit.hpp>
+#include <boost/range/algorithm/sort.hpp>
 #include <boost/range/algorithm/for_each.hpp>
+#include <boost/uuid/uuid_io.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Window.hpp>
-#include <boost/uuid/uuid_io.hpp>
 
 #include "SfmlRectangleShape.hpp"
 #include "Conversion.hpp"

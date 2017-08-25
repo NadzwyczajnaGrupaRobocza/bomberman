@@ -11,6 +11,6 @@ class RendererPoolFactory
 {
 public:
     virtual ~RendererPoolFactory() noexcept = default;
-    virtual std::unique_ptr<RendererPool> create(const math::Size&) const = 0;
+    virtual std::unique_ptr<RendererPool> create(const math::Size&) const;
 };
 }

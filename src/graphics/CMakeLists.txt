@@ -10,12 +10,12 @@ set(SFML_LIBS
 ########################### GRAPHICS ###########################
 
 add_library(graphics
-  RendererPoolSfml.cpp
-  RenderTarget.cpp
-  RendererIdGenerator.cpp
-  SfmlRectangleShape.cpp
-  RendererPoolSfmlFactory.cpp
-  Conversion.cpp
+  details/RendererPoolFactory.cpp
+  details/RendererPoolSfml.cpp
+  details/RenderTarget.cpp
+  details/RendererIdGenerator.cpp
+  details/SfmlRectangleShape.cpp
+  details/Conversion.cpp
   )
 
 target_include_directories(graphics SYSTEM PRIVATE
@@ -25,9 +25,9 @@ target_include_directories(graphics SYSTEM PRIVATE
 ############################## UT ##############################
 
 add_executable(graphics_ut
-  RendererPoolSfml.ut.cpp
-  RenderTarget.ut.cpp
-  SfmlRectangleShape.ut.cpp
+  details/RendererPoolSfml.ut.cpp
+  details/RenderTarget.ut.cpp
+  details/SfmlRectangleShape.ut.cpp
   )
 
 target_include_directories(graphics_ut SYSTEM BEFORE INTERFACE PRIVATE

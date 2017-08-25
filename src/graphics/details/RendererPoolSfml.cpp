@@ -47,4 +47,8 @@ void RendererPoolSfml::render_all()
 void RendererPoolSfml::set_position(const RendererId&, const math::Position2&)
 {
 }
+
+void RendererPoolSfml::get_position(const RendererId&)
+{
+}
 }
