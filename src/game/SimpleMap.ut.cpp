@@ -7,19 +7,95 @@
 
 #include "physics/PhysicsEngine.hpp"
 
-struct ExplosionRange
+enum class Direction
 {
-    int left;
-    int right;
-    int up;
-    int down;
+    up,
+    down,
+    left,
+    right
+};
+
+template <typename T, Direction diretction>
+struct Distance
+{
+    Distance() = default;
+    constexpr explicit Distance(int d) : distance{d}
+    {
+    }
+
+    operator int() const
+    {
+        return distance;
+    }
+
+private:
+    int distance;
+};
+
+using LeftDistance = Distance<int, Direction::left>;
+using RightDistance = Distance<int, Direction::right>;
+using UpDistance = Distance<int, Direction::up>;
+using DownDistance = Distance<int, Direction::down>;
+
+constexpr LeftDistance operator"" _left(unsigned long long int d)
+{
+    return LeftDistance{static_cast<int>(d)};
+}
+constexpr RightDistance operator"" _right(unsigned long long int d)
+{
+    return RightDistance{static_cast<int>(d)};
+}
+constexpr UpDistance operator"" _up(unsigned long long int d)
+{
+    return UpDistance{static_cast<int>(d)};
+}
+constexpr DownDistance operator"" _down(unsigned long long int d)
+{
+    return DownDistance{static_cast<int>(d)};
+}
+
+class ExplosionRange
+{
+public:
+    ExplosionRange(LeftDistance left, RightDistance right, UpDistance up,
+                   DownDistance down)
+        : leftDist{left}, rightDist{right}, upDist{up}, downDist{down}
+    {
+    }
+
+    LeftDistance left() const
+    {
+        return leftDist;
+    }
+
+    RightDistance right() const
+    {
+        return rightDist;
+    }
+
+    UpDistance up() const
+    {
+        return upDist;
+    }
+
+    DownDistance down() const
+    {
+        return downDist;
+    }
+
+private:
+    LeftDistance leftDist;
+    RightDistance rightDist;
+    UpDistance upDist;
+    DownDistance downDist;
 };
 
 bool operator==(const ExplosionRange& lhs, const ExplosionRange& rhs);
 bool operator==(const ExplosionRange& lhs, const ExplosionRange& rhs)
 {
-    return std::tie(lhs.left, lhs.right, lhs.up, lhs.down) ==
-           std::tie(rhs.left, rhs.right, rhs.up, rhs.down);
+    const auto &lhsTie = std::tie(lhs.left(), lhs.right(), lhs.up(), lhs.down()) ;
+        const auto &rhsTie = std::tie(rhs.left(), rhs.right(), rhs.up(), rhs.down());
+    return lhsTie == rhsTie;
 }
 
 class WallPositionsGenerator
@@ -93,10 +169,6 @@ public:
                                                        {{2, 1}, {1, 2}},
                                                        {{2, 8}, {4, 4}},
                                                        {{88, 123}, {4, 67}}};
-    /*{generatedWallsPositions[0], generatedWallsSizes[0]},
-        {generatedWallsPositions[1], generatedWallsSizes[1]},
-        {generatedWallsPositions[2], generatedWallsSizes[2]},
-        {generatedWallsPositions[3], generatedWallsSizes[3]}};*/
     Mock<physics::PhysicsEngine> physicsEngine;
     Mock<WallPositionsGenerator> wallPosGenerator;
     std::vector<physics::PhysicsEngine::Position> wallsPositions;
@@ -128,7 +200,15 @@ TEST_F(SimpleMapTest, DuringConstruction_ShouldCreateWalls)
 TEST_F(SimpleMapTest,
        get_explosion_range_shouldReturnMaxExplosionWhenNoBoundaryWallHit)
 {
-    ExplosionRange expectedRange{1, 1, 1, 1};
+    ExplosionRange expectedRange{1_left, 1_right, 1_up, 1_down};
     ASSERT_THAT(map.get_explosion_range(std::make_pair(2, 2), 1),
+                ::testing::Eq(expectedRange));
+}
+
+TEST_F(SimpleMapTest,
+       get_explosion_range_shouldReturnMaxExplosionLimitedWhenInCorner)
+{
+    ExplosionRange expectedRange{0, 1, 1, 1};
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(1, 1), 1),
                 ::testing::Eq(expectedRange));
 }
