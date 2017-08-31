@@ -93,8 +93,10 @@ private:
 bool operator==(const ExplosionRange& lhs, const ExplosionRange& rhs);
 bool operator==(const ExplosionRange& lhs, const ExplosionRange& rhs)
 {
-    const auto &lhsTie = std::tie(lhs.left(), lhs.right(), lhs.up(), lhs.down()) ;
-        const auto &rhsTie = std::tie(rhs.left(), rhs.right(), rhs.up(), rhs.down());
+    const auto& lhsTie =
+        std::tie(lhs.left(), lhs.right(), lhs.up(), lhs.down());
+    const auto& rhsTie =
+        std::tie(rhs.left(), rhs.right(), rhs.up(), rhs.down());
     return lhsTie == rhsTie;
 }
 
