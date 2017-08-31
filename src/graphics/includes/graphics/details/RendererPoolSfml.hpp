@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../RendererPool.hpp"
+#include "RendererPool.hpp"
 
 #include <vector>
 #include <memory>
@@ -18,16 +18,13 @@ public:
     RendererPoolSfml(std::unique_ptr<ContextRenderer>,
                      std::unique_ptr<RendererIdGenerator>);
 
-    RendererId take(const math::Size& size,
-                    const math::Position2& position) override;
+    RendererId take(const Size&, const Position&) override;
     void give_back(const RendererId&) override;
     void cleanup_unused() override;
     void render_all() override;
 
-    void set_position(const RendererId&,
-                      const math::Position2& position) override;
-
-    void get_position(const RendererId&) override;
+    void set_position(const RendererId&, const Position& position) override;
+    Position get_position(const RendererId&) override;
 
 private:
     std::unique_ptr<ContextRenderer> context_renderer;

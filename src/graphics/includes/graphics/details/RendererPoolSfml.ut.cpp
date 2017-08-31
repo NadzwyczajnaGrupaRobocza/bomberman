@@ -9,7 +9,6 @@
 #include <SFML/Window/Window.hpp>
 
 #include "SfmlRectangleShape.hpp"
-#include "Conversion.hpp"
 
 using namespace ::testing;
 using namespace ::fakeit;
@@ -39,9 +38,9 @@ public:
 
     const RendererId id1{RendererIdGenerator{}.generate()};
     const RendererId id2{RendererIdGenerator{}.generate()};
-    const math::Size dummy_size{20, 30};
-    const math::Size another_dummy_size{100, 100};
-    const math::Position2 dummy_position{0, 10};
+    const Size dummy_size{20, 30};
+    const Size another_dummy_size{100, 100};
+    const Position dummy_position{0, 10};
 };
 
 TEST_F(RendererPoolSfmlTest, take)
@@ -50,7 +49,7 @@ TEST_F(RendererPoolSfmlTest, take)
     sf::Vector2f rect_size{20, 100};
 
     EXPECT_EQ(id1, renderer_pool->take(dummy_size, dummy_position));
-    EXPECT_EQ(id2, renderer_pool->take(dummy_size, dummy_position));
+    EXPECT_EQ(id2, renderer_pool->take(another_dummy_size, dummy_position));
 }
 
 TEST_F(RendererPoolSfmlTest, renderAll)
@@ -75,7 +74,7 @@ TEST_F(RendererPoolSfmlTest, renderAll)
     });
 
     boost::for_each(expected_shapes, [this](const auto& shape) {
-        this->renderer_pool->take(utils::to_math(shape.getSize()),
+        this->renderer_pool->take(Size{shape.getSize().x, shape.getSize().y},
                                   dummy_position);
     });
     renderer_pool->render_all();

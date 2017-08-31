@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "RendererPool.hpp"
-#include "math/Size.hpp"
+#include "WindowSize.hpp"
 
 namespace graphics
 {
@@ -11,6 +11,6 @@ class RendererPoolFactory
 {
 public:
     virtual ~RendererPoolFactory() noexcept = default;
-    virtual std::unique_ptr<RendererPool> create(const math::Size&) const;
+    virtual std::unique_ptr<RendererPool> create(const WindowSize&) const;
 };
 }

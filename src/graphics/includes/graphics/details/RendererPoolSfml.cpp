@@ -18,12 +18,11 @@ RendererPoolSfml::RendererPoolSfml(
     context_renderer->initialize();
 }
 
-RendererId RendererPoolSfml::take(const math::Size& size,
-                                  const math::Position2& position)
+RendererId RendererPoolSfml::take(const Size& size, const Position& position)
 {
     auto id = renderer_id_generator->generate();
     auto shape = shapes.emplace(id, sf::Vector2f{size.width, size.height});
-    shape.first->second.setPosition(sf::Vector2f(position.x, position.y));
+    shape.first->second.setPosition(position.x, position.y);
     return id;
 }
 
@@ -44,11 +43,12 @@ void RendererPoolSfml::render_all()
     });
 }
 
-void RendererPoolSfml::set_position(const RendererId&, const math::Position2&)
+void RendererPoolSfml::set_position(const RendererId&, const Position&)
 {
 }
 
-void RendererPoolSfml::get_position(const RendererId&)
+Position RendererPoolSfml::get_position(const RendererId&)
 {
+    return Position{};
 }
 }
