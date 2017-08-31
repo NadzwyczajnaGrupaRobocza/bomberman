@@ -1,9 +1,9 @@
 #include "BombermanGameWorld.hpp"
 
 
-bool BombermanGameWorld::is_bomb_at_pos(const BombPosition&) const
+bool BombermanGameWorld::is_bomb_at_pos(const BombPosition& p) const
 {
-    return true;
+    return bombs.count(p);
 }
 
 void BombermanGameWorld::register_bomb(BombPosition p, std::unique_ptr<Bomb> bomb)
