@@ -87,9 +87,12 @@ public:
     const int boundarySize = 10;
     const std::vector<physics::PhysicsEngine::Position> generatedWallsSizes{
         {1, 1}, {1, 2}, {4, 4}, {4, 67}};
-    const std::vector<physics::PhysicsEngine::Position>
-        generatedWallsPositions{{8, 7}, {2, 1}, {2, 8}, {88, 123}};
-    const WallPositionsGenerator::Walls generatedWalls{};
+    const std::vector<physics::PhysicsEngine::Position> generatedWallsPositions{
+        {8, 7}, {2, 1}, {2, 8}, {88, 123}};
+    const WallPositionsGenerator::Walls generatedWalls{{{8, 7}, {1, 1}},
+                                                       {{2, 1}, {1, 2}},
+                                                       {{2, 8}, {4, 4}},
+                                                       {{88, 123}, {4, 67}}};
     /*{generatedWallsPositions[0], generatedWallsSizes[0]},
         {generatedWallsPositions[1], generatedWallsSizes[1]},
         {generatedWallsPositions[2], generatedWallsSizes[2]},
@@ -107,9 +110,10 @@ public:
 
     void verifyAllWallsArePlacedCorrectly()
     {
-        //ASSERT_THAT(wallsPositions,
-        //::testing::UnorderedElementsAreArray(generatedWallsPositions));
-        //ASSERT_THAT(wallsSizes, ::testing::UnorderedElementsAreArray(generatedWallsSizes));
+        ASSERT_THAT(wallsPositions, ::testing::UnorderedElementsAreArray(
+                                        generatedWallsPositions));
+        ASSERT_THAT(wallsSizes,
+                    ::testing::UnorderedElementsAreArray(generatedWallsSizes));
     }
 };
 
