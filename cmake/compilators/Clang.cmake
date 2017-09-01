@@ -5,7 +5,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything -Werror\
  -Wno-c++98-c++11-compat-pedantic -Wno-weak-vtables -Wno-padded\
  -Wno-global-constructors -Wno-extra-semi")
 
-if(${CMAKE_CXX_COMPILER_VERSION} LESS 4)
+if(${CMAKE_CXX_COMPILER_VERSION} GREATER 4)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-zero-as-null-pointer-constant")
 endif()
 

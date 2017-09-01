@@ -1,4 +1,3 @@
-#include <gtest/gtest.h>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Window.hpp>
 #include <memory>

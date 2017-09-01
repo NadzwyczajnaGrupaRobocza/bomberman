@@ -2,4 +2,3 @@ set(UT_INCLUDES ${FAKEIT_INCLUDE_DIR} ${GMOCK_INCLUDE_DIR} ${GTEST_INCLUDE_DIR})
 
 add_subdirectory(graphics)
 add_subdirectory(game)
-add_subdirectory(examples)
