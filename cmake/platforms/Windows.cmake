@@ -12,6 +12,4 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
   set(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "/imsvc ")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
-  --driver-mode=cl -fms-compatibility-version=19")
 endif()
