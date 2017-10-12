@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
+#include <unordered_set>
 #include <boost/functional/hash.hpp>
 
 #include "ContextRenderer.hpp"
@@ -20,16 +21,18 @@ public:
 
     RendererId take(const Size&, const Position&) override;
     void give_back(const RendererId&) override;
-    void cleanup_unused() override;
     void render_all() override;
 
     void set_position(const RendererId&, const Position& position) override;
     Position get_position(const RendererId&) override;
 
 private:
+    void cleanup_unused();
+
     std::unique_ptr<ContextRenderer> context_renderer;
     std::unique_ptr<RendererIdGenerator> renderer_id_generator;
     std::unordered_map<RendererId, SfmlRectangleShape, boost::hash<RendererId>>
         shapes;
+    std::unordered_set<RendererId, boost::hash<RendererId>> trash;
 };
 }

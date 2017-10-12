@@ -6,6 +6,8 @@
 
 #include <boost/uuid/uuid_io.hpp>
 
+#include <iostream>
+
 namespace graphics
 {
 
@@ -26,16 +28,26 @@ RendererId RendererPoolSfml::take(const Size& size, const Position& position)
     return id;
 }
 
-void RendererPoolSfml::give_back(const RendererId&)
+void RendererPoolSfml::give_back(const RendererId& id)
 {
+    trash.emplace(id);
 }
 
 void RendererPoolSfml::cleanup_unused()
 {
+    for(const auto& id : trash)
+    {
+        std::cerr << "id: \n";
+        shapes.erase(id);
+    }
+    trash.clear();
 }
 
 void RendererPoolSfml::render_all()
 {
+    std::cerr << "size before: " << shapes.size() << '\n';
+    cleanup_unused();
+    std::cerr << "size after: " << shapes.size() << '\n';
     context_renderer->clear(sf::Color::Black);
 
     boost::for_each(shapes, [&](const auto& shape) {

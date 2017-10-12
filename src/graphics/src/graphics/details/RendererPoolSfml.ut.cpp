@@ -32,6 +32,30 @@ public:
         Verify(Method(context_renderer, initialize));
     }
 
+    void expect_render_all(std::vector<SfmlRectangleShape> expected_shapes)
+    {
+        std::vector<SfmlRectangleShape> shapes;
+        shapes.reserve(expected_shapes.size());
+        Fake(Method(context_renderer, clear));
+        When(Method(context_renderer, draw)).AlwaysDo([&](const auto& shape) {
+            shapes.push_back(shape);
+        });
+
+        renderer_pool->render_all();
+
+        boost::sort(expected_shapes);
+        boost::sort(shapes);
+        for (auto i = 0U; i < expected_shapes.size(); ++i)
+        {
+            EXPECT_EQ(expected_shapes[i].getSize().x, shapes[i].getSize().x);
+            EXPECT_EQ(expected_shapes[i].getSize().y, shapes[i].getSize().y);
+        }
+
+        Verify(Method(context_renderer, clear).Using(sf::Color::Black));
+        Verify(Method(context_renderer, draw))
+            .Exactly(static_cast<int>(expected_shapes.size()));
+    }
+
     Mock<RendererIdGenerator> renderer_id_generator;
     Mock<ContextRenderer> context_renderer;
     std::unique_ptr<RendererPoolSfml> renderer_pool;
@@ -43,10 +67,9 @@ public:
     const Position dummy_position{0, 10};
 };
 
-TEST_F(RendererPoolSfmlTest, take)
+TEST_F(RendererPoolSfmlTest, takeTwoRenderableObject)
 {
     When(Method(renderer_id_generator, generate)).Return(id1).Return(id2);
-    sf::Vector2f rect_size{20, 100};
 
     EXPECT_EQ(id1, renderer_pool->take(dummy_size, dummy_position));
     EXPECT_EQ(id2, renderer_pool->take(another_dummy_size, dummy_position));
@@ -65,30 +88,76 @@ TEST_F(RendererPoolSfmlTest, renderAll)
         SfmlRectangleShape{sf::Vector2f{107, 180}},
         SfmlRectangleShape{sf::Vector2f{60, 30}}};
 
-    std::vector<SfmlRectangleShape> shapes;
-    shapes.reserve(expected_shapes.size());
-
-    Fake(Method(context_renderer, clear));
-    When(Method(context_renderer, draw)).AlwaysDo([&](const auto& shape) {
-        shapes.push_back(shape);
-    });
-
     boost::for_each(expected_shapes, [this](const auto& shape) {
         this->renderer_pool->take(Size{shape.getSize().x, shape.getSize().y},
                                   dummy_position);
     });
-    renderer_pool->render_all();
 
-    boost::sort(expected_shapes);
-    boost::sort(shapes);
-    for (auto i = 0U; i < expected_shapes.size(); ++i)
-    {
-        EXPECT_EQ(expected_shapes[i].getSize().x, shapes[i].getSize().x);
-        EXPECT_EQ(expected_shapes[i].getSize().y, shapes[i].getSize().y);
-    }
+    expect_render_all({expected_shapes});
 
     Verify(Method(context_renderer, clear).Using(sf::Color::Black));
     Verify(Method(context_renderer, draw))
         .Exactly(static_cast<int>(expected_shapes.size()));
+}
+
+TEST_F(RendererPoolSfmlTest, giveBackWithoutTake)
+{
+    renderer_pool->give_back(id1);
+    Fake(Method(context_renderer, clear));
+    renderer_pool->render_all();
+}
+
+TEST_F(RendererPoolSfmlTest, takeAndGiveBack_shouldStillBeAvailable)
+{
+    // When(Method(renderer_id_generator, generate)).Return(id1);
+    // EXPECT_EQ(id1, renderer_pool->take(dummy_size, dummy_position));
+    // renderer_pool->give_back(id1);
+    // expect_render_all({SfmlRectangleShape{
+    //     sf::Vector2f{dummy_size.width, dummy_size.height}}});
+}
+
+TEST_F(RendererPoolSfmlTest, takeTwoGiveBackOne_shouldRenderOnlyOne)
+{
+    When(Method(renderer_id_generator, generate)).Return(id1).Return(id2);
+
+    EXPECT_EQ(id1, renderer_pool->take(dummy_size, dummy_position));
+    EXPECT_EQ(id2, renderer_pool->take(another_dummy_size, dummy_position));
+
+    renderer_pool->give_back(id2);
+
+    std::vector<SfmlRectangleShape> expected_shapes = {
+        SfmlRectangleShape{sf::Vector2f{dummy_size.width, dummy_size.height}}};
+
+    expect_render_all(expected_shapes);
+
+    Verify(Method(context_renderer, clear).Using(sf::Color::Black));
+    Verify(Method(context_renderer, draw))
+        .Exactly(static_cast<int>(expected_shapes.size()));
+}
+
+TEST_F(RendererPoolSfmlTest, retakenShouldBeRendered)
+{
+    When(Method(renderer_id_generator, generate))
+        .Return(id1)
+        .Return(id2)
+        .Return(id2);
+
+    EXPECT_EQ(id1, renderer_pool->take(dummy_size, dummy_position));
+    EXPECT_EQ(id2, renderer_pool->take(another_dummy_size, dummy_position));
+
+    std::vector<SfmlRectangleShape> expected_shapes{
+        SfmlRectangleShape{sf::Vector2f{dummy_size.width, dummy_size.height}}};
+
+    renderer_pool->give_back(id2);
+    expect_render_all(expected_shapes);
+
+    EXPECT_EQ(id2, renderer_pool->take(another_dummy_size, dummy_position));
+    expected_shapes.emplace_back(
+        sf::Vector2f{another_dummy_size.width, another_dummy_size.height});
+
+    expect_render_all(expected_shapes);
+
+    Verify(Method(context_renderer, clear).Using(sf::Color::Black)).Exactly(2);
+    Verify(Method(context_renderer, draw)).Exactly(3);
 }
 }
