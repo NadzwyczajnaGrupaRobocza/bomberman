@@ -2,6 +2,7 @@ add_library(game
   TimeBomb.cpp
   HumanPlayerSfml.cpp
   BombermanGameWorld.cpp
+  main.cpp
   )
 
 add_executable(game_test
