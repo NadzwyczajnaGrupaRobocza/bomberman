@@ -98,12 +98,15 @@ TEST_F(RendererPoolSfmlTest, renderableObjectShouldBeMovable)
     expectEqPosition(new_position, id1);
 }
 
-TEST_F(RendererPoolSfmlTest, getpositionthrow)
+TEST_F(RendererPoolSfmlTest, getPositionOfInvalidIdShouldThrow)
 {
+    EXPECT_THROW(renderer_pool->get_position(id1), std::out_of_range);
 }
 
-TEST_F(RendererPoolSfmlTest, setpositionthrow)
+TEST_F(RendererPoolSfmlTest, setPositiontOfInvalidIdShouldThrow)
 {
+    EXPECT_THROW(renderer_pool->set_position(id1, dummy_position),
+                 std::out_of_range);
 }
 
 TEST_F(RendererPoolSfmlTest, renderAll)

@@ -23,12 +23,14 @@ RendererId RendererPoolSfml::take(const Size& size, const Position& position)
     auto id = renderer_id_generator->generate();
     auto shape = shapes.emplace(id, sf::Vector2f{size.width, size.height});
     shape.first->second.setPosition(position.x, position.y);
+    std::clog << "x: " << position.x << ", y: " << position.y << '\n';
     return id;
 }
 
 void RendererPoolSfml::give_back(const RendererId& id)
 {
     trash.emplace(id);
+    std::clog << "give_back \n";
 }
 
 void RendererPoolSfml::cleanup_unused()
@@ -36,6 +38,7 @@ void RendererPoolSfml::cleanup_unused()
     for (const auto& id : trash)
     {
         shapes.erase(id);
+        std::clog << "left: " << shapes.size() << '\n';
     }
     trash.clear();
 }
