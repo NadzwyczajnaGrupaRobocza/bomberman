@@ -1,4 +1,4 @@
-find_package(SFML 2 COMPONENTS system graphics REQUIRED)
+find_package(SFML 2.4.2 COMPONENTS system graphics REQUIRED)
 
 set(CPP_DIR graphics/details)
 
@@ -13,6 +13,9 @@ target_include_directories(graphics
   PUBLIC ${CMAKE_CURRENT_LIST_DIR}
   PRIVATE ${CMAKE_CURRENT_LIST_DIR}/graphics)
 
+target_include_directories(graphics SYSTEM
+  PRIVATE ${SFML_INCLUDE_DIR})
+
 target_link_libraries(graphics
   PRIVATE ${SFML_LIBRARIES})
 
@@ -23,7 +26,8 @@ add_executable(graphics-ut
 
 target_include_directories(graphics-ut SYSTEM BEFORE
   PRIVATE ${CMAKE_CURRENT_LIST_DIR}/graphics
-  ${UT_INCLUDES})
+          ${UT_INCLUDES}
+          ${SFML_INCLUDE_DIR})
 
 target_compile_options(graphics-ut
   PRIVATE "-Wno-disabled-macro-expansion")

@@ -1,7 +1,12 @@
+find_package(SFML 2.4.2 COMPONENTS graphics REQUIRED)
+
 add_library(game
   TimeBomb.cpp
   HumanPlayerSfml.cpp
   )
+
+target_include_directories(game SYSTEM
+  PRIVATE ${SFML_INCLUDE_DIR})
 
 add_executable(game_test
   TimeBomb.ut.cpp
