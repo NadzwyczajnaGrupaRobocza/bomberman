@@ -28,7 +28,7 @@ endif()
 
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
   include(${CMAKE_SOURCE_DIR}/cmake/compilators/Clang.cmake)
-elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
+elseif(MSVC)
   include(${CMAKE_SOURCE_DIR}/cmake/compilators/Msvc.cmake)
 else()
   include(${CMAKE_SOURCE_DIR}/cmake/compilators/Gcc.cmake)

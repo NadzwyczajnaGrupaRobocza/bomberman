@@ -50,10 +50,18 @@ public:
             EXPECT_EQ(expected_shapes[i].getSize().x, shapes[i].getSize().x);
             EXPECT_EQ(expected_shapes[i].getSize().y, shapes[i].getSize().y);
         }
+    }
 
-        Verify(Method(context_renderer, clear).Using(sf::Color::Black));
-        Verify(Method(context_renderer, draw))
-            .Exactly(static_cast<int>(expected_shapes.size()));
+    void expectTakeRenderable(const Size& size, const Position& position,
+                              const RendererId& id)
+    {
+        EXPECT_EQ(id, renderer_pool->take(size, position));
+    }
+
+    void expectEqPosition(const Position& position, const RendererId& id)
+    {
+        EXPECT_FLOAT_EQ(position.x, renderer_pool->get_position(id).x);
+        EXPECT_FLOAT_EQ(position.y, renderer_pool->get_position(id).y);
     }
 
     Mock<RendererIdGenerator> renderer_id_generator;
@@ -67,12 +75,35 @@ public:
     const Position dummy_position{0, 10};
 };
 
-TEST_F(RendererPoolSfmlTest, takeTwoRenderableObject)
+TEST_F(RendererPoolSfmlTest, takeTwoRenderableObject_positionShouldMatch)
 {
     When(Method(renderer_id_generator, generate)).Return(id1).Return(id2);
 
-    EXPECT_EQ(id1, renderer_pool->take(dummy_size, dummy_position));
-    EXPECT_EQ(id2, renderer_pool->take(another_dummy_size, dummy_position));
+    expectTakeRenderable(dummy_size, dummy_position, id1);
+    expectTakeRenderable(another_dummy_size, dummy_position, id2);
+    expectEqPosition(dummy_position, id1);
+    expectEqPosition(dummy_position, id2);
+}
+
+TEST_F(RendererPoolSfmlTest, renderableObjectShouldBeMovable)
+{
+    When(Method(renderer_id_generator, generate)).Return(id1);
+    expectTakeRenderable(dummy_size, dummy_position, id1);
+    expectEqPosition(dummy_position, id1);
+
+    auto new_position = dummy_position;
+    new_position.x += 10;
+    renderer_pool->set_position(id1, new_position);
+
+    expectEqPosition(new_position, id1);
+}
+
+TEST_F(RendererPoolSfmlTest, getpositionthrow)
+{
+}
+
+TEST_F(RendererPoolSfmlTest, setpositionthrow)
+{
 }
 
 TEST_F(RendererPoolSfmlTest, renderAll)
@@ -131,8 +162,7 @@ TEST_F(RendererPoolSfmlTest, takeTwoGiveBackOne_shouldRenderOnlyOne)
     expect_render_all(expected_shapes);
 
     Verify(Method(context_renderer, clear).Using(sf::Color::Black));
-    Verify(Method(context_renderer, draw))
-        .Exactly(static_cast<int>(expected_shapes.size()));
+    Verify(Method(context_renderer, draw)).Exactly(1);
 }
 
 TEST_F(RendererPoolSfmlTest, retakenShouldBeRendered)
@@ -157,7 +187,8 @@ TEST_F(RendererPoolSfmlTest, retakenShouldBeRendered)
 
     expect_render_all(expected_shapes);
 
-    Verify(Method(context_renderer, clear).Using(sf::Color::Black)).Exactly(2);
-    Verify(Method(context_renderer, draw)).Exactly(3);
+    // Verify(Method(context_renderer,
+    // clear).Using(sf::Color::Black)).Exactly(2);
+    // Verify(Method(context_renderer, draw)).Exactly(3);
 }
 }

@@ -16,19 +16,19 @@ target_include_directories(graphics
 target_link_libraries(graphics
   PRIVATE ${SFML_LIBRARIES})
 
-add_executable(graphics_ut
+add_executable(graphics-ut
   ${CPP_DIR}/RendererPoolSfml.ut.cpp
   ${CPP_DIR}/RenderTarget.ut.cpp
   ${CPP_DIR}/SfmlRectangleShape.ut.cpp)
 
-target_include_directories(graphics_ut SYSTEM BEFORE
+target_include_directories(graphics-ut SYSTEM BEFORE
   PRIVATE ${CMAKE_CURRENT_LIST_DIR}/graphics
   ${UT_INCLUDES})
 
-target_compile_options(graphics_ut
+target_compile_options(graphics-ut
   PRIVATE "-Wno-disabled-macro-expansion")
 
-target_link_libraries(graphics_ut
+target_link_libraries(graphics-ut
   PRIVATE graphics gmock_main)
 
-add_test(graphics_ut ${EXECUTABLE_OUTPUT_PATH}/graphics_ut --gtest_color=yes)
+add_test(graphics-ut ${EXECUTABLE_OUTPUT_PATH}/graphics-ut --gtest_color=yes)
