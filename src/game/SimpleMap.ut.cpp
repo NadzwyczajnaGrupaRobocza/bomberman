@@ -83,22 +83,18 @@ public:
         return downDist;
     }
 
+    bool operator==(const ExplosionRange& other) const
+    {
+        return std::tie(leftDist, rightDist, upDist, downDist) ==
+               std::tie(other.leftDist, other.rightDist, other.upDist, other.downDist);
+    }
+
 private:
     LeftDistance leftDist;
     RightDistance rightDist;
     UpDistance upDist;
     DownDistance downDist;
 };
-
-bool operator==(const ExplosionRange& lhs, const ExplosionRange& rhs);
-bool operator==(const ExplosionRange& lhs, const ExplosionRange& rhs)
-{
-    const auto& lhsTie =
-        std::tie(lhs.left(), lhs.right(), lhs.up(), lhs.down());
-    const auto& rhsTie =
-        std::tie(rhs.left(), rhs.right(), rhs.up(), rhs.down());
-    return lhsTie == rhsTie;
-}
 
 class WallPositionsGenerator
 {
@@ -130,9 +126,9 @@ public:
         }
     }
 
-    ExplosionRange get_explosion_range(std::pair<int, int>, int)
+    ExplosionRange get_explosion_range(std::pair<int, int> , int )
     {
-        return {1, 1, 1, 1};
+        return {LeftDistance{1} , RightDistance{1}, UpDistance{1}, DownDistance{1}};
     }
 
 private:
@@ -210,7 +206,7 @@ TEST_F(SimpleMapTest,
 TEST_F(SimpleMapTest,
        get_explosion_range_shouldReturnMaxExplosionLimitedWhenInCorner)
 {
-    ExplosionRange expectedRange{0, 1, 1, 1};
+    ExplosionRange expectedRange{0_left, 1_right, 1_up, 1_down};
     ASSERT_THAT(map.get_explosion_range(std::make_pair(1, 1), 1),
                 ::testing::Eq(expectedRange));
 }
