@@ -12,8 +12,8 @@
 Bomb should appear when proper key is pressed.
 ![UC:2.1](./img/UC_2_1.png)
 
-## [UC:2.2] As player I want my bomb to explode when its timer expided
+## [UC:2.2] As player I want my bomb to explode when its timer expired
 ![UC:2.2](./img/UC_2_2.png)
 
-## [UC:2.3] As player I want explosions of my bombs to last a prededined time interval
+## [UC:2.3] As player I want explosions of my bombs to last a predefined time interval
 ![UC:2.3](./img/UC_2_3.png)

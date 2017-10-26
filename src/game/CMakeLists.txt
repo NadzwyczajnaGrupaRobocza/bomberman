@@ -3,6 +3,7 @@ find_package(SFML 2 COMPONENTS graphics REQUIRED)
 add_library(game
   TimeBomb.cpp
   HumanPlayerSfml.cpp
+  BombermanGameWorld.cpp
   )
 
 target_include_directories(game SYSTEM
