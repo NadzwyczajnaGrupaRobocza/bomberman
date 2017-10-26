@@ -126,7 +126,7 @@ public:
         }
     }
 
-    ExplosionRange get_explosion_range(std::pair<int, int> , int )
+    ExplosionRange get_explosion_range(std::pair<int, int> , int range)
     {
         return {LeftDistance{1} , RightDistance{1}, UpDistance{1}, DownDistance{1}};
     }
@@ -196,7 +196,7 @@ TEST_F(SimpleMapTest, DuringConstruction_ShouldCreateWalls)
 }
 
 TEST_F(SimpleMapTest,
-       get_explosion_range_shouldReturnMaxExplosionWhenNoBoundaryWallHit)
+       get_explosion_range_shouldReturnMaxExplosion_WhenNoBoundaryWallHit)
 {
     ExplosionRange expectedRange{1_left, 1_right, 1_up, 1_down};
     ASSERT_THAT(map.get_explosion_range(std::make_pair(2, 2), 1),
@@ -204,9 +204,9 @@ TEST_F(SimpleMapTest,
 }
 
 TEST_F(SimpleMapTest,
-       get_explosion_range_shouldReturnMaxExplosionLimitedWhenInCorner)
+       get_explosion_range_shouldReturnMaxExplosion_WithCustomRange)
 {
     ExplosionRange expectedRange{0_left, 1_right, 1_up, 1_down};
-    ASSERT_THAT(map.get_explosion_range(std::make_pair(1, 1), 1),
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(3, 3), 2),
                 ::testing::Eq(expectedRange));
 }
