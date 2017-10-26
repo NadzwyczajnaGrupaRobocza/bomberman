@@ -10,7 +10,6 @@ add_executable(game_test
   Map.ut.cpp
   )
 
-add_executable(Bomberman main.cpp)
 
 target_include_directories(game_test SYSTEM PRIVATE
   ${UT_INCLUDES}
@@ -25,6 +24,12 @@ target_include_directories(game_test PRIVATE
   )
 
 target_include_directories(game PRIVATE
+  ${INTERNAL_LIBS_INCLUDE_PATH}
+  )
+
+add_executable(Bomberman main.cpp)
+
+target_include_directories(Bomberman PRIVATE
   ${INTERNAL_LIBS_INCLUDE_PATH}
   )
 
