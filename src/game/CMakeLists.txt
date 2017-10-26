@@ -2,7 +2,6 @@ add_library(game
   TimeBomb.cpp
   HumanPlayerSfml.cpp
   BombermanGameWorld.cpp
-  main.cpp
   )
 
 add_executable(game_test
@@ -10,6 +9,8 @@ add_executable(game_test
   Entity.ut.cpp
   Map.ut.cpp
   )
+
+add_executable(Bomberman main.cpp)
 
 target_include_directories(game_test SYSTEM PRIVATE
   ${UT_INCLUDES}
@@ -28,4 +29,6 @@ target_include_directories(game PRIVATE
   )
 
 target_link_libraries(game_test gtest_main game)
+target_link_libraries(Bomberman game)
+
 add_test(game_test ${EXECUTABLE_OUTPUT_PATH}/game_test --gtest_color=yes)
