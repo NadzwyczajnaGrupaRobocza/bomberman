@@ -33,14 +33,14 @@ inline auto create_arrow_from_point(const graphics::Position& point,
     const auto point_count = arrow_length / arrow_body_density;
     float current_pos = arrow_body_density;
 
-    Arrow points(point_count);
-    ranges::generate(points, [&] {
-        const auto current_r = -current_pos;
+    Arrow arrow(point_count);
+    ranges::generate(arrow, [&] {
+        const auto distance_from_center = current_pos;
         current_pos += arrow_body_density;
-        return std::make_pair(current_r,
+        return std::make_pair(distance_from_center,
                               renderer_pool.take(Size{20, 30}, point));
     });
-    return points;
+    return arrow;
 }
 
 inline auto calculate_pi()
@@ -119,9 +119,10 @@ int main()
     auto arrow = create_arrow_from_point(center_position, circle_r, step,
                                          *renderer_pool);
 
-    const auto double_pi = calculate_pi() * 2;
+    const auto pi = calculate_pi();
+    const auto double_pi = pi * 2;
 
-    auto alfa = double_pi / 4;
+    auto alfa = 3*pi/2;
     const auto alfa_of_one_turn = alfa + double_pi;
 
     auto last = std::chrono::system_clock::now();

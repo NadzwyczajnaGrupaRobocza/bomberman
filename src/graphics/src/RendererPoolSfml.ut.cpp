@@ -141,15 +141,6 @@ TEST_F(RendererPoolSfmlTest, giveBackWithoutTake)
     renderer_pool->render_all();
 }
 
-TEST_F(RendererPoolSfmlTest, takeAndGiveBack_shouldStillBeAvailable)
-{
-    // When(Method(renderer_id_generator, generate)).Return(id1);
-    // EXPECT_EQ(id1, renderer_pool->take(dummy_size, dummy_position));
-    // renderer_pool->give_back(id1);
-    // expect_render_all({SfmlRectangleShape{
-    //     sf::Vector2f{dummy_size.width, dummy_size.height}}});
-}
-
 TEST_F(RendererPoolSfmlTest, takeTwoGiveBackOne_shouldRenderOnlyOne)
 {
     When(Method(renderer_id_generator, generate)).Return(id1).Return(id2);
@@ -189,9 +180,5 @@ TEST_F(RendererPoolSfmlTest, retakenShouldBeRendered)
         sf::Vector2f{another_dummy_size.width, another_dummy_size.height});
 
     expect_render_all(expected_shapes);
-
-    // Verify(Method(context_renderer,
-    // clear).Using(sf::Color::Black)).Exactly(2);
-    // Verify(Method(context_renderer, draw)).Exactly(3);
 }
 }

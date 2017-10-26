@@ -1,4 +1,4 @@
-find_package(SFML 2.4.2 COMPONENTS graphics REQUIRED)
+find_package(SFML 2 COMPONENTS graphics REQUIRED)
 
 add_library(game
   TimeBomb.cpp
