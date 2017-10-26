@@ -20,8 +20,8 @@ inline auto create_object_at_center(const graphics::WindowSize& window_size,
 {
     using namespace graphics;
     return renderer_pool.take(
-        Size{15, 15},
-        Position{window_size.width / 2.0f, window_size.height / 2.0f});
+        Size{15, 15}, Position{static_cast<float>(window_size.width) / 2.0f,
+                               static_cast<float>(window_size.height) / 2.0f});
 }
 
 inline auto create_arrow_from_point(const graphics::Position& point,
@@ -31,12 +31,12 @@ inline auto create_arrow_from_point(const graphics::Position& point,
 {
     using namespace graphics;
     const auto point_count = arrow_length / arrow_body_density;
-    float current_pos = arrow_body_density;
+    float current_pos = static_cast<float>(arrow_body_density);
 
     Arrow arrow(point_count);
     ranges::generate(arrow, [&] {
         const auto distance_from_center = current_pos;
-        current_pos += arrow_body_density;
+        current_pos += static_cast<float>(arrow_body_density);
         return std::make_pair(distance_from_center,
                               renderer_pool.take(Size{20, 30}, point));
     });
@@ -122,7 +122,7 @@ int main()
     const auto pi = calculate_pi();
     const auto double_pi = pi * 2;
 
-    auto alfa = 3*pi/2;
+    auto alfa = 3 * pi / 2;
     const auto alfa_of_one_turn = alfa + double_pi;
 
     auto last = std::chrono::system_clock::now();
