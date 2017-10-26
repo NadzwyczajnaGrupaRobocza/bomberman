@@ -86,7 +86,8 @@ public:
     bool operator==(const ExplosionRange& other) const
     {
         return std::tie(leftDist, rightDist, upDist, downDist) ==
-               std::tie(other.leftDist, other.rightDist, other.upDist, other.downDist);
+               std::tie(other.leftDist, other.rightDist, other.upDist,
+                        other.downDist);
     }
 
 private:
@@ -126,9 +127,15 @@ public:
         }
     }
 
-    ExplosionRange get_explosion_range(std::pair<int, int> , int range)
+    ExplosionRange get_explosion_range(std::pair<int, int> startPoint, int range)
     {
-        return {LeftDistance{1} , RightDistance{1}, UpDistance{1}, DownDistance{1}};
+        auto left = range;
+        if (startPoint.first == 1)
+        {
+            left = 0;
+        }
+        return {LeftDistance{left}, RightDistance{range}, UpDistance{range},
+                DownDistance{range}};
     }
 
 private:
@@ -204,9 +211,17 @@ TEST_F(SimpleMapTest,
 }
 
 TEST_F(SimpleMapTest,
-       get_explosion_range_shouldReturnMaxExplosion_WithCustomRange)
+       get_explosion_range_shouldReturnMaxExplosion_WhenBiggerRange)
+{
+    ExplosionRange expectedRange{2_left, 2_right, 2_up, 2_down};
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(3, 3), 2),
+                ::testing::Eq(expectedRange));
+}
+
+TEST_F(SimpleMapTest,
+       get_explosion_range_shouldReturnMaxExplosionLimited_WhenRachLeftEnd)
 {
     ExplosionRange expectedRange{0_left, 1_right, 1_up, 1_down};
-    ASSERT_THAT(map.get_explosion_range(std::make_pair(3, 3), 2),
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(1, 2), 1),
                 ::testing::Eq(expectedRange));
 }
