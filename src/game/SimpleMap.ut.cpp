@@ -130,9 +130,9 @@ public:
     ExplosionRange get_explosion_range(std::pair<int, int> startPoint, int range)
     {
         auto left = range;
-        if (startPoint.first == 1)
+        if (startPoint.first <= range)
         {
-            left = 0;
+            left = range - 1;
         }
         return {LeftDistance{left}, RightDistance{range}, UpDistance{range},
                 DownDistance{range}};
@@ -223,5 +223,13 @@ TEST_F(SimpleMapTest,
 {
     ExplosionRange expectedRange{0_left, 1_right, 1_up, 1_down};
     ASSERT_THAT(map.get_explosion_range(std::make_pair(1, 2), 1),
+                ::testing::Eq(expectedRange));
+}
+
+TEST_F(SimpleMapTest,
+       get_explosion_range_shouldReturnMaxExplosionLimited_WhenRachLeftEndFarAway)
+{
+    ExplosionRange expectedRange{2_left, 3_right, 3_up, 3_down};
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(3, 5), 3),
                 ::testing::Eq(expectedRange));
 }
