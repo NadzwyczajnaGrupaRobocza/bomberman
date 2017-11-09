@@ -28,6 +28,18 @@ struct Distance
         return distance;
     }
 
+    Distance operator+=(Distance other)
+    {
+        distance += other.distance;
+        return *this;
+    }
+
+    Distance operator+(Distance other)
+    {
+        auto dist = *this;
+        return dist += other;
+    }
+
 private:
     int distance;
 };
@@ -127,14 +139,12 @@ public:
         }
     }
 
-    ExplosionRange get_explosion_range(std::pair<int, int> startPoint, int range)
+    ExplosionRange get_explosion_range(std::pair<int, int> startPoint,
+                                       int range)
     {
-        auto left = range;
-        if (startPoint.first <= range)
-        {
-            left = range - 1;
-        }
-        return {LeftDistance{left}, RightDistance{range}, UpDistance{range},
+        const auto left = get_range_in_one_direction<LeftDistance>(startPoint.first, range);
+        const auto up = get_range_in_one_direction<UpDistance>(startPoint.second, range);
+        return {left, RightDistance{range}, up,
                 DownDistance{range}};
     }
 
@@ -143,6 +153,24 @@ private:
     std::vector<physics::PhysicsEngine> walls;
     const int wallsCount = 36;
     const WallPositionsGenerator::WallSize wallSize{1, 1};
+
+    template <typename Distance>
+    Distance get_range_in_one_direction(const int startPoint, const int range)
+    {
+        constexpr auto nearest_wall_position = 1;
+        constexpr auto minumum_resonable_range = 0;
+        if (startPoint > nearest_wall_position && range > minumum_resonable_range)
+        {
+            constexpr auto step = 1;
+            return get_range_in_one_direction<Distance>(startPoint - step, range - step) + Distance{step};
+        }
+        else
+        {
+            constexpr auto zeroRange = Distance{0};
+            return zeroRange;
+        }
+    }
+
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////TEST
@@ -227,9 +255,9 @@ TEST_F(SimpleMapTest,
 }
 
 TEST_F(SimpleMapTest,
-       get_explosion_range_shouldReturnMaxExplosionLimited_WhenRachLeftEndFarAway)
+       get_explosion_range_shouldReturnMaxExplosionLimited_WhenRachLeftUpEnd)
 {
-    ExplosionRange expectedRange{2_left, 3_right, 3_up, 3_down};
-    ASSERT_THAT(map.get_explosion_range(std::make_pair(3, 5), 3),
+    ExplosionRange expectedRange{2_left, 3_right, 0_up, 3_down};
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(3, 1), 3),
                 ::testing::Eq(expectedRange));
 }
