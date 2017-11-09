@@ -131,7 +131,7 @@ public:
         : physicsEngine(pEngine)
     {
         for (const auto wall_position :
-             wall_positions_generator.generateBoundaryWalls(10))
+             wall_positions_generator.generateBoundaryWalls(mapSize))
         {
             physicsEngine.register_colider(
                 {wall_position.first.first, wall_position.first.second},
@@ -152,6 +152,7 @@ public:
 private:
     physics::PhysicsEngine& physicsEngine;
     std::vector<physics::PhysicsEngine> walls;
+    const int mapSize = 10;
 
     template <typename Distance>
     Distance get_range_in_decreasing_direction(const int startPoint,
