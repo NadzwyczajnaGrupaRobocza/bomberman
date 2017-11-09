@@ -142,8 +142,8 @@ public:
     ExplosionRange get_explosion_range(std::pair<int, int> startPoint,
                                        int range)
     {
-        const auto left = get_range_in_one_direction<LeftDistance>(startPoint.first, range);
-        const auto up = get_range_in_one_direction<UpDistance>(startPoint.second, range);
+        const auto left = get_range_in_decreasing_direction<LeftDistance>(startPoint.first, range);
+        const auto up = get_range_in_decreasing_direction<UpDistance>(startPoint.second, range);
         return {left, RightDistance{range}, up,
                 DownDistance{range}};
     }
@@ -151,18 +151,17 @@ public:
 private:
     physics::PhysicsEngine& physicsEngine;
     std::vector<physics::PhysicsEngine> walls;
-    const int wallsCount = 36;
     const WallPositionsGenerator::WallSize wallSize{1, 1};
 
     template <typename Distance>
-    Distance get_range_in_one_direction(const int startPoint, const int range)
+    Distance get_range_in_decreasing_direction(const int startPoint, const int range)
     {
         constexpr auto nearest_wall_position = 1;
         constexpr auto minumum_resonable_range = 0;
         if (startPoint > nearest_wall_position && range > minumum_resonable_range)
         {
             constexpr auto step = 1;
-            return get_range_in_one_direction<Distance>(startPoint - step, range - step) + Distance{step};
+            return get_range_in_decreasing_direction<Distance>(startPoint - step, range - step) + Distance{step};
         }
         else
         {
@@ -256,6 +255,14 @@ TEST_F(SimpleMapTest,
 
 TEST_F(SimpleMapTest,
        get_explosion_range_shouldReturnMaxExplosionLimited_WhenRachLeftUpEnd)
+{
+    ExplosionRange expectedRange{2_left, 3_right, 0_up, 3_down};
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(3, 1), 3),
+                ::testing::Eq(expectedRange));
+}
+
+TEST_F(SimpleMapTest,
+       get_explosion_range_shouldReturnMaxExplosionLimited_WhenRachRightEnd)
 {
     ExplosionRange expectedRange{2_left, 3_right, 0_up, 3_down};
     ASSERT_THAT(map.get_explosion_range(std::make_pair(3, 1), 3),
