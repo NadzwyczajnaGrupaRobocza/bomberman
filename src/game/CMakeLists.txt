@@ -2,6 +2,7 @@ add_library(game
   TimeBomb.cpp
   SimpleMap.cpp
   HumanPlayerSfml.cpp
+  BombermanGameWorld.cpp
   )
 
 add_executable(game_test
@@ -20,6 +21,10 @@ target_include_directories(game PRIVATE
   )
 
 target_include_directories(game_test PRIVATE
+  ${INTERNAL_LIBS_INCLUDE_PATH}
+  )
+
+target_include_directories(game PRIVATE
   ${INTERNAL_LIBS_INCLUDE_PATH}
   )
 
