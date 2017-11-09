@@ -142,26 +142,30 @@ public:
     ExplosionRange get_explosion_range(std::pair<int, int> startPoint,
                                        int range)
     {
-        const auto left = get_range_in_decreasing_direction<LeftDistance>(startPoint.first, range);
-        const auto up = get_range_in_decreasing_direction<UpDistance>(startPoint.second, range);
-        return {left, RightDistance{range}, up,
-                DownDistance{range}};
+        const auto left = get_range_in_decreasing_direction<LeftDistance>(
+            startPoint.first, range);
+        const auto up = get_range_in_decreasing_direction<UpDistance>(
+            startPoint.second, range);
+        return {left, RightDistance{range}, up, DownDistance{range}};
     }
 
 private:
     physics::PhysicsEngine& physicsEngine;
     std::vector<physics::PhysicsEngine> walls;
-    const WallPositionsGenerator::WallSize wallSize{1, 1};
 
     template <typename Distance>
-    Distance get_range_in_decreasing_direction(const int startPoint, const int range)
+    Distance get_range_in_decreasing_direction(const int startPoint,
+                                               const int range)
     {
         constexpr auto nearest_wall_position = 1;
         constexpr auto minumum_resonable_range = 0;
-        if (startPoint > nearest_wall_position && range > minumum_resonable_range)
+        if (startPoint > nearest_wall_position &&
+            range > minumum_resonable_range)
         {
             constexpr auto step = 1;
-            return get_range_in_decreasing_direction<Distance>(startPoint - step, range - step) + Distance{step};
+            return get_range_in_decreasing_direction<Distance>(
+                       startPoint - step, range - step) +
+                   Distance{step};
         }
         else
         {
@@ -169,7 +173,6 @@ private:
             return zeroRange;
         }
     }
-
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////TEST
