@@ -109,6 +109,18 @@ private:
     DownDistance downDist;
 };
 
+std::ostream& operator<<(std::ostream& out, const ExplosionRange& range);
+std::ostream& operator<<(std::ostream& out, const ExplosionRange& range)
+{
+    out << "{";
+    out << "Left: " << range.left() << " ,";
+    out << "Right: " << range.right() << " ,";
+    out << "Up: " << range.up() << " ,";
+    out << "Down: " << range.down();
+    out << "}";
+    return out;
+}
+
 class WallPositionsGenerator
 {
 public:
@@ -160,10 +172,9 @@ private:
     Distance get_range_in_decreasing_direction(const int startPoint,
                                                const int range) const
     {
-        constexpr auto nearest_wall_position = 1;
+        constexpr auto first_no_wall_field = 1;
         constexpr auto minumum_resonable_range = 0;
-        if (startPoint > nearest_wall_position &&
-            range > minumum_resonable_range)
+        if (startPoint > first_no_wall_field && range > minumum_resonable_range)
         {
             constexpr auto step = 1;
             return get_range_in_decreasing_direction<Distance>(
@@ -181,15 +192,16 @@ private:
     Distance get_range_in_increasing_direction(const int startPoint,
                                                const int range) const
     {
-        const auto nearest_wall_position = mapSize - 1;
+        constexpr auto distance_from_map_size_to_last_no_wall_field = 2;
+        const auto last_no_wall_field =
+            mapSize - distance_from_map_size_to_last_no_wall_field;
         constexpr auto minumum_resonable_range = 0;
-        if (startPoint < nearest_wall_position &&
-            range > minumum_resonable_range)
+        if (startPoint < last_no_wall_field && range > minumum_resonable_range)
         {
             constexpr auto step = 1;
-            return get_range_in_decreasing_direction<Distance>(
-                startPoint + step, range - step) +
-                Distance{step};
+            return get_range_in_increasing_direction<Distance>(
+                       startPoint + step, range - step) +
+                   Distance{step};
         }
         else
         {
@@ -260,7 +272,7 @@ TEST_F(SimpleMapTest,
        get_explosion_range_shouldReturnMaxExplosion_WhenNoBoundaryWallHit)
 {
     ExplosionRange expectedRange{1_left, 1_right, 1_up, 1_down};
-    ASSERT_THAT(map.get_explosion_range(std::make_pair(2, 2), 1),
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(4, 4), 1),
                 ::testing::Eq(expectedRange));
 }
 
@@ -268,7 +280,7 @@ TEST_F(SimpleMapTest,
        get_explosion_range_shouldReturnMaxExplosion_WhenBiggerRange)
 {
     ExplosionRange expectedRange{2_left, 2_right, 2_up, 2_down};
-    ASSERT_THAT(map.get_explosion_range(std::make_pair(3, 3), 2),
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(4, 4), 2),
                 ::testing::Eq(expectedRange));
 }
 
