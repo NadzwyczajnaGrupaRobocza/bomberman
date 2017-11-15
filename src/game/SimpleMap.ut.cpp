@@ -160,7 +160,9 @@ public:
             startPoint.second, range);
         const auto down = get_range_in_increasing_direction<DownDistance>(
             startPoint.second, range);
-        return {left, RightDistance{range}, up, down};
+        const auto right = get_range_in_increasing_direction<RightDistance>(
+            startPoint.first, range);
+        return {left, right, up, down};
     }
 
 private:
@@ -305,5 +307,13 @@ TEST_F(SimpleMapTest,
 {
     ExplosionRange expectedRange{3_left, 3_right, 3_up, 2_down};
     ASSERT_THAT(map.get_explosion_range(std::make_pair(5, 6), 3),
+                ::testing::Eq(expectedRange));
+}
+
+TEST_F(SimpleMapTest,
+       get_explosion_range_shouldReturnMaxExplosionLimited_WhenReachRightEnd)
+{
+    ExplosionRange expectedRange{3_left, 2_right, 3_up, 0_down};
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(6, 9), 3),
                 ::testing::Eq(expectedRange));
 }
