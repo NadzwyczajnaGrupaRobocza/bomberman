@@ -1,3 +1,5 @@
+find_package(SFML 2 COMPONENTS window REQUIRED)
+
 add_library(game
   TimeBomb.cpp
   HumanPlayerSfml.cpp
@@ -34,6 +36,6 @@ target_include_directories(Bomberman PRIVATE
   )
 
 target_link_libraries(game_test gtest_main game)
-target_link_libraries(Bomberman game)
+target_link_libraries(Bomberman game ${SFML_LIBRARIES})
 
 add_test(game_test ${EXECUTABLE_OUTPUT_PATH}/game_test --gtest_color=yes)

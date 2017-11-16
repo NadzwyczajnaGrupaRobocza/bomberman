@@ -7,7 +7,7 @@
 int main()
 {
     const std::pair<int, int> window_size{800, 600};
-    sf::Window window(sf::VideoMode(window_size.first, window_size.second), "Bomberman ");
+    sf::Window window(sf::VideoMode(window_size.first, window_size.second), "Bomberman Remake");
 
     BombermanGameWorld world;
     sf::Clock clock;
