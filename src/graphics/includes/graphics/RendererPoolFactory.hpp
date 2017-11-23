@@ -2,8 +2,9 @@
 
 #include <memory>
 
+#include "math/Size2u.hpp"
+
 #include "RendererPool.hpp"
-#include "WindowSize.hpp"
 
 namespace graphics
 {
@@ -11,6 +12,7 @@ class RendererPoolFactory
 {
 public:
     virtual ~RendererPoolFactory() noexcept = default;
-    virtual std::unique_ptr<RendererPool> create(const WindowSize&) const;
+    virtual std::unique_ptr<RendererPool>
+    create(const math::Size2u& window_size) const;
 };
 }

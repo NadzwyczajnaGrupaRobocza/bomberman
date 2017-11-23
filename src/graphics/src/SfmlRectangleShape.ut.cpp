@@ -4,10 +4,14 @@
 
 namespace graphics
 {
+using namespace math::sf;
+
+const Position2f pos{0.0f, 0.0f};
+
 TEST(SfmlRectangleShapeTest, equality)
 {
-    SfmlRectangleShape rect_1(sf::Vector2f{200, 100});
-    SfmlRectangleShape rect_2(sf::Vector2f{200, 100});
+    SfmlRectangleShape rect_1(Size2f{200, 100}, pos);
+    SfmlRectangleShape rect_2(Size2f{200, 100}, pos);
     SfmlRectangleShape rect_3(rect_2);
 
     EXPECT_EQ(rect_1, rect_2);
@@ -16,8 +20,8 @@ TEST(SfmlRectangleShapeTest, equality)
 
 TEST(SfmlRectangleShapeTest, inequality)
 {
-    SfmlRectangleShape rect_1(sf::Vector2f{200, 10});
-    SfmlRectangleShape rect_2(sf::Vector2f{20, 100});
+    SfmlRectangleShape rect_1(Size2f{200, 10}, pos);
+    SfmlRectangleShape rect_2(Size2f{20, 100}, pos);
 
     EXPECT_NE(rect_1, rect_2);
 }

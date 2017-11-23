@@ -12,7 +12,7 @@ namespace graphics
 class ContextRenderer
 {
 public:
-    virtual ~ContextRenderer() = default;
+    virtual ~ContextRenderer() noexcept = default;
 
     virtual void initialize() = 0;
     virtual void clear(const sf::Color color) = 0;

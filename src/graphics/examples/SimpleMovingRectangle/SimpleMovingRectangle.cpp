@@ -8,23 +8,24 @@
 #include <range/v3/algorithm/for_each.hpp>
 #include <range/v3/algorithm/generate.hpp>
 
+#include "math/Size2u.hpp"
+#include "math/Position2f.hpp"
 #include "graphics/RendererPoolFactory.hpp"
-#include "graphics/Size.hpp"
-#include "graphics/WindowSize.hpp"
-#include "graphics/Position.hpp"
 
+using namespace math;
 using Arrow = std::vector<std::pair<int, graphics::RendererId>>;
 
-inline auto create_object_at_center(const graphics::WindowSize& window_size,
+inline auto create_object_at_center(const Size2u& window_size,
                                     graphics::RendererPool& renderer_pool)
 {
     using namespace graphics;
     return renderer_pool.take(
-        Size{15, 15}, Position{static_cast<float>(window_size.width) / 2.0f,
-                               static_cast<float>(window_size.height) / 2.0f});
+        Size2f{15, 15},
+        Position2f{static_cast<float>(window_size.width) / 2.0f,
+                   static_cast<float>(window_size.height) / 2.0f});
 }
 
-inline auto create_arrow_from_point(const graphics::Position& point,
+inline auto create_arrow_from_point(const Position2f& point,
                                     const std::uint32_t& arrow_length,
                                     const std::uint32_t& arrow_body_density,
                                     graphics::RendererPool& renderer_pool)
@@ -38,7 +39,7 @@ inline auto create_arrow_from_point(const graphics::Position& point,
         const auto distance_from_center = current_pos;
         current_pos += static_cast<float>(arrow_body_density);
         return std::make_pair(distance_from_center,
-                              renderer_pool.take(Size{20, 30}, point));
+                              renderer_pool.take(Size2f{20, 30}, point));
     });
     return arrow;
 }
@@ -80,7 +81,7 @@ inline auto update_events(sf::Window& window)
 
 inline auto update_arrow(const double& alfa, Arrow& arrow,
                          graphics::RendererPool& renderer_pool,
-                         const graphics::Position& center_position)
+                         const Position2f& center_position)
 {
     auto sinus = std::sin(alfa);
     auto cosinus = std::cos(alfa);
@@ -89,8 +90,8 @@ inline auto update_arrow(const double& alfa, Arrow& arrow,
         auto new_x = gsl::narrow_cast<float>(point.first * cosinus);
         auto new_y = gsl::narrow_cast<float>(point.first * sinus);
 
-        renderer_pool.set_position(
-            point.second, center_position + graphics::Position{new_x, new_y});
+        renderer_pool.set_position(point.second,
+                                   center_position + Position2f{new_x, new_y});
     });
 }
 
@@ -105,7 +106,7 @@ update_time(std::chrono::time_point<std::chrono::system_clock>& last)
 
 int main()
 {
-    const graphics::WindowSize window_size{800, 600};
+    const Size2u window_size{800, 600};
     auto renderer_pool = graphics::RendererPoolFactory{}.create(window_size);
 
     sf::Window window(sf::VideoMode(window_size.width, window_size.height),

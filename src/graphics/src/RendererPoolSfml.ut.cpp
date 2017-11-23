@@ -1,9 +1,10 @@
 #include "RendererPoolSfml.hpp"
 
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
+
 #include <fakeit.hpp>
-#include <boost/range/algorithm/sort.hpp>
-#include <boost/range/algorithm/for_each.hpp>
+#include <range/v3/algorithm/for_each.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Window.hpp>
@@ -12,6 +13,7 @@
 
 using namespace ::testing;
 using namespace ::fakeit;
+using namespace ::math::sf;
 
 namespace graphics
 {
@@ -20,7 +22,6 @@ class RendererPoolSfmlTest : public Test
 public:
     void SetUp() override
     {
-        ASSERT_NE(id1, id2);
         Fake(Dtor(renderer_id_generator));
         Fake(Dtor(context_renderer));
         Fake(Method(context_renderer, initialize));
@@ -42,26 +43,31 @@ public:
         });
 
         renderer_pool->render_all();
-
-        boost::sort(expected_shapes);
-        boost::sort(shapes);
-        for (auto i = 0U; i < expected_shapes.size(); ++i)
-        {
-            EXPECT_EQ(expected_shapes[i].getSize().x, shapes[i].getSize().x);
-            EXPECT_EQ(expected_shapes[i].getSize().y, shapes[i].getSize().y);
-        }
+        ASSERT_THAT(shapes, UnorderedElementsAreArray(expected_shapes));
     }
 
-    void expectTakeRenderable(const Size& size, const Position& position,
+    void expectTakeRenderable(const math::Size2f& size,
+                              const math::Position2f& position,
                               const RendererId& id)
     {
         EXPECT_EQ(id, renderer_pool->take(size, position));
     }
 
-    void expectEqPosition(const Position& position, const RendererId& id)
+    void expectEqPosition(const math::Position2f& position,
+                          const RendererId& id)
     {
         EXPECT_FLOAT_EQ(position.x, renderer_pool->get_position(id).x);
         EXPECT_FLOAT_EQ(position.y, renderer_pool->get_position(id).y);
+    }
+
+    void expectMoveObject(const float x, const float y, const RendererId& id)
+    {
+        auto new_position = dummy_position;
+        new_position.x += x;
+        new_position.y += y;
+        renderer_pool->set_position(id, new_position);
+
+        expectEqPosition(new_position, id);
     }
 
     Mock<RendererIdGenerator> renderer_id_generator;
@@ -70,9 +76,9 @@ public:
 
     const RendererId id1{RendererIdGenerator{}.generate()};
     const RendererId id2{RendererIdGenerator{}.generate()};
-    const Size dummy_size{20, 30};
-    const Size another_dummy_size{100, 100};
-    const Position dummy_position{0, 10};
+    const math::Size2f dummy_size{20, 30};
+    const math::Size2f another_dummy_size{100, 100};
+    const math::Position2f dummy_position{0, 10};
 };
 
 TEST_F(RendererPoolSfmlTest, takeTwoRenderableObject_positionShouldMatch)
@@ -91,11 +97,10 @@ TEST_F(RendererPoolSfmlTest, renderableObjectShouldBeMovable)
     expectTakeRenderable(dummy_size, dummy_position, id1);
     expectEqPosition(dummy_position, id1);
 
-    auto new_position = dummy_position;
-    new_position.x += 10;
-    renderer_pool->set_position(id1, new_position);
-
-    expectEqPosition(new_position, id1);
+    expectMoveObject(10, 30, id1);
+    expectMoveObject(0, -23, id1);
+    expectMoveObject(-99, 10, id1);
+    expectMoveObject(10, -231, id1);
 }
 
 TEST_F(RendererPoolSfmlTest, getPositionOfInvalidIdShouldThrow)
@@ -116,15 +121,14 @@ TEST_F(RendererPoolSfmlTest, renderAll)
     });
 
     std::vector<SfmlRectangleShape> expected_shapes = {
-        SfmlRectangleShape{sf::Vector2f{10, 10}},
-        SfmlRectangleShape{sf::Vector2f{710, 30}},
-        SfmlRectangleShape{sf::Vector2f{80, 8}},
-        SfmlRectangleShape{sf::Vector2f{107, 180}},
-        SfmlRectangleShape{sf::Vector2f{60, 30}}};
+        SfmlRectangleShape{Size2f{10, 10}, dummy_position},
+        SfmlRectangleShape{Size2f{710, 30}, dummy_position},
+        SfmlRectangleShape{Size2f{80, 8}, dummy_position},
+        SfmlRectangleShape{Size2f{107, 180}, dummy_position},
+        SfmlRectangleShape{Size2f{60, 30}, dummy_position}};
 
-    boost::for_each(expected_shapes, [this](const auto& shape) {
-        this->renderer_pool->take(Size{shape.getSize().x, shape.getSize().y},
-                                  dummy_position);
+    ranges::for_each(expected_shapes, [this](auto& shape) {
+        this->renderer_pool->take(shape.getSize(), dummy_position);
     });
 
     expect_render_all({expected_shapes});
@@ -150,8 +154,8 @@ TEST_F(RendererPoolSfmlTest, takeTwoGiveBackOne_shouldRenderOnlyOne)
 
     renderer_pool->give_back(id2);
 
-    std::vector<SfmlRectangleShape> expected_shapes = {
-        SfmlRectangleShape{sf::Vector2f{dummy_size.width, dummy_size.height}}};
+    std::vector<SfmlRectangleShape> expected_shapes = {SfmlRectangleShape{
+        sf::Vector2f{dummy_size.width, dummy_size.height}, dummy_position}};
 
     expect_render_all(expected_shapes);
 
@@ -169,15 +173,16 @@ TEST_F(RendererPoolSfmlTest, retakenShouldBeRendered)
     EXPECT_EQ(id1, renderer_pool->take(dummy_size, dummy_position));
     EXPECT_EQ(id2, renderer_pool->take(another_dummy_size, dummy_position));
 
-    std::vector<SfmlRectangleShape> expected_shapes{
-        SfmlRectangleShape{sf::Vector2f{dummy_size.width, dummy_size.height}}};
+    std::vector<SfmlRectangleShape> expected_shapes{SfmlRectangleShape{
+        sf::Vector2f{dummy_size.width, dummy_size.height}, dummy_position}};
 
     renderer_pool->give_back(id2);
     expect_render_all(expected_shapes);
 
     EXPECT_EQ(id2, renderer_pool->take(another_dummy_size, dummy_position));
     expected_shapes.emplace_back(
-        sf::Vector2f{another_dummy_size.width, another_dummy_size.height});
+        sf::Vector2f{another_dummy_size.width, another_dummy_size.height},
+        dummy_position);
 
     expect_render_all(expected_shapes);
 }

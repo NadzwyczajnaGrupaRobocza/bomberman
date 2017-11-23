@@ -7,7 +7,8 @@ add_library(game
   )
 
 target_include_directories(game SYSTEM
-  PRIVATE ${SFML_INCLUDE_DIR})
+  PRIVATE ${SFML_INCLUDE_DIR}
+  PUBLIC math)
 
 add_executable(game_test
   TimeBomb.ut.cpp

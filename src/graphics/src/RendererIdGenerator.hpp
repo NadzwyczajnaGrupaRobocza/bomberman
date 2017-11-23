@@ -7,7 +7,7 @@ namespace graphics
 class RendererIdGenerator
 {
 public:
-    virtual ~RendererIdGenerator() = default;
+    virtual ~RendererIdGenerator() noexcept = default;
     virtual RendererId generate() const;
 };
 }

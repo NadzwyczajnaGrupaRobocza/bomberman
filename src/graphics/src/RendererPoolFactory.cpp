@@ -7,11 +7,10 @@
 namespace graphics
 {
 std::unique_ptr<RendererPool>
-RendererPoolFactory::create(const WindowSize& window_size) const
+RendererPoolFactory::create(const math::Size2u& window_size) const
 {
     return std::make_unique<RendererPoolSfml>(
-        std::make_unique<RenderTarget>(
-            sf::Vector2u(window_size.width, window_size.height)),
+        std::make_unique<RenderTarget>(window_size),
         std::make_unique<RendererIdGenerator>());
 }
 }

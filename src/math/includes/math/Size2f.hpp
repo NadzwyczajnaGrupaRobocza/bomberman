@@ -2,7 +2,7 @@
 
 namespace math
 {
-struct Size
+struct Size2f
 {
     float width;
     float height;

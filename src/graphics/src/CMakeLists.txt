@@ -1,4 +1,5 @@
 find_package(SFML 2 COMPONENTS system graphics REQUIRED)
+find_package(Boost 1.6 REQUIRED)
 
 add_library(graphics
   RendererPoolFactory.cpp
@@ -12,10 +13,12 @@ target_include_directories(graphics
   PRIVATE ${CMAKE_CURRENT_LIST_DIR})
 
 target_include_directories(graphics SYSTEM
-  PRIVATE ${SFML_INCLUDE_DIR})
+  PRIVATE ${SFML_INCLUDE_DIR}
+          Boost::boost)
 
 target_link_libraries(graphics
-  PRIVATE ${SFML_LIBRARIES})
+  PRIVATE ${SFML_LIBRARIES}
+  PUBLIC math)
 
 add_executable(graphics-ut
   RendererPoolSfml.ut.cpp

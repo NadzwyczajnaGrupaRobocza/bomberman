@@ -18,11 +18,12 @@ RendererPoolSfml::RendererPoolSfml(
     context_renderer->initialize();
 }
 
-RendererId RendererPoolSfml::take(const Size& size, const Position& position)
+RendererId RendererPoolSfml::take(const math::Size2f& size,
+                                  const math::Position2f& position)
 {
     auto id = renderer_id_generator->generate();
-    auto shape = shapes.emplace(id, sf::Vector2f{size.width, size.height});
-    shape.first->second.setPosition(position.x, position.y);
+    shapes.emplace(std::piecewise_construct, std::forward_as_tuple(id),
+                   std::forward_as_tuple(size, position));
     return id;
 }
 
@@ -48,13 +49,13 @@ void RendererPoolSfml::render_all()
 }
 
 void RendererPoolSfml::set_position(const RendererId& id,
-                                    const Position& position)
+                                    const math::Position2f& position)
 {
     shapes.at(id).setPosition({position.x, position.y});
 }
 
-Position RendererPoolSfml::get_position(const RendererId& id)
+math::Position2f RendererPoolSfml::get_position(const RendererId& id)
 {
-    return {shapes.at(id).getPosition().x, shapes.at(id).getPosition().y};
+    return shapes.at(id).getPosition();
 }
 }
