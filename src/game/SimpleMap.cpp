@@ -4,7 +4,7 @@ SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
                      const WallPositionsGenerator& wall_positions_generator)
     : physicsEngine(pEngine)
 {
-    for (const auto wall_position :
+    for (const auto& wall_position :
          wall_positions_generator.generateBoundaryWalls(mapSize))
     {
         physicsEngine.register_colider(
