@@ -1,5 +1,6 @@
 add_library(game
   BombermanGameWorld.cpp
+  BoundaryWallsPositionsGenerator.cpp
   ExplosionRange.cpp
   HumanPlayerSfml.cpp
   SimpleMap.cpp
@@ -7,10 +8,11 @@ add_library(game
   )
 
 add_executable(game_test
-  TimeBomb.ut.cpp
+  BoundaryWallsPositionsGenerator.ut.cpp
   Entity.ut.cpp
   Map.ut.cpp
   SimpleMap.ut.cpp
+  TimeBomb.ut.cpp
   )
 
 target_include_directories(game_test SYSTEM PRIVATE
