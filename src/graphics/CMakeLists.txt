@@ -7,5 +7,5 @@ target_include_directories(graphics_ut SYSTEM PRIVATE
   )
 
 
-target_link_libraries(graphics_ut gtest_main)
+target_link_libraries(graphics_ut --coverage gtest_main)
 add_test(graphics_ut ${EXECUTABLE_OUTPUT_PATH}/graphics_ut --gtest_color=yes)

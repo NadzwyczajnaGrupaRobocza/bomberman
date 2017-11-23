@@ -36,7 +36,8 @@ script:
   - cd ..
   - mkdir build
   - cd build
-  - env CC=${C_COMPILER} CXX=${CXX_COMPILER} cmake .. 
+  - env CC=${C_COMPILER} CXX=${CXX_COMPILER} cmake .. -DENABLE_COVERAGE:BOOL=TRUE
   - echo "We have" `nproc` "cores here"
   - make -j `nproc`
   - ctest -j `nproc` -V
+  - bash <(curl -s https://codecov.io/bash)
