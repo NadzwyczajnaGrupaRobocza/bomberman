@@ -1,8 +1,9 @@
 add_library(game
-  TimeBomb.cpp
-  SimpleMap.cpp
-  HumanPlayerSfml.cpp
   BombermanGameWorld.cpp
+  ExplosionRange.cpp
+  HumanPlayerSfml.cpp
+  SimpleMap.cpp
+  TimeBomb.cpp
   )
 
 add_executable(game_test
