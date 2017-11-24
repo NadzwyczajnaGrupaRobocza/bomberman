@@ -1,6 +1,7 @@
 #pragma once
 
 #include <boost/operators.hpp>
+#include <tuple>
 
 namespace math
 {
