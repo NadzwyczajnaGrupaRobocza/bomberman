@@ -5,6 +5,7 @@
 #include <iostream>
 #include <gsl/gsl_util>
 #include <chrono>
+#include <vector>
 #include <range/v3/algorithm/for_each.hpp>
 #include <range/v3/algorithm/generate.hpp>
 
@@ -70,15 +71,15 @@ inline auto update_arrows_after_one_turn(double& alfa,
     }
 }
 
-inline auto update_events(sf::Window& window)
-{
-    sf::Event event;
-    while (window.pollEvent(event))
-    {
-        if (event.type == sf::Event::Closed)
-            window.close();
-    }
-}
+// inline auto update_events(sf::Window& window)
+// {
+//     sf::Event event;
+//     while (window.pollEvent(event))
+//     {
+//         if (event.type == sf::Event::Closed)
+//             window.close();
+//     }
+// }
 
 inline auto update_arrow(const double& alfa, Arrow& arrow,
                          graphics::RendererPool& renderer_pool,

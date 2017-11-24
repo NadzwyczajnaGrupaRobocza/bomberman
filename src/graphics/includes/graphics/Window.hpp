@@ -10,5 +10,5 @@ public:
     virtual bool is_open() const = 0;
     virtual void display() = 0;
     virtual void update() = 0;
-}
+};
 }

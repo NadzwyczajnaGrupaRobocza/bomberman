@@ -9,7 +9,7 @@ using namespace math;
 int main()
 {
     const Size2u window_size{800, 600};
-    auto renderer_pool = graphics::RendererPoolFactory{}.create(window_size);
+    auto renderer_pool = graphics::create_renderer_pool(window_size);
 
     sf::Window window(sf::VideoMode(window_size.width, window_size.height),
                       "My window ");
