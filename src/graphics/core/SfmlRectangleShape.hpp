@@ -8,18 +8,20 @@
 
 namespace graphics
 {
-class SfmlRectangleShape : public sf::RectangleShape
+class SfmlRectangleShape : public sf::RectangleShape,
+                           public boost::totally_ordered<SfmlRectangleShape>
 {
 public:
     SfmlRectangleShape(const Size2f&, const Position2f&);
 
     Position2f getPosition() const;
     Size2f getSize() const;
-
-    friend bool operator==(const SfmlRectangleShape& lhs,
-                           const SfmlRectangleShape& rhs);
-
-    friend bool operator!=(const SfmlRectangleShape& lhs,
-                           const SfmlRectangleShape& rhs);
 };
+
+inline bool operator==(const SfmlRectangleShape& lhs,
+                       const SfmlRectangleShape& rhs)
+{
+    return lhs.getPosition() == rhs.getPosition() &&
+           lhs.getSize() == rhs.getSize();
+}
 }

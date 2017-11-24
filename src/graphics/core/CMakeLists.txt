@@ -35,7 +35,8 @@ target_include_directories(graphics-ut SYSTEM BEFORE
   PRIVATE ${CMAKE_CURRENT_LIST_DIR}
           ${CMAKE_CURRENT_LIST_DIR}/../types
           ${UT_INCLUDES}
-          ${SFML_INCLUDE_DIR})
+          ${SFML_INCLUDE_DIR}
+          Boost::boost)
 
 target_link_libraries(graphics-ut
   PRIVATE graphics gmock_main ${SFML_LIBRARIES})

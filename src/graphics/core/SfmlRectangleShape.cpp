@@ -21,15 +21,4 @@ Size2f SfmlRectangleShape::getSize() const
 {
     return sf::RectangleShape::getSize();
 }
-
-bool operator==(const SfmlRectangleShape& lhs, const SfmlRectangleShape& rhs)
-{
-    return lhs.getPosition() == rhs.getPosition() &&
-           lhs.getSize() == rhs.getSize();
-}
-
-bool operator!=(const SfmlRectangleShape& lhs, const SfmlRectangleShape& rhs)
-{
-    return not(lhs == rhs);
-}
 }
