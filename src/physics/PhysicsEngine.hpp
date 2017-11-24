@@ -17,5 +17,6 @@ public:
     virtual Position get_position(PhysicsId) const = 0;
     virtual void solve_colisions() = 0;
     virtual PhysicsId register_colider(const Position&, const Position&) = 0;
+    virtual void deregister(PhysicsId) = 0;
 };
 }

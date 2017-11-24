@@ -20,9 +20,14 @@ public:
     {
     }
 
-    physics::PhysicsId register_colider(const Position&, const Position&) override
+    physics::PhysicsId register_colider(const Position&,
+                                        const Position&) override
     {
         return {};
+    }
+
+    void deregister(physics::PhysicsId) override
+    {
     }
 };
 

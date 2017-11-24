@@ -63,6 +63,7 @@ class Map {
 - static_element : std::vector<PhysId>
 - renderer_pool : graphics::RendererPool&
 - physics_engine : PhysicsEngine&
++ ExplosionRange : get_explosion_range(const std::pair<int, int>, int)
 }
 Map o-- graphics.RendererPool
 Map *-- graphics.RendererId
