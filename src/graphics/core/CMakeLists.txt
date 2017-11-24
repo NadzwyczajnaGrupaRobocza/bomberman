@@ -37,9 +37,6 @@ target_include_directories(graphics-ut SYSTEM BEFORE
           ${UT_INCLUDES}
           ${SFML_INCLUDE_DIR})
 
-target_compile_options(graphics-ut
-  PRIVATE "-Wno-disabled-macro-expansion")
-
 target_link_libraries(graphics-ut
   PRIVATE graphics gmock_main ${SFML_LIBRARIES})
 
