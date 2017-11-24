@@ -17,7 +17,7 @@ TEST(RenderTargetTest, setAndGetSize)
     EXPECT_EQ(size_400x300, renderTarget400x300.getSize());
 }
 
-TEST(RenderTargetTest, activate)
+TEST(RenderTargetTest, activate_dummyMethodShouldJustReturnTrue)
 {
     const WindowSize dummy_size{200, 300};
     SfmlRenderTarget renderTarget{dummy_size};

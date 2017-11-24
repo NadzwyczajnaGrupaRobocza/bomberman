@@ -145,7 +145,7 @@ TEST_F(RendererPoolSfmlTest, renderAll)
         .Exactly(static_cast<int>(expected_shapes.size()));
 }
 
-TEST_F(RendererPoolSfmlTest, releaseWithoutAcquire)
+TEST_F(RendererPoolSfmlTest, releaseWithoutAcquire_doNothing)
 {
     renderer_pool->release(id1);
     Fake(Method(context_renderer, clear));

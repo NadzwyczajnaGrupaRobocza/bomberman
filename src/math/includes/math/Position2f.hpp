@@ -17,6 +17,14 @@ struct Position2f : boost::additive<Position2f>,
     float y;
 };
 
+namespace
+{
+auto tie(const Position2f& pos)
+{
+    return std::tie(pos.x, pos.y);
+}
+}
+
 inline Position2f& operator+=(Position2f& lhs, const Position2f& rhs)
 {
     lhs.x += rhs.x;
@@ -26,11 +34,11 @@ inline Position2f& operator+=(Position2f& lhs, const Position2f& rhs)
 
 inline bool operator==(const Position2f& lhs, const Position2f& rhs)
 {
-    return std::tie(lhs.x, lhs.y) == std::tie(rhs.x, rhs.y);
+    return tie(lhs) == tie(rhs);
 }
 
 inline bool operator<(const Position2f& lhs, const Position2f& rhs)
 {
-    return std::tie(lhs.x, lhs.y) < std::tie(rhs.x, rhs.y);
+    return tie(lhs) < tie(rhs);
 }
 }

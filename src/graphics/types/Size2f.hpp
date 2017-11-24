@@ -13,11 +13,11 @@ struct Size2f : ::math::Size2f
     {
     }
 
-    Size2f(const ::math::Size2f& pos) : ::math::Size2f{pos}
+    Size2f(const ::math::Size2f& size) : Size2f{size.width, size.height}
     {
     }
 
-    Size2f(const ::sf::Vector2f& pos) : ::math::Size2f{pos.x, pos.y}
+    Size2f(const ::sf::Vector2f& size) : Size2f{size.x, size.y}
     {
     }
 
