@@ -74,7 +74,7 @@ TEST_F(WindowSfmlTest, updateWindow)
 {
     auto window = create_window();
     const auto expected_polled_events =
-        prepare_events({sf::Event::MouseLeft, sf::Event::TouchBegan,
+        prepare_events({sf::Event::MouseLeft, sf::Event::LostFocus,
                         sf::Event::MouseMoved, sf::Event::MouseEntered});
 
     expectPollEvent();
@@ -88,7 +88,7 @@ TEST_F(WindowSfmlTest, updateAndCloseWindow)
     fakeit::Fake(Method(sfml_window, close));
     auto window = create_window();
     const auto expected_polled_events = prepare_events(
-        {sf::Event::MouseLeft, sf::Event::TouchBegan, sf::Event::MouseMoved,
+        {sf::Event::MouseLeft, sf::Event::LostFocus, sf::Event::MouseMoved,
          sf::Event::MouseEntered, sf::Event::Closed});
 
     expectPollEvent();

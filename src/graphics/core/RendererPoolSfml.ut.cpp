@@ -149,7 +149,9 @@ TEST_F(RendererPoolSfmlTest, releaseWithoutAcquire)
 {
     renderer_pool->release(id1);
     Fake(Method(context_renderer, clear));
+    Fake(Method(context_renderer, draw));
     renderer_pool->render_all();
+    Verify(Method(context_renderer, draw)).Exactly(0);
 }
 
 TEST_F(RendererPoolSfmlTest, acquireTwoReleaseOne_shouldRenderOnlyOne)
@@ -166,7 +168,7 @@ TEST_F(RendererPoolSfmlTest, acquireTwoReleaseOne_shouldRenderOnlyOne)
     expect_render_all(expected_shapes);
 
     Verify(Method(context_renderer, clear).Using(sf::Color::Black));
-    Verify(Method(context_renderer, draw)).Exactly(1);
+    Verify(Method(context_renderer, draw)).Once();
 }
 
 TEST_F(RendererPoolSfmlTest, reacquirenShouldBeRendered)
