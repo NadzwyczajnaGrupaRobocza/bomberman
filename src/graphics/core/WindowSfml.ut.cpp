@@ -1,10 +1,9 @@
 #include <gtest/gtest.h>
 #include <fakeit.hpp>
 #include <range/v3/algorithm/for_each.hpp>
+#include <SFML/Window/Event.hpp>
 
 #include "WindowSfml.hpp"
-
-#include <iostream>
 
 namespace graphics
 {
