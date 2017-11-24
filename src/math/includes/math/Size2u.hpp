@@ -1,10 +1,8 @@
 #pragma once
 
+#include "math/Size2.hpp"
+
 namespace math
 {
-struct Size2u
-{
-    unsigned width;
-    unsigned height;
-};
+using Size2u = Size2<unsigned>;
 }

@@ -1,5 +1,5 @@
-add_executable(simple_rectangle_draw
-  SimpleRectangleDraw.cpp)
+target_sources(simple_rectangle_draw
+  PRIVATE ${CMAKE_CURRENT_LIST_DIR}/SimpleRectangleDraw.cpp)
 
 target_include_directories(simple_rectangle_draw SYSTEM
   PRIVATE ${SFML_INCLUDE_DIR})

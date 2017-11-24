@@ -5,19 +5,19 @@
 namespace graphics
 {
 
-SfmlRectangleShape::SfmlRectangleShape(const math::sf::Size2f size,
-                                       const math::sf::Position2f position)
+SfmlRectangleShape::SfmlRectangleShape(const Size2f& size,
+                                       const Position2f& position)
 {
     setSize(size);
     setPosition(position);
 }
 
-const math::sf::Position2f SfmlRectangleShape::getPosition() const
+Position2f SfmlRectangleShape::getPosition() const
 {
     return sf::RectangleShape::getPosition();
 }
 
-const math::sf::Size2f SfmlRectangleShape::getSize() const
+Size2f SfmlRectangleShape::getSize() const
 {
     return sf::RectangleShape::getSize();
 }

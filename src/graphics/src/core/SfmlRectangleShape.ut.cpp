@@ -4,8 +4,6 @@
 
 namespace graphics
 {
-using namespace math::sf;
-
 const Position2f pos{0.0f, 0.0f};
 
 TEST(SfmlRectangleShapeTest, equality)

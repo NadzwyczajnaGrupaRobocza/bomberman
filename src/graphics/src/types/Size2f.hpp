@@ -4,14 +4,12 @@
 
 #include "math/Size2f.hpp"
 
-namespace math
+namespace graphics
 {
-namespace sf
+struct Size2f : ::math::Size2f
 {
-struct Size2f : public ::math::Size2f
-{
-    Size2f(const float width, const float height)
-        : ::math::Size2f{width, height}
+    Size2f(const float width_, const float height_)
+        : ::math::Size2f{width_, height_}
     {
     }
 
@@ -28,10 +26,4 @@ struct Size2f : public ::math::Size2f
         return {width, height};
     }
 };
-
-inline bool operator==(const Size2f& lhs, const Size2f& rhs)
-{
-    return std::tie(lhs.width, lhs.height) == std::tie(rhs.width, rhs.height);
-}
-}
 }

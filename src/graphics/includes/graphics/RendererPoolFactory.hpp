@@ -2,17 +2,15 @@
 
 #include <memory>
 
+#include "math/Position2f.hpp"
 #include "math/Size2u.hpp"
 
 #include "RendererPool.hpp"
+#include "Window.hpp"
 
 namespace graphics
 {
-class RendererPoolFactory
-{
-public:
-    virtual ~RendererPoolFactory() noexcept = default;
-    virtual std::unique_ptr<RendererPool>
-    create(const math::Size2u& window_size) const;
-};
+std::unique_ptr<RendererPool>
+create_renderer_pool(const math::Size2u& rendering_reion_size);
+std::unique_ptr<Window> create_window(const math::Size2u&);
 }

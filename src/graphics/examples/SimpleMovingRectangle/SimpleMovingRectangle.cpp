@@ -1,5 +1,5 @@
-#include <SFML/Window/Event.hpp>
-#include <SFML/Window/Window.hpp>
+// #include <SFML/Window/Event.hpp>
+// #include <SFML/Window/Window.hpp>
 #include <memory>
 #include <cmath>
 #include <iostream>
@@ -11,18 +11,19 @@
 #include "math/Size2u.hpp"
 #include "math/Position2f.hpp"
 #include "graphics/RendererPoolFactory.hpp"
+#include "graphics/Window.hpp"
 
 using namespace math;
 using Arrow = std::vector<std::pair<int, graphics::RendererId>>;
 
-inline auto create_object_at_center(const Size2u& window_size,
+inline auto create_object_at_center(const Size2u& available_region,
                                     graphics::RendererPool& renderer_pool)
 {
     using namespace graphics;
     return renderer_pool.take(
         Size2f{15, 15},
-        Position2f{static_cast<float>(window_size.width) / 2.0f,
-                   static_cast<float>(window_size.height) / 2.0f});
+        Position2f{static_cast<float>(available_region.width) / 2.0f,
+                   static_cast<float>(available_region.height) / 2.0f});
 }
 
 inline auto create_arrow_from_point(const Position2f& point,
@@ -106,13 +107,16 @@ update_time(std::chrono::time_point<std::chrono::system_clock>& last)
 
 int main()
 {
-    const Size2u window_size{800, 600};
-    auto renderer_pool = graphics::RendererPoolFactory{}.create(window_size);
+    const Size2u available_region{800, 600};
+    auto window = graphics::create_window(available_region);
+    auto renderer_pool = graphics::create_renderer_pool(available_region);
 
-    sf::Window window(sf::VideoMode(window_size.width, window_size.height),
-                      "My window ");
+    // sf::Window window(sf::VideoMode(available_region.width,
+    // available_region.height),
+    //                   "My window ");
 
-    const auto center_id = create_object_at_center(window_size, *renderer_pool);
+    const auto center_id =
+        create_object_at_center(available_region, *renderer_pool);
     const auto center_position = renderer_pool->get_position(center_id);
 
     constexpr auto circle_r = 200;
@@ -127,7 +131,7 @@ int main()
     const auto alfa_of_one_turn = alfa + double_pi;
 
     auto last = std::chrono::system_clock::now();
-    while (window.isOpen() && arrow.size() > 0)
+    while (window->is_open() && arrow.size() > 0)
     {
         const auto delta_time = update_time(last);
         update_arrow(alfa, arrow, *renderer_pool, center_position);
@@ -135,8 +139,7 @@ int main()
         update_arrows_after_one_turn(alfa, *renderer_pool, arrow,
                                      alfa_of_one_turn, double_pi);
         renderer_pool->render_all();
-        window.display();
-
-        update_events(window);
+        window->display();
+        window->update();
     }
 }

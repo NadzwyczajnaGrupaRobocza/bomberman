@@ -14,8 +14,8 @@ int main()
     sf::Window window(sf::VideoMode(window_size.width, window_size.height),
                       "My window ");
 
-    renderer_pool->take(Size2f{20, 30}, Position2f{100, 200});
-    renderer_pool->take(Size2f{30, 30}, Position2f{200, 350});
+    renderer_pool->take(Size2f{20, 30}, Position2f{100.0f, 200.0f});
+    renderer_pool->take(Size2f{30, 30}, Position2f{200.0f, 350.0f});
 
     while (window.isOpen())
     {

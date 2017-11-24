@@ -1,10 +1,8 @@
 #pragma once
 
+#include "math/Size2.hpp"
+
 namespace math
 {
-struct Size2f
-{
-    float width;
-    float height;
-};
+using Size2f = Size2<float>;
 }
