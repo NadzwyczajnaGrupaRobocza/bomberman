@@ -43,7 +43,7 @@ class GameWorld {
 + create_bomb(Vector2D position, int timeToExplode)
 + create_explosion(Vector2D povesition)
 }
-GameWorld o-- graphics.RendererPool
+GameWorld o-down- graphics.RendererPool
 
 class HumanPlayer {
 + Vector2D get_direction()
