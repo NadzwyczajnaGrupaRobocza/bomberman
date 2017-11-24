@@ -25,6 +25,12 @@ else()
   include(${CMAKE_SOURCE_DIR}/cmake/platforms/Linux.cmake)
 endif()
 
+if(${WIN32})
+  include(${CMAKE_SOURCE_DIR}/cmake/platforms/Windows.cmake)
+else()
+  include(${CMAKE_SOURCE_DIR}/cmake/platforms/Linux.cmake)
+endif()
+
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
   include(${CMAKE_SOURCE_DIR}/cmake/compilators/Clang.cmake)
 elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")

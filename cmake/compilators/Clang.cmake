@@ -1,4 +1,5 @@
-message(STATUS "Detected system with clang compiler.")
+message(STATUS "Detected system with clang compiler v"
+  ${CMAKE_CXX_COMPILER_VERSION})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything -Werror\
  -Wno-c++98-compat -Wno-c++98-compat-pedantic\
