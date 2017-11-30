@@ -4,12 +4,10 @@
 
 namespace graphics
 {
-WindowSfml::WindowSfml(const WindowSize& size, std::unique_ptr<SfmlWindow> w)
+WindowSfml::WindowSfml(const WindowSize& size, const std::string& title,
+                       std::unique_ptr<SfmlWindow> w)
     : window{std::move(w)}
 {
-    sf::String title("My Window");
-    std::cout << "size: " << title.getSize()
-              << "\ntitle: " << std::string(title) << '\n';
     window->create(sf::VideoMode{size.width, size.height}, title);
 }
 

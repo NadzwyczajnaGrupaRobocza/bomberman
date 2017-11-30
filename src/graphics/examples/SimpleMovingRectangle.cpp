@@ -109,12 +109,8 @@ update_time(std::chrono::time_point<std::chrono::system_clock>& last)
 int main()
 {
     const Size2u available_region{800, 600};
-    auto window = graphics::create_window(available_region);
+    auto window = graphics::create_window(available_region, "win");
     auto renderer_pool = graphics::create_renderer_pool(available_region);
-
-    // sf::Window window(sf::VideoMode(available_region.width,
-    // available_region.height),
-    //                   "My window ");
 
     const auto center_id =
         create_object_at_center(available_region, *renderer_pool);

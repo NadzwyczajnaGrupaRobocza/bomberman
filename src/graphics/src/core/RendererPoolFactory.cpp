@@ -16,8 +16,10 @@ create_renderer_pool(const math::Size2u& rendering_region_size)
         std::make_unique<RendererIdGenerator>());
 }
 
-std::unique_ptr<Window> create_window(const math::Size2u& size)
+std::unique_ptr<Window> create_window(const math::Size2u& size,
+                                      const std::string& title)
 {
-    return std::make_unique<WindowSfml>(size, std::make_unique<SfmlWindowFacade>());
+    return std::make_unique<WindowSfml>(
+        size, title, std::make_unique<SfmlWindowFacade>(size, title));
 }
 }

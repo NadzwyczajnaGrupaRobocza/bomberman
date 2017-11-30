@@ -13,7 +13,8 @@ namespace graphics
 class WindowSfml : public Window
 {
 public:
-    WindowSfml(const WindowSize&, std::unique_ptr<SfmlWindow>);
+    WindowSfml(const WindowSize&, const std::string&,
+               std::unique_ptr<SfmlWindow>);
     bool is_open() const override;
     void display() override;
     void update() override;

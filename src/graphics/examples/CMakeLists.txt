@@ -1,11 +1,11 @@
 find_package(SFML 2 COMPONENTS window REQUIRED)
 
-add_executable(simple_rectangle_draw "")
-add_executable(simple_moving_rectangle "")
+include_directories(SYSTEM ${SFML_INCLUDE_DIR})
+link_libraries(graphics ${SFML_LIBRARIES})
 
-include(SimpleRectangleDraw/CMakeLists.txt)
-include(SimpleMovingRectangle/CMakeLists.txt)
+add_executable(simple-rectangle-draw SimpleRectangleDraw.cpp)
+add_executable(simple-moving-rectangle SimpleMovingRectangle.cpp)
 
-add_custom_target(graphics_examples
-  DEPENDS simple_rectangle_draw
-          simple_moving_rectangle)
+add_custom_target(graphics-examples DEPENDS
+  simple-rectangle-draw
+  simple-moving-rectangle)

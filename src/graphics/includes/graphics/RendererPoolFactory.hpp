@@ -11,6 +11,7 @@
 namespace graphics
 {
 std::unique_ptr<RendererPool>
-create_renderer_pool(const math::Size2u& rendering_reion_size);
-std::unique_ptr<Window> create_window(const math::Size2u&);
+create_renderer_pool(const math::Size2u& rendering_region_size);
+std::unique_ptr<Window> create_window(const math::Size2u&,
+                                      const std::string& title);
 }
