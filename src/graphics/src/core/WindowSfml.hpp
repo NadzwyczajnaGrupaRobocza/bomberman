@@ -15,6 +15,7 @@ class WindowSfml : public Window
 public:
     WindowSfml(const WindowSize&, const std::string&,
                std::unique_ptr<SfmlWindow>);
+
     bool is_open() const override;
     void display() override;
     void update() override;
