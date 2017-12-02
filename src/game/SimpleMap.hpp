@@ -25,9 +25,7 @@ private:
     Distance get_range_in_decreasing_direction(const int startPoint,
                                                const int range) const
     {
-        constexpr auto first_no_wall_field = 1;
-        constexpr auto minumum_resonable_range = 0;
-        if (startPoint > first_no_wall_field && range > minumum_resonable_range)
+        if (canMoveBackward(startPoint, range))
         {
             constexpr auto step = 1;
             return get_range_in_decreasing_direction<Distance>(
@@ -41,15 +39,13 @@ private:
         }
     }
 
+    static bool canMoveBackward(const int startPoint, const int range);
+
     template <typename Distance>
     Distance get_range_in_increasing_direction(const int startPoint,
                                                const int range) const
     {
-        constexpr auto distance_from_map_size_to_last_no_wall_field = 2;
-        const auto last_no_wall_field =
-            mapSize - distance_from_map_size_to_last_no_wall_field;
-        constexpr auto minumum_resonable_range = 0;
-        if (startPoint < last_no_wall_field && range > minumum_resonable_range)
+        if (canMoveForward(startPoint, range, mapSize))
         {
             constexpr auto step = 1;
             return get_range_in_increasing_direction<Distance>(
@@ -62,4 +58,7 @@ private:
             return zeroRange;
         }
     }
+
+    static bool canMoveForward(const int startPoint, const int range,
+                               const int mapSize);
 };
