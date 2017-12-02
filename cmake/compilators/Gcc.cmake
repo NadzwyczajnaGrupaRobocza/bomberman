@@ -10,7 +10,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
 -Wmissing-declarations \
 -Wshadow \
 -Wnon-virtual-dtor \
--std=c++14 \
+-std=c++17 \
 -pedantic \
 -g \
 -Werror")
