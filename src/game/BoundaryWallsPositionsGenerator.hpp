@@ -5,6 +5,5 @@
 class BoundaryWallsPositionsGenerator : public WallPositionsGenerator
 {
 public:
-    Walls generateBoundaryWalls(BoundarySize) const;
-    
+    Walls generate_boundary_walls(BoundarySize) const;
 };

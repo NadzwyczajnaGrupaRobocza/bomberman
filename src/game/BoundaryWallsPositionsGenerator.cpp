@@ -1,17 +1,17 @@
 #include "BoundaryWallsPositionsGenerator.hpp"
 
 BoundaryWallsPositionsGenerator::Walls
-    BoundaryWallsPositionsGenerator::generateBoundaryWalls(BoundarySize boundarySize) const
+    BoundaryWallsPositionsGenerator::generate_boundary_walls(BoundarySize boundary_size) const
 {
-    if (boundarySize == 0)
+    if (boundary_size == 0)
     {
         return {};
     }
     else
     {
-        return {{{0, 0}, {0, boundarySize}},
-                {{0, 0}, {boundarySize, 0}},
-                {{boundarySize, 0}, {boundarySize, boundarySize}},
-                {{0, boundarySize}, {boundarySize, boundarySize}}};
+        return {{{0, 0}, {0, boundary_size}},
+                {{0, 0}, {boundary_size, 0}},
+                {{boundary_size, 0}, {boundary_size, boundary_size}},
+                {{0, boundary_size}, {boundary_size, boundary_size}}};
     }
 }

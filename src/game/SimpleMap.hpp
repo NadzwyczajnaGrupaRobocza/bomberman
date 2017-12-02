@@ -13,52 +13,52 @@ public:
     SimpleMap(physics::PhysicsEngine& pEngine,
               const WallPositionsGenerator& wall_positions_generator);
 
-    ExplosionRange get_explosion_range(std::pair<int, int> startPoint,
+    ExplosionRange get_explosion_range(std::pair<int, int> start_point,
                                        int range) const;
 
 private:
-    physics::PhysicsEngine& physicsEngine;
+    physics::PhysicsEngine& physics_engine;
     std::vector<physics::PhysicsEngine> walls;
-    const int mapSize = 10;
+    const int map_size = 10;
 
     template <typename Distance>
-    Distance get_range_in_decreasing_direction(const int startPoint,
+    Distance get_range_in_decreasing_direction(const int start_point,
                                                const int range) const
     {
-        if (canMoveBackward(startPoint, range))
+        if (can_move_backward(start_point, range))
         {
             constexpr auto step = 1;
             return get_range_in_decreasing_direction<Distance>(
-                       startPoint - step, range - step) +
+                       start_point - step, range - step) +
                    Distance{step};
         }
         else
         {
-            constexpr auto zeroRange = Distance{0};
-            return zeroRange;
+            constexpr auto zero_range = Distance{0};
+            return zero_range;
         }
     }
 
-    static bool canMoveBackward(const int startPoint, const int range);
+    static bool can_move_backward(const int start_point, const int range);
 
     template <typename Distance>
-    Distance get_range_in_increasing_direction(const int startPoint,
+    Distance get_range_in_increasing_direction(const int start_point,
                                                const int range) const
     {
-        if (canMoveForward(startPoint, range, mapSize))
+        if (can_move_forward(start_point, range, map_size))
         {
             constexpr auto step = 1;
             return get_range_in_increasing_direction<Distance>(
-                       startPoint + step, range - step) +
+                       start_point + step, range - step) +
                    Distance{step};
         }
         else
         {
-            constexpr auto zeroRange = Distance{0};
-            return zeroRange;
+            constexpr auto zero_range = Distance{0};
+            return zero_range;
         }
     }
 
-    static bool canMoveForward(const int startPoint, const int range,
-                               const int mapSize);
+    static bool can_move_forward(const int start_point, const int range,
+                               const int map_size);
 };
