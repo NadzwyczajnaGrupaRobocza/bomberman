@@ -39,6 +39,6 @@ target_compile_options(graphics-ut
   PRIVATE "-Wno-disabled-macro-expansion")
 
 target_link_libraries(graphics-ut
-  PRIVATE graphics gmock_main ${SFML_LIBRARIES})
+  PRIVATE --coverage graphics gmock_main ${SFML_LIBRARIES})
 
 add_test(graphics-ut ${EXECUTABLE_OUTPUT_PATH}/graphics-ut --gtest_color=yes)
