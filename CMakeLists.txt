@@ -21,10 +21,10 @@ if(SFML_FOUND)
 
   add_subdirectory(external/googletest/googletest)
 
-  if(${CMAKE_COMPILER_IS_GNUCXX})
-    include(${CMAKE_SOURCE_DIR}/cmake/platforms/Linux.cmake)
-  else()
+  if (${WIN32})
     include(${CMAKE_SOURCE_DIR}/cmake/platforms/Windows.cmake)
+  else()
+    include(${CMAKE_SOURCE_DIR}/cmake/platforms/Linux.cmake)
   endif()
 
   if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
