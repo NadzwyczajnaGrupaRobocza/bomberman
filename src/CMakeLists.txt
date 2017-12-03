@@ -6,3 +6,5 @@ set(INTERNAL_LIBS_INCLUDE_PATH ${CMAKE_CURRENT_LIST_DIR})
 add_subdirectory(physics)
 
 add_subdirectory(game)
+
+add_subdirectory(environment_test)

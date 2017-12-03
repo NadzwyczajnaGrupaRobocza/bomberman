@@ -8,7 +8,6 @@ add_executable(game_test
   TimeBomb.ut.cpp
   Entity.ut.cpp
   Map.ut.cpp
-  test17.cpp
   )
 
 target_include_directories(game_test SYSTEM PRIVATE
