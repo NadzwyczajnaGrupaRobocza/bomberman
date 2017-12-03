@@ -21,7 +21,7 @@ if(SFML_FOUND)
 
   add_subdirectory(external/googletest/googletest)
 
-  if (${WIN32})
+  if(${WIN32})
     include(${CMAKE_SOURCE_DIR}/cmake/platforms/Windows.cmake)
   else()
     include(${CMAKE_SOURCE_DIR}/cmake/platforms/Linux.cmake)
