@@ -1,19 +1,20 @@
 find_package(SFML 2 COMPONENTS system graphics window REQUIRED)
 find_package(Boost 1.6 REQUIRED)
 
+########################### SRC ###########################
 add_library(graphics
-  core/RendererPoolFactory.cpp
-  core/RendererPoolSfml.cpp
-  core/RenderTarget.cpp
-  core/RendererIdGenerator.cpp
-  core/SfmlRectangleShape.cpp
-  core/WindowSfml.cpp
-  core/SfmlWindowFacade.cpp)
+  Factory.cpp
+  RendererPoolSfml.cpp
+  SfmlRenderTarget.cpp
+  RendererIdGenerator.cpp
+  SfmlRectangleShape.cpp
+  WindowSfml.cpp
+  SfmlWindowFacade.cpp)
 
 target_include_directories(graphics
   PUBLIC ${CMAKE_CURRENT_LIST_DIR}/../includes
-  PRIVATE ${CMAKE_CURRENT_LIST_DIR}/core
-          ${CMAKE_CURRENT_LIST_DIR}/types)
+  PRIVATE ${CMAKE_CURRENT_LIST_DIR}
+          ${CMAKE_CURRENT_LIST_DIR}/../types)
 
 target_include_directories(graphics SYSTEM
   PRIVATE ${SFML_INCLUDE_DIR}
@@ -23,15 +24,16 @@ target_link_libraries(graphics
   PRIVATE ${SFML_LIBRARIES}
   PUBLIC math)
 
+########################### UT ###########################
 add_executable(graphics-ut
-  core/RendererPoolSfml.ut.cpp
-  core/RenderTarget.ut.cpp
-  core/SfmlRectangleShape.ut.cpp
-  core/WindowSfml.ut.cpp)
+  RendererPoolSfml.ut.cpp
+  SfmlRenderTarget.ut.cpp
+  SfmlRectangleShape.ut.cpp
+  WindowSfml.ut.cpp)
 
 target_include_directories(graphics-ut SYSTEM BEFORE
-  PRIVATE ${CMAKE_CURRENT_LIST_DIR}/core
-          ${CMAKE_CURRENT_LIST_DIR}/types
+  PRIVATE ${CMAKE_CURRENT_LIST_DIR}
+          ${CMAKE_CURRENT_LIST_DIR}/../types
           ${UT_INCLUDES}
           ${SFML_INCLUDE_DIR})
 

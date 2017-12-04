@@ -19,8 +19,8 @@ public:
     RendererPoolSfml(std::unique_ptr<ContextRenderer>,
                      std::unique_ptr<RendererIdGenerator>);
 
-    RendererId take(const math::Size2f&, const math::Position2f&) override;
-    void give_back(const RendererId&) override;
+    RendererId acquire(const math::Size2f&, const math::Position2f&) override;
+    void release(const RendererId&) override;
     void render_all() override;
 
     void set_position(const RendererId&,

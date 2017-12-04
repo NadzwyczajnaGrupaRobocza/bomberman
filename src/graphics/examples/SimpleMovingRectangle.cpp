@@ -1,5 +1,3 @@
-// #include <SFML/Window/Event.hpp>
-// #include <SFML/Window/Window.hpp>
 #include <memory>
 #include <cmath>
 #include <iostream>
@@ -11,7 +9,7 @@
 
 #include "math/Size2u.hpp"
 #include "math/Position2f.hpp"
-#include "graphics/RendererPoolFactory.hpp"
+#include "graphics/Factory.hpp"
 #include "graphics/Window.hpp"
 
 using namespace math;
@@ -21,7 +19,7 @@ inline auto create_object_at_center(const Size2u& available_region,
                                     graphics::RendererPool& renderer_pool)
 {
     using namespace graphics;
-    return renderer_pool.take(
+    return renderer_pool.acquire(
         Size2f{15, 15},
         Position2f{static_cast<float>(available_region.width) / 2.0f,
                    static_cast<float>(available_region.height) / 2.0f});
@@ -41,7 +39,7 @@ inline auto create_arrow_from_point(const Position2f& point,
         const auto distance_from_center = current_pos;
         current_pos += static_cast<float>(arrow_body_density);
         return std::make_pair(distance_from_center,
-                              renderer_pool.take(Size2f{20, 30}, point));
+                              renderer_pool.acquire(Size2f{20, 30}, point));
     });
     return arrow;
 }
@@ -66,20 +64,10 @@ inline auto update_arrows_after_one_turn(double& alfa,
     if (alfa > alfa_of_one_turn)
     {
         alfa -= double_pi;
-        renderer_pool.give_back(arrow.back().second);
+        renderer_pool.release(arrow.back().second);
         arrow.pop_back();
     }
 }
-
-// inline auto update_events(sf::Window& window)
-// {
-//     sf::Event event;
-//     while (window.pollEvent(event))
-//     {
-//         if (event.type == sf::Event::Closed)
-//             window.close();
-//     }
-// }
 
 inline auto update_arrow(const double& alfa, Arrow& arrow,
                          graphics::RendererPool& renderer_pool,

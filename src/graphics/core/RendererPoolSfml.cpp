@@ -18,8 +18,8 @@ RendererPoolSfml::RendererPoolSfml(
     context_renderer->initialize();
 }
 
-RendererId RendererPoolSfml::take(const math::Size2f& size,
-                                  const math::Position2f& position)
+RendererId RendererPoolSfml::acquire(const math::Size2f& size,
+                                     const math::Position2f& position)
 {
     auto id = renderer_id_generator->generate();
     shapes.emplace(std::piecewise_construct, std::forward_as_tuple(id),
@@ -27,7 +27,7 @@ RendererId RendererPoolSfml::take(const math::Size2f& size,
     return id;
 }
 
-void RendererPoolSfml::give_back(const RendererId& id)
+void RendererPoolSfml::release(const RendererId& id)
 {
     trash.emplace(id);
 }

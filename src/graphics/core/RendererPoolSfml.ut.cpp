@@ -58,11 +58,11 @@ public:
         ASSERT_THAT(shapes, UnorderedElementsAreArray(expected_shapes));
     }
 
-    void expect_take_renderable(const math::Size2f& size,
-                                const math::Position2f& position,
-                                const RendererId& id)
+    void expect_acquire_renderable(const math::Size2f& size,
+                                   const math::Position2f& position,
+                                   const RendererId& id)
     {
-        EXPECT_EQ(id, renderer_pool->take(size, position));
+        EXPECT_EQ(id, renderer_pool->acquire(size, position));
     }
 
     void expect_eq_position(const math::Position2f& position,
@@ -90,12 +90,12 @@ public:
     const RendererId id2{RendererIdGenerator{}.generate()};
 };
 
-TEST_F(RendererPoolSfmlTest, takeTwoRenderableObject_positionShouldMatch)
+TEST_F(RendererPoolSfmlTest, acquireTwoRenderableObject_positionShouldMatch)
 {
     When(Method(renderer_id_generator, generate)).Return(id1).Return(id2);
 
-    expect_take_renderable(dummy_size, dummy_position, id1);
-    expect_take_renderable(another_dummy_size, dummy_position, id2);
+    expect_acquire_renderable(dummy_size, dummy_position, id1);
+    expect_acquire_renderable(another_dummy_size, dummy_position, id2);
     expect_eq_position(dummy_position, id1);
     expect_eq_position(dummy_position, id2);
 }
@@ -103,7 +103,7 @@ TEST_F(RendererPoolSfmlTest, takeTwoRenderableObject_positionShouldMatch)
 TEST_F(RendererPoolSfmlTest, renderableObjectShouldBeMovable)
 {
     When(Method(renderer_id_generator, generate)).Return(id1);
-    expect_take_renderable(dummy_size, dummy_position, id1);
+    expect_acquire_renderable(dummy_size, dummy_position, id1);
     expect_eq_position(dummy_position, id1);
 
     expect_move_object(10, 30, id1);
@@ -135,7 +135,7 @@ TEST_F(RendererPoolSfmlTest, renderAll)
         create_dummy_shape(Size2f{60, 30})};
 
     ranges::for_each(expected_shapes, [this](auto& shape) {
-        this->renderer_pool->take(shape.getSize(), dummy_position);
+        this->renderer_pool->acquire(shape.getSize(), dummy_position);
     });
 
     expect_render_all({expected_shapes});
@@ -145,21 +145,21 @@ TEST_F(RendererPoolSfmlTest, renderAll)
         .Exactly(static_cast<int>(expected_shapes.size()));
 }
 
-TEST_F(RendererPoolSfmlTest, giveBackWithoutTake)
+TEST_F(RendererPoolSfmlTest, releaseWithoutAcquire)
 {
-    renderer_pool->give_back(id1);
+    renderer_pool->release(id1);
     Fake(Method(context_renderer, clear));
     renderer_pool->render_all();
 }
 
-TEST_F(RendererPoolSfmlTest, takeTwoGiveBackOne_shouldRenderOnlyOne)
+TEST_F(RendererPoolSfmlTest, acquireTwoReleaseOne_shouldRenderOnlyOne)
 {
     When(Method(renderer_id_generator, generate)).Return(id1).Return(id2);
 
-    EXPECT_EQ(id1, renderer_pool->take(dummy_size, dummy_position));
-    EXPECT_EQ(id2, renderer_pool->take(another_dummy_size, dummy_position));
+    EXPECT_EQ(id1, renderer_pool->acquire(dummy_size, dummy_position));
+    EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position));
 
-    renderer_pool->give_back(id2);
+    renderer_pool->release(id2);
 
     auto expected_shapes = {create_dummy_shape()};
 
@@ -169,22 +169,22 @@ TEST_F(RendererPoolSfmlTest, takeTwoGiveBackOne_shouldRenderOnlyOne)
     Verify(Method(context_renderer, draw)).Exactly(1);
 }
 
-TEST_F(RendererPoolSfmlTest, retakenShouldBeRendered)
+TEST_F(RendererPoolSfmlTest, reacquirenShouldBeRendered)
 {
     When(Method(renderer_id_generator, generate))
         .Return(id1)
         .Return(id2)
         .Return(id2);
 
-    EXPECT_EQ(id1, renderer_pool->take(dummy_size, dummy_position));
-    EXPECT_EQ(id2, renderer_pool->take(another_dummy_size, dummy_position));
+    EXPECT_EQ(id1, renderer_pool->acquire(dummy_size, dummy_position));
+    EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position));
 
     std::vector<SfmlRectangleShape> expected_shapes{create_dummy_shape()};
 
-    renderer_pool->give_back(id2);
+    renderer_pool->release(id2);
     expect_render_all(expected_shapes);
 
-    EXPECT_EQ(id2, renderer_pool->take(another_dummy_size, dummy_position));
+    EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position));
     expected_shapes.emplace_back(another_dummy_size, dummy_position);
 
     expect_render_all(expected_shapes);

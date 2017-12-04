@@ -1,7 +1,7 @@
-#include "graphics/RendererPoolFactory.hpp"
+#include "graphics/Factory.hpp"
 
 #include "RendererPoolSfml.hpp"
-#include "RenderTarget.hpp"
+#include "SfmlRenderTarget.hpp"
 #include "RendererIdGenerator.hpp"
 #include "WindowSfml.hpp"
 #include "SfmlWindowFacade.hpp"
@@ -12,7 +12,7 @@ std::unique_ptr<RendererPool>
 create_renderer_pool(const math::Size2u& rendering_region_size)
 {
     return std::make_unique<RendererPoolSfml>(
-        std::make_unique<RenderTarget>(rendering_region_size),
+        std::make_unique<SfmlRenderTarget>(rendering_region_size),
         std::make_unique<RendererIdGenerator>());
 }
 

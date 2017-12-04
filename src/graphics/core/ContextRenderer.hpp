@@ -15,7 +15,7 @@ public:
     virtual ~ContextRenderer() noexcept = default;
 
     virtual void initialize() = 0;
-    virtual void clear(const sf::Color& color) = 0;
+    virtual void clear(const sf::Color&) = 0;
     virtual void draw(const SfmlRectangleShape&) = 0;
 };
 }
