@@ -2,8 +2,8 @@
 
 SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
                      const WallPositionsGenerator& wall_positions_generator,
-                     graphics::RenderEngine&)
-    : physics_engine(pEngine)
+                     graphics::RenderEngine& rEngine)
+    : physics_engine(pEngine), graphics_engine{rEngine}
 {
     for (const auto& wall_position :
          wall_positions_generator.generate_boundary_walls(map_size))
@@ -12,6 +12,7 @@ SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
             {wall_position.first.first, wall_position.first.second},
             {wall_position.second.first, wall_position.second.second});
     }
+    graphics_engine.register_renderable({map_size, map_size}, {0, 0});
 }
 
 ExplosionRange SimpleMap::get_explosion_range(std::pair<int, int> start_point,
@@ -19,8 +20,8 @@ ExplosionRange SimpleMap::get_explosion_range(std::pair<int, int> start_point,
 {
     const auto left = get_range_in_decreasing_direction<LeftDistance>(
         start_point.first, range);
-    const auto up =
-        get_range_in_decreasing_direction<UpDistance>(start_point.second, range);
+    const auto up = get_range_in_decreasing_direction<UpDistance>(
+        start_point.second, range);
     const auto down = get_range_in_increasing_direction<DownDistance>(
         start_point.second, range);
     const auto right = get_range_in_increasing_direction<RightDistance>(
@@ -36,7 +37,7 @@ bool SimpleMap::can_move_backward(const int start_point, const int range)
 }
 
 bool SimpleMap::can_move_forward(const int start_point, const int range,
-                               const int map_size)
+                                 const int map_size)
 {
     constexpr auto distance_from_map_size_to_last_no_wall_field = 2;
     const auto last_no_wall_field =

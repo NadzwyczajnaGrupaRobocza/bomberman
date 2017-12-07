@@ -1,4 +1,3 @@
-#include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
 #include "glm/glm.hpp"
@@ -22,10 +21,13 @@ public:
                 return physics::PhysicsId{id++};
             });
         Method(wall_positions_generator, generate_boundary_walls)
-            .Using(boundary_size) = generated_walls;
+            .Using(edge_size) = generated_walls;
+        Method(render_engine, register_renderable).Using(boundary_size, top_left_position) = backgroundId;
     }
 
-    const int boundary_size = 10;
+    const int edge_size{10};
+    const graphics::RenderEngine::Position top_left_position{0, 0};
+    const graphics::RenderEngine::Position boundary_size{edge_size, edge_size};
     const std::vector<physics::PhysicsEngine::Position> generateed_walls_sizes{
         {1, 1}, {1, 2}, {4, 4}, {4, 67}};
     const std::vector<physics::PhysicsEngine::Position>
@@ -39,12 +41,14 @@ public:
     Mock<WallPositionsGenerator> wall_positions_generator;
     std::vector<physics::PhysicsEngine::Position> walls_positions;
     std::vector<physics::PhysicsEngine::Position> walls_sizes;
+    graphics::RenderId backgroundId;
 };
 
 class SimpleMapTest : public SimpleMapConstructorExpectations
 {
 public:
-    SimpleMap map{physics_engine.get(), wall_positions_generator.get(), render_engine.get()};
+    SimpleMap map{physics_engine.get(), wall_positions_generator.get(),
+                  render_engine.get()};
 
     void verifyAllWallsArePlacedCorrectly()
     {
@@ -61,6 +65,7 @@ TEST_F(SimpleMapTest, DuringConstruction_ShouldCreateWalls)
         .Exactly(static_cast<int>(generated_walls.size()));
     Verify(Method(wall_positions_generator, generate_boundary_walls));
     verifyAllWallsArePlacedCorrectly();
+    Verify(Method(render_engine, register_renderable));
 }
 
 TEST_F(SimpleMapTest,

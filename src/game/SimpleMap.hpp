@@ -7,6 +7,7 @@
 #include "glm/glm.hpp"
 #include "physics/PhysicsEngine.hpp"
 #include "graphics/RenderEngine.hpp"
+#include "graphics/RenderId.hpp"
 
 class SimpleMap
 {
@@ -21,6 +22,7 @@ public:
 private:
     physics::PhysicsEngine& physics_engine;
     std::vector<physics::PhysicsEngine> walls;
+    graphics::RenderEngine& graphics_engine;
     const int map_size = 10;
 
     template <typename Distance>
