@@ -41,7 +41,7 @@ install:
   - set SFML_LIB=%SFML_DIR%\lib
   - set SFML_BIN=%SFML_DIR%\bin
   - set NINJA_BIN=%DEPS_DIR%\ninja
-  - set LLVM_BIN="C:\Program Files\LLVM\bin"
+  - set LLVM_BIN=C:\Libraries\llvm-5.0.0\bin
 
   - set PATH=%NINJA_BIN%;%PATH%
   - set PATH=%SFML_BIN%;%PATH%
@@ -75,7 +75,6 @@ build_script:
   - cmake .. -GNinja -DCMAKE_BUILD_TYPE=%Configuration%
                      -DCMAKE_CXX_COMPILER=clang-cl
                      -DCMAKE_C_COMPILER=clang-cl
-                     -DCMAKE_LINKER=lld
                      -DBUILD_SHARED_LIBS:BOOL=OFF
   - cmake --build .
 
