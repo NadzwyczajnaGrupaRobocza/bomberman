@@ -19,8 +19,7 @@ public:
     void draw(const SfmlRectangleShape&) override;
 
     sf::Vector2u getSize() const override;
-    bool activate(/*[[maybe_unused]]*/
-                  const bool) override;
+    bool activate(/*[[maybe_unused]]*/ bool) override;
 
 protected:
     WindowSize window_size;
