@@ -56,6 +56,7 @@ install:
   - dir C:\Libraries\boost_1_65_1
   - dir C:\Libraries\llvm-4.0.0
   - dir C:\Libraries\llvm-5.0.0
+  - dir C:\Libraries\llvm-5.0.0\bin
   - dir "C:\Program Files"
   - dir "C:\Program Files\LLVM"
   - dir "C:\Program Files\LLVM\bin"
