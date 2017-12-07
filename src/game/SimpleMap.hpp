@@ -6,12 +6,14 @@
 
 #include "glm/glm.hpp"
 #include "physics/PhysicsEngine.hpp"
+#include "graphics/RenderEngine.hpp"
 
 class SimpleMap
 {
 public:
     SimpleMap(physics::PhysicsEngine& pEngine,
-              const WallPositionsGenerator& wall_positions_generator);
+              const WallPositionsGenerator& wall_positions_generator,
+              graphics::RenderEngine& rEngine);
 
     ExplosionRange get_explosion_range(std::pair<int, int> start_point,
                                        int range) const;

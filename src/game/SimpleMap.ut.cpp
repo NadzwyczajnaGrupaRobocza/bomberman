@@ -35,6 +35,7 @@ public:
                                                         {{2, 8}, {4, 4}},
                                                         {{88, 123}, {4, 67}}};
     Mock<physics::PhysicsEngine> physics_engine;
+    Mock<graphics::RenderEngine> render_engine;
     Mock<WallPositionsGenerator> wall_positions_generator;
     std::vector<physics::PhysicsEngine::Position> walls_positions;
     std::vector<physics::PhysicsEngine::Position> walls_sizes;
@@ -43,7 +44,7 @@ public:
 class SimpleMapTest : public SimpleMapConstructorExpectations
 {
 public:
-    SimpleMap map{physics_engine.get(), wall_positions_generator.get()};
+    SimpleMap map{physics_engine.get(), wall_positions_generator.get(), render_engine.get()};
 
     void verifyAllWallsArePlacedCorrectly()
     {

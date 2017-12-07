@@ -1,7 +1,8 @@
 #include "SimpleMap.hpp"
 
 SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
-                     const WallPositionsGenerator& wall_positions_generator)
+                     const WallPositionsGenerator& wall_positions_generator,
+                     graphics::RenderEngine&)
     : physics_engine(pEngine)
 {
     for (const auto& wall_position :
