@@ -47,22 +47,6 @@ install:
   - set INCLUDE=%INCLUDE%;%BOOST_LIB%
   - set LIB=%LIB%;%BOOST_LIB%;%SFML_LIB%
 
-  - echo %PATH%
-
-  - dir C:\
-  - dir C:\Tools
-  - dir C:\Libraries\
-  - dir C:\Libraries\boost_1_64_0
-  - dir C:\Libraries\boost_1_65_1
-  - dir C:\Libraries\llvm-4.0.0
-  - dir C:\Libraries\llvm-4.0.0\bin
-  - dir C:\Libraries\llvm-5.0.0
-  - dir C:\Libraries\llvm-5.0.0\bin
-  - dir "C:\Program Files"
-  - dir "C:\Program Files\LLVM"
-  - dir "C:\Program Files\LLVM\bin"
-  - dir "C:\Program Files (x86)"
-
   - ninja --version
   - clang-cl -v
 
@@ -76,14 +60,11 @@ build_script:
   - mkdir build
   - cd build
   - cmake .. -GNinja -DCMAKE_BUILD_TYPE=%Configuration%
-                     -DCMAKE_CXX_COMPILER=clang
-                     -DCMAKE_C_COMPILER=clang
-                     -DCMAKE_LINKER=lld
+                     -DCMAKE_CXX_COMPILER=clang-cl
+                     -DCMAKE_C_COMPILER=clang-cl
                      -DBUILD_SHARED_LIBS:BOOL=OFF
   - cmake --build .
 
 test_script:
   - ps: |
       & ctest -V -j nproc
-
-
