@@ -50,9 +50,10 @@ install:
   - set LIB=%LIB%;%BOOST_LIB%;%SFML_LIB%
 
   - dir C:\
+  - dir C:\Tools
   - dir C:\Libraries\
-  - dir C:\Libraries\boost_1.64_0
-  - dir C:\Libraries\boost_1.65_1
+  - dir C:\Libraries\boost_1_64_0
+  - dir C:\Libraries\boost_1_65_1
   - dir C:\Libraries\llvm-4.0.0
   - dir C:\Libraries\llvm-5.0.0
   - dir "C:\Program Files"
