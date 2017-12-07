@@ -11,6 +11,9 @@ SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
         physics_engine.register_colider(
             {wall_position.first.first, wall_position.first.second},
             {wall_position.second.first, wall_position.second.second});
+        graphics_engine.register_renderable(
+            {wall_position.second.first, wall_position.second.second},
+            {wall_position.first.first, wall_position.first.second});
     }
     graphics_engine.register_renderable({map_size, map_size}, {0, 0});
 }

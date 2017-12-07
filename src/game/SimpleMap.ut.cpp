@@ -16,13 +16,21 @@ public:
         When(Method(physics_engine, register_colider))
             .AlwaysDo([&](const auto& position, const auto& size) {
                 static unsigned id = 0;
-                walls_positions.push_back(position);
-                walls_sizes.push_back(size);
+                physics_wall_positions.push_back(position);
+                physics_wall_sizes.push_back(size);
                 return physics::PhysicsId{id++};
             });
         Method(wall_positions_generator, generate_boundary_walls)
             .Using(edge_size) = generated_walls;
-        Method(render_engine, register_renderable).Using(boundary_size, top_left_position) = backgroundId;
+        When(Method(render_engine, register_renderable))
+            .AlwaysDo([&](const auto& size, const auto& position) {
+                static unsigned id = 0;
+                render_wall_positions.push_back(position);
+                render_wall_sizes.push_back(size);
+                return graphics::RenderId{id++};
+            });
+        Method(render_engine, register_renderable)
+            .Using(boundary_size, top_left_position) = backgroundId;
     }
 
     const int edge_size{10};
@@ -39,9 +47,11 @@ public:
     Mock<physics::PhysicsEngine> physics_engine;
     Mock<graphics::RenderEngine> render_engine;
     Mock<WallPositionsGenerator> wall_positions_generator;
-    std::vector<physics::PhysicsEngine::Position> walls_positions;
-    std::vector<physics::PhysicsEngine::Position> walls_sizes;
-    graphics::RenderId backgroundId;
+    std::vector<physics::PhysicsEngine::Position> physics_wall_positions;
+    std::vector<physics::PhysicsEngine::Position> physics_wall_sizes;
+    std::vector<graphics::RenderEngine::Position> render_wall_positions;
+    std::vector<graphics::RenderEngine::Position> render_wall_sizes;
+    graphics::RenderId backgroundId{1024};
 };
 
 class SimpleMapTest : public SimpleMapConstructorExpectations
@@ -52,10 +62,15 @@ public:
 
     void verifyAllWallsArePlacedCorrectly()
     {
-        ASSERT_THAT(walls_positions, ::testing::UnorderedElementsAreArray(
-                                         generated_walls_positions));
-        ASSERT_THAT(walls_sizes, ::testing::UnorderedElementsAreArray(
-                                     generateed_walls_sizes));
+        ASSERT_THAT(
+            physics_wall_positions,
+            ::testing::UnorderedElementsAreArray(generated_walls_positions));
+        ASSERT_THAT(physics_wall_sizes, ::testing::UnorderedElementsAreArray(
+                                            generateed_walls_sizes));
+        ASSERT_THAT(render_wall_positions, ::testing::UnorderedElementsAreArray(
+                                               generated_walls_positions));
+        ASSERT_THAT(render_wall_sizes, ::testing::UnorderedElementsAreArray(
+                                           generateed_walls_sizes));
     }
 };
 
