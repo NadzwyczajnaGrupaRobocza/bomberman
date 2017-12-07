@@ -24,7 +24,7 @@ platform:
 - x64
 
 install:
-  - set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip"
+  - set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-win.zip"
   - set SFML_URL="https://www.sfml-dev.org/files/SFML-2.4.2-windows-vc14-64-bit.zip"
   - set DEPS_DIR=C:\projects\deps
 
@@ -41,7 +41,7 @@ install:
   - set SFML_LIB=%SFML_DIR%\lib
   - set SFML_BIN=%SFML_DIR%\bin
   - set NINJA_BIN=%DEPS_DIR%\ninja
-  - set LLVM_BIN=C:\Libraries\llvm-5.0.0\bin
+  # - set LLVM_BIN=C:\Libraries\llvm-5.0.0\bin
 
   - set PATH=%NINJA_BIN%;%PATH%
   - set PATH=%SFML_BIN%;%PATH%
@@ -55,12 +55,14 @@ install:
   - dir C:\Libraries\boost_1_64_0
   - dir C:\Libraries\boost_1_65_1
   - dir C:\Libraries\llvm-4.0.0
+  - dir C:\Libraries\llvm-4.0.0\bin
   - dir C:\Libraries\llvm-5.0.0
   - dir C:\Libraries\llvm-5.0.0\bin
   - dir "C:\Program Files"
   - dir "C:\Program Files\LLVM"
   - dir "C:\Program Files\LLVM\bin"
   - dir "C:\Program Files (x86)"
+
   - ninja --version
   - clang-cl -v
 
