@@ -13,4 +13,6 @@ private:
     static Walls generate_empty_walls();
     static Walls generate_walls_for_size_one();
     static Walls generate_empty_for_size_bigger_than_one(BoundarySize);
+    static PositionInSpace position(BaseType, BaseType);
+    static WallSize size(BaseType, BaseType);
 };
