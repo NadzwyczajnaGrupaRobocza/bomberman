@@ -18,8 +18,13 @@ public:
                 static unsigned id = 0;
                 physics_wall_positions.push_back(position);
                 physics_wall_sizes.push_back(size);
-                return physics::PhysicsId{id++};
+                const auto pid = physics::PhysicsId{id++};
+                physicsIds.push_back(pid);
+                return pid;
             });
+        When(Method(physics_engine, deregister)).AlwaysDo([&](const auto id) {
+            deregistered_physics_ids.push_back(id);
+        });
         Method(wall_positions_generator, generate_boundary_walls)
             .Using(edge_size) = generated_walls;
         When(Method(render_engine, register_renderable))
@@ -27,10 +32,16 @@ public:
                 static unsigned id = 0;
                 render_wall_positions.push_back(position);
                 render_wall_sizes.push_back(size);
-                return graphics::RenderId{id++};
+                const auto rid = graphics::RenderId{id++};
+                render_ids.push_back(rid);
+                return rid;
             });
+        When(Method(render_engine, deregister)).AlwaysDo([&](const auto id) {
+            deregistered_render_ids.push_back(id);
+        });
         Method(render_engine, register_renderable)
-            .Using(boundary_size, top_left_position) = backgroundId;
+            .Using(boundary_size, top_left_position) = background_id;
+        render_ids.push_back(background_id);
     }
 
     const int edge_size{10};
@@ -48,12 +59,14 @@ public:
     Mock<graphics::RenderEngine> render_engine;
     Mock<WallPositionsGenerator> wall_positions_generator;
     std::vector<physics::PhysicsId> physicsIds;
+    std::vector<physics::PhysicsId> deregistered_physics_ids;
     std::vector<physics::PhysicsEngine::Position> physics_wall_positions;
     std::vector<physics::PhysicsEngine::Position> physics_wall_sizes;
-    std::vector<graphics::RenderId> renderIds;
+    std::vector<graphics::RenderId> render_ids;
+    std::vector<graphics::RenderId> deregistered_render_ids;
     std::vector<graphics::RenderEngine::Position> render_wall_positions;
     std::vector<graphics::RenderEngine::Position> render_wall_sizes;
-    graphics::RenderId backgroundId{1024};
+    graphics::RenderId background_id{1024};
 };
 
 class SimpleMapTest : public SimpleMapConstructorExpectations
@@ -131,4 +144,23 @@ TEST_F(SimpleMapTest,
     ExplosionRange expected_range{3_left, 2_right, 3_up, 0_down};
     ASSERT_THAT(map.get_explosion_range(std::make_pair(6, 9), 3),
                 ::testing::Eq(expected_range));
+}
+
+class SimpleMapWithoutImplicitConstructionTest
+    : public SimpleMapConstructorExpectations
+{
+};
+
+TEST_F(SimpleMapWithoutImplicitConstructionTest,
+       DuringDestruction_ShouldUnredisterWalls)
+{
+    {
+        SimpleMap map_destructor_test{physics_engine.get(),
+                                      wall_positions_generator.get(),
+                                      render_engine.get()};
+    }
+    ASSERT_THAT(deregistered_render_ids,
+                ::testing::UnorderedElementsAreArray(render_ids));
+    ASSERT_THAT(deregistered_physics_ids,
+                ::testing::UnorderedElementsAreArray(physicsIds));
 }

@@ -3,18 +3,20 @@
 
 #include "ExplosionRange.hpp"
 #include "WallPositionsGenerator.hpp"
+#include "Map.hpp"
 
 #include "glm/glm.hpp"
 #include "physics/PhysicsEngine.hpp"
 #include "graphics/RenderEngine.hpp"
 #include "graphics/RenderId.hpp"
 
-class SimpleMap
+class SimpleMap : public Map
 {
 public:
     SimpleMap(physics::PhysicsEngine& pEngine,
               const WallPositionsGenerator& wall_positions_generator,
               graphics::RenderEngine& rEngine);
+    ~SimpleMap() override;
 
     ExplosionRange get_explosion_range(std::pair<int, int> start_point,
                                        int range) const;
@@ -24,6 +26,8 @@ private:
     std::vector<physics::PhysicsEngine> walls;
     graphics::RenderEngine& graphics_engine;
     const int map_size = 10;
+    std::vector<physics::PhysicsId> physics_ids;
+    std::vector<graphics::RenderId> render_ids;
 
     template <typename Distance>
     Distance get_range_in_decreasing_direction(const int start_point,
@@ -64,5 +68,5 @@ private:
     }
 
     static bool can_move_forward(const int start_point, const int range,
-                               const int map_size);
+                                 const int map_size);
 };

@@ -1,5 +1,7 @@
 #include "SimpleMap.hpp"
 
+#include "boost/range/algorithm.hpp"
+
 SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
                      const WallPositionsGenerator& generated_wallss_generator,
                      graphics::RenderEngine& rEngine)
@@ -8,14 +10,23 @@ SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
     for (const auto& generated_walls :
          generated_wallss_generator.generate_boundary_walls(map_size))
     {
-        physics_engine.register_colider(
+        physics_ids.push_back(physics_engine.register_colider(
             {generated_walls.first.first, generated_walls.first.second},
-            {generated_walls.second.first, generated_walls.second.second});
-        graphics_engine.register_renderable(
+            {generated_walls.second.first, generated_walls.second.second}));
+        render_ids.push_back(graphics_engine.register_renderable(
             {generated_walls.second.first, generated_walls.second.second},
-            {generated_walls.first.first, generated_walls.first.second});
+            {generated_walls.first.first, generated_walls.first.second}));
     }
-    graphics_engine.register_renderable({map_size, map_size}, {0, 0});
+    render_ids.push_back(
+        graphics_engine.register_renderable({map_size, map_size}, {0, 0}));
+}
+
+SimpleMap::~SimpleMap()
+{
+    boost::for_each(render_ids,
+                    [&](const auto id) { graphics_engine.deregister(id); });
+    boost::for_each(physics_ids,
+                    [&](const auto id) { physics_engine.deregister(id); });
 }
 
 ExplosionRange SimpleMap::get_explosion_range(std::pair<int, int> start_point,
