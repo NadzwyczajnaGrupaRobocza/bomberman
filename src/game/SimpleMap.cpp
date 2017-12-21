@@ -1,19 +1,19 @@
 #include "SimpleMap.hpp"
 
 SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
-                     const WallPositionsGenerator& wall_positions_generator,
+                     const WallPositionsGenerator& generated_wallss_generator,
                      graphics::RenderEngine& rEngine)
     : physics_engine(pEngine), graphics_engine{rEngine}
 {
-    for (const auto& wall_position :
-         wall_positions_generator.generate_boundary_walls(map_size))
+    for (const auto& generated_walls :
+         generated_wallss_generator.generate_boundary_walls(map_size))
     {
         physics_engine.register_colider(
-            {wall_position.first.first, wall_position.first.second},
-            {wall_position.second.first, wall_position.second.second});
+            {generated_walls.first.first, generated_walls.first.second},
+            {generated_walls.second.first, generated_walls.second.second});
         graphics_engine.register_renderable(
-            {wall_position.second.first, wall_position.second.second},
-            {wall_position.first.first, wall_position.first.second});
+            {generated_walls.second.first, generated_walls.second.second},
+            {generated_walls.first.first, generated_walls.first.second});
     }
     graphics_engine.register_renderable({map_size, map_size}, {0, 0});
 }
