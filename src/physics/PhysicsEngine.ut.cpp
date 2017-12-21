@@ -26,7 +26,7 @@ public:
         return {};
     }
 
-    void deregister(physics::PhysicsId)
+    void deregister(physics::PhysicsId) override
     {
     }
 };
