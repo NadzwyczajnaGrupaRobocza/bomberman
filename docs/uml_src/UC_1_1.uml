@@ -15,11 +15,9 @@ main --> GameWorld : create
 GameWorld --> Map : create
 
 Map --> Map : create_background
-loop tiles
-  Map --> RenderingEngine : register_background
-end
+Map --> RenderingEngine : register
 
-Map --> Map : create_walls
+Map --> BoundaryWallsGenerator : create_boundary_walls
 loop walls
   Map --> RenderingEngine : register
   Map --> PhysicsEngine : register
