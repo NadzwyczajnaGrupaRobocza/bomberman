@@ -47,8 +47,10 @@ public:
     Mock<physics::PhysicsEngine> physics_engine;
     Mock<graphics::RenderEngine> render_engine;
     Mock<WallPositionsGenerator> wall_positions_generator;
+    std::vector<physics::PhysicsId> physicsIds;
     std::vector<physics::PhysicsEngine::Position> physics_wall_positions;
     std::vector<physics::PhysicsEngine::Position> physics_wall_sizes;
+    std::vector<graphics::RenderId> renderIds;
     std::vector<graphics::RenderEngine::Position> render_wall_positions;
     std::vector<graphics::RenderEngine::Position> render_wall_sizes;
     graphics::RenderId backgroundId{1024};
