@@ -1,13 +1,18 @@
 add_library(game
-  TimeBomb.cpp
-  HumanPlayerSfml.cpp
   BombermanGameWorld.cpp
+  BoundaryWallsPositionsGenerator.cpp
+  ExplosionRange.cpp
+  HumanPlayerSfml.cpp
+  SimpleMap.cpp
+  TimeBomb.cpp
   )
 
 add_executable(game_test
-  TimeBomb.ut.cpp
+  BoundaryWallsPositionsGenerator.ut.cpp
   Entity.ut.cpp
   Map.ut.cpp
+  SimpleMap.ut.cpp
+  TimeBomb.ut.cpp
   )
 
 target_include_directories(game_test SYSTEM PRIVATE
@@ -26,5 +31,5 @@ target_include_directories(game PRIVATE
   ${INTERNAL_LIBS_INCLUDE_PATH}
   )
 
-target_link_libraries(game_test --coverage gtest_main game)
+target_link_libraries(game_test --coverage gmock gtest_main game)
 add_test(game_test ${EXECUTABLE_OUTPUT_PATH}/game_test --gtest_color=yes)
