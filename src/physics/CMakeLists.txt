@@ -15,4 +15,4 @@ target_include_directories(physics-ut SYSTEM
 target_link_libraries(physics-ut
   PRIVATE math gtest_main)
 
-add_test(physics-ut ${EXECUTABLE_OUTPUT_PATH}/physics_ut --gtest_color=yes)
+add_test(physics-ut ${EXECUTABLE_OUTPUT_PATH}/physics-ut --gtest_color=yes)
