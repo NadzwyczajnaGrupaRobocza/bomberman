@@ -11,10 +11,10 @@ SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
          generated_wallss_generator.generate_boundary_walls(map_size))
     {
         physics_ids.push_back(physics_engine.register_colider(
-            {static_cast<float>(generated_walls.first.first),
-             static_cast<float>(generated_walls.first.second)},
             {static_cast<float>(generated_walls.second.first),
-             static_cast<float>(generated_walls.second.second)}));
+             static_cast<float>(generated_walls.second.second)},
+            {static_cast<float>(generated_walls.first.first),
+             static_cast<float>(generated_walls.first.second)}));
         render_ids.push_back(graphics_engine.acquire(
             {static_cast<float>(generated_walls.second.first),
              static_cast<float>(generated_walls.second.second)},

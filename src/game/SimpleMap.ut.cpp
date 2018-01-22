@@ -1,6 +1,7 @@
 #include "gmock/gmock.h"
 
 #include "glm/glm.hpp"
+#include <vector>
 
 #include "fakeit.hpp"
 
@@ -14,7 +15,7 @@ public:
     SimpleMapConstructorExpectations()
     {
         When(Method(physics_engine, register_colider))
-            .AlwaysDo([&](const auto& position, const auto& size) {
+            .AlwaysDo([&](const auto& size, const auto& position) {
                 static uint8_t id = 0;
                 physics_wall_positions.push_back(position);
                 physics_wall_sizes.push_back(size);
@@ -48,16 +49,10 @@ public:
     const math::Position2f top_left_position{0, 0};
     const math::Size2f boundary_size{static_cast<float>(edge_size),
                                      static_cast<float>(edge_size)};
-    const std::vector<physics::PhysicsEngine::Position>
-        generated_physics_walls_sizes{{1, 1}, {1, 2}, {4, 4}, {4, 67}};
-
-    const std::vector<math::Size2f> generated_graphics_walls_sizes{
+    const std::vector<math::Size2f> generated_walls_sizes{
         {1, 1}, {1, 2}, {4, 4}, {4, 67}};
 
-    const std::vector<physics::PhysicsEngine::Position>
-        generated_physics_walls_positions{{8, 7}, {2, 1}, {2, 8}, {88, 123}};
-
-    const std::vector<math::Position2f> generated_graphics_walls_positions{
+    const std::vector<math::Position2f> generated_walls_positions{
         {8, 7}, {2, 1}, {2, 8}, {88, 123}};
 
     const WallPositionsGenerator::Walls generated_walls{{{8, 7}, {1, 1}},
@@ -69,12 +64,12 @@ public:
     Mock<WallPositionsGenerator> wall_positions_generator;
     std::vector<physics::PhysicsId> physicsIds;
     std::vector<physics::PhysicsId> deregistered_physics_ids;
-    std::vector<physics::PhysicsEngine::Position> physics_wall_positions;
-    std::vector<physics::PhysicsEngine::Position> physics_wall_sizes;
+    std::vector<math::Position2f> physics_wall_positions;
+    std::vector<math::Size2f> physics_wall_sizes;
     std::vector<graphics::RendererId> render_ids;
-    std::vector<graphics::RendererId> deregistered_render_ids;
     std::vector<math::Position2f> render_wall_positions;
     std::vector<math::Size2f> render_wall_sizes;
+    std::vector<graphics::RendererId> deregistered_render_ids;
     graphics::RendererId background_id{{uint8_t(1024)}};
 };
 
@@ -86,16 +81,15 @@ public:
 
     void verifyAllWallsArePlacedCorrectly()
     {
-        ASSERT_THAT(physics_wall_positions,
-                    ::testing::UnorderedElementsAreArray(
-                        generated_physics_walls_positions));
+        ASSERT_THAT(
+            physics_wall_positions,
+            ::testing::UnorderedElementsAreArray(generated_walls_positions));
         ASSERT_THAT(physics_wall_sizes, ::testing::UnorderedElementsAreArray(
-                                            generated_physics_walls_sizes));
-        ASSERT_THAT(render_wall_positions,
-                    ::testing::UnorderedElementsAreArray(
-                        generated_graphics_walls_positions));
+                                            generated_walls_sizes));
+        ASSERT_THAT(render_wall_positions, ::testing::UnorderedElementsAreArray(
+                                               generated_walls_positions));
         ASSERT_THAT(render_wall_sizes, ::testing::UnorderedElementsAreArray(
-                                           generated_graphics_walls_sizes));
+                                           generated_walls_sizes));
     }
 };
 

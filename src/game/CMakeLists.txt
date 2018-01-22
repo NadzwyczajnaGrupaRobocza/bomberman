@@ -17,7 +17,7 @@ target_link_libraries(game
   PRIVATE graphics
   )
 
-add_executable(game_test
+add_executable(game-ut
   BoundaryWallsPositionsGenerator.ut.cpp
   Entity.ut.cpp
   Map.ut.cpp
@@ -25,7 +25,7 @@ add_executable(game_test
   TimeBomb.ut.cpp
   )
 
-target_include_directories(game_test SYSTEM PRIVATE
+target_include_directories(game-ut SYSTEM PRIVATE
   ${UT_INCLUDES}
   )
 
@@ -33,7 +33,7 @@ target_include_directories(game PRIVATE
   ${INTERNAL_LIBS_INCLUDE_PATH}
   )
 
-target_include_directories(game_test PRIVATE
+target_include_directories(game-ut PRIVATE
   ${INTERNAL_LIBS_INCLUDE_PATH}
   )
 
@@ -41,7 +41,7 @@ target_include_directories(game PRIVATE
   ${INTERNAL_LIBS_INCLUDE_PATH}
   )
 
-target_link_libraries(game_test
+target_link_libraries(game-ut
   PRIVATE game graphics gtest_main gmock)
 
-add_test(game_test ${EXECUTABLE_OUTPUT_PATH}/game_test --gtest_color=yes)
+add_test(game-ut ${EXECUTABLE_OUTPUT_PATH}/game-ut --gtest_color=yes)
