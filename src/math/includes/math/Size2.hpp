@@ -24,18 +24,12 @@ struct Size2 : boost::additive<Size2<T>>, boost::equality_comparable<Size2<T>>
     T height;
 };
 
-namespace
-{
-template <typename T>
-auto tie(const Size2<T>& size)
-{
-    return std::tie(size.width, size.height);
-}
-}
-
 template <typename T>
 bool operator==(const Size2<T>& lhs, const Size2<T>& rhs)
 {
+    const auto tie = [](const Size2<T>& size) {
+        return std::tie(size.width, size.height);
+    };
     return tie(lhs) == tie(rhs);
 }
 }
