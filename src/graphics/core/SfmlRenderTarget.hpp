@@ -14,12 +14,12 @@ class SfmlRenderTarget : public ContextRenderer, private sf::RenderTarget
 public:
     SfmlRenderTarget(const WindowSize& size);
 
-    void initialize() override;//[[facade]]
-    void clear(const sf::Color& color) override;//[[facade]]
-    void draw(const SfmlRectangleShape&) override;//[[facade]]
+    void initialize() override;
+    void clear(const sf::Color& color) override;
+    void draw(const SfmlRectangleShape&) override;
 
     sf::Vector2u getSize() const override;
-    bool activate(/*[[maybe_unused]]*/ bool) override;
+    bool activate([[maybe_unused]] bool) override;
 
 protected:
     WindowSize window_size;

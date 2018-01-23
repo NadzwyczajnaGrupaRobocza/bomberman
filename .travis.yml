@@ -40,4 +40,6 @@ script:
   - echo "We have" `nproc` "cores here"
   - make -j `nproc`
   - ctest -j `nproc` -V
+
+after_success:
   - bash <(curl -s https://codecov.io/bash)

@@ -5,8 +5,8 @@ namespace graphics
 SfmlRenderTarget::SfmlRenderTarget(const WindowSize& size) : window_size{size}
 {
 }
-
-void SfmlRenderTarget::initialize()//[[facade]]
+/* codecov skip start */
+void SfmlRenderTarget::initialize()
 {
     sf::RenderTarget::initialize();
 }
@@ -20,7 +20,7 @@ void SfmlRenderTarget::draw(const SfmlRectangleShape& drawable)
 {
     sf::RenderTarget::draw(drawable);
 }
-
+/* codecov skip end */
 sf::Vector2u SfmlRenderTarget::getSize() const
 {
     return window_size;
