@@ -5,7 +5,6 @@ find_package(Boost 1.6 REQUIRED)
 add_library(graphics
   Factory.cpp
   RendererPoolSfml.cpp
-  SfmlRenderTarget.cpp
   RendererIdGenerator.cpp
   SfmlRectangleShape.cpp
   WindowSfml.cpp
