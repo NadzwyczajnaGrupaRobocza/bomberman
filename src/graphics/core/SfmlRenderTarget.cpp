@@ -6,7 +6,7 @@ SfmlRenderTarget::SfmlRenderTarget(const WindowSize& size) : window_size{size}
 {
 }
 
-void SfmlRenderTarget::initialize()
+void SfmlRenderTarget::initialize()//[[facade]]
 {
     sf::RenderTarget::initialize();
 }
