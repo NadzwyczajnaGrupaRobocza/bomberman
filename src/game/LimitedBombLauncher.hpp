@@ -19,7 +19,7 @@ private:
     const int max_bombs;
     int bombs{0};
 
-    bool can_spawn_bomb(math::Position2) const;
+    bool can_spawn_bomb(math::Position2f) const;
     void launch_bomb();
     bool can_retrieve_bomb() const;
     void retrieve_bomb();
