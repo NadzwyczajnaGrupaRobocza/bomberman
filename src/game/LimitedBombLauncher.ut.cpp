@@ -4,18 +4,31 @@
 
 using namespace ::testing;
 
-class LimitedBombLauncherTest : public Test
+struct LimitedBombLauncherTest : public Test
 {
-public:
     const math::Position2 defaultPosition{0.2f, 0.2f};
     const bool bombHasBeenSpawned = true;
     const bool bombCannotBeSpawned = false;
+    const int maxBombs = 2;
 
-    LimitedBombLauncher launcher;
+    LimitedBombLauncher launcher{maxBombs};
 };
 
-TEST_F(LimitedBombLauncherTest, ShouldLaunchBomb)
+struct LimitedBombLauncherWithoutBombsLaunched : public LimitedBombLauncherTest
+{
+};
+
+TEST_F(LimitedBombLauncherWithoutBombsLaunched, ShouldLaunchBomb)
 {
     ASSERT_THAT(launcher.try_spawn_bomb(defaultPosition),
                 Eq(bombHasBeenSpawned));
 }
+
+struct LimitedBombLauncherWithAllBombsLunched : public LimitedBombLauncherTest
+{
+    LimitedBombLauncherWithAllBombsLunched()
+    {
+        launcher.try_spawn_bomb(defaultPosition);
+        launcher.try_spawn_bomb(defaultPosition);
+    }
+};
