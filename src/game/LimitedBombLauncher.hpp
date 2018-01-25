@@ -1,0 +1,10 @@
+#pragma once
+
+#include "BombLauncher.hpp"
+
+class LimitedBombLauncher : public  BombLauncher
+{
+public:
+    bool try_spawn_bomb(const math::Position2) override;
+    void notifyExploded() override;
+};
