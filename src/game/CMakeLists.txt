@@ -3,6 +3,7 @@ add_library(game
   BoundaryWallsPositionsGenerator.cpp
   ExplosionRange.cpp
   HumanPlayerSfml.cpp
+  LimitedBombLauncher.cpp
   SimpleMap.cpp
   TimeBomb.cpp
   )
@@ -10,6 +11,7 @@ add_library(game
 add_executable(game_test
   BoundaryWallsPositionsGenerator.ut.cpp
   Entity.ut.cpp
+  LimitedBombLauncher.ut.cpp
   Map.ut.cpp
   SimpleMap.ut.cpp
   TimeBomb.ut.cpp
