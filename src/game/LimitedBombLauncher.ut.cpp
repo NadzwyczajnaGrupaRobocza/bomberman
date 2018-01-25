@@ -1,17 +1,21 @@
 #include "gmock/gmock.h"
 
+#include "fakeit.hpp"
+
+#include "GameWorld.hpp"
 #include "LimitedBombLauncher.hpp"
 
-using namespace ::testing;
+using namespace ::fakeit;
 
-struct LimitedBombLauncherTest : public Test
+struct LimitedBombLauncherTest : public ::testing::Test
 {
-    const math::Position2 defaultPosition{0.2f, 0.2f};
-    const bool bombHasBeenSpawned = true;
-    const bool bombCannotBeSpawned = false;
-    const int maxBombs = 2;
+    const math::Position2 default_position{0.2f, 0.2f};
+    const bool bomb_has_been_spawned = true;
+    const bool bomb_cannot_be_spawned = false;
+    const int max_bombs = 2;
 
-    LimitedBombLauncher launcher{maxBombs};
+    fakeit::Mock<GameWorld> game_world;
+    LimitedBombLauncher launcher{max_bombs};
 };
 
 struct LimitedBombLauncherWithoutBombsLaunched : public LimitedBombLauncherTest
@@ -20,45 +24,45 @@ struct LimitedBombLauncherWithoutBombsLaunched : public LimitedBombLauncherTest
 
 TEST_F(LimitedBombLauncherWithoutBombsLaunched, ShouldLaunchBomb)
 {
-    ASSERT_THAT(launcher.try_spawn_bomb(defaultPosition),
-                Eq(bombHasBeenSpawned));
+    ASSERT_THAT(launcher.try_spawn_bomb(default_position),
+                ::testing::Eq(bomb_has_been_spawned));
 }
 
 struct LimitedBombLauncherWithAllBombsLunched : public LimitedBombLauncherTest
 {
     LimitedBombLauncherWithAllBombsLunched()
     {
-        launcher.try_spawn_bomb(defaultPosition);
-        launcher.try_spawn_bomb(defaultPosition);
+        launcher.try_spawn_bomb(default_position);
+        launcher.try_spawn_bomb(default_position);
     }
 };
 
 TEST_F(LimitedBombLauncherWithAllBombsLunched, ShouldNotLaunchBomb)
 {
-    ASSERT_THAT(launcher.try_spawn_bomb(defaultPosition),
-                Eq(bombCannotBeSpawned));
+    ASSERT_THAT(launcher.try_spawn_bomb(default_position),
+                ::testing::Eq(bomb_cannot_be_spawned));
 }
 
 TEST_F(LimitedBombLauncherWithAllBombsLunched,
        AfterNotfiedExploded_ShouldLaunchBomb)
 {
-    launcher.notifyExploded();
+    launcher.notify_exploded();
 
-    ASSERT_THAT(launcher.try_spawn_bomb(defaultPosition),
-                Eq(bombHasBeenSpawned));
+    ASSERT_THAT(launcher.try_spawn_bomb(default_position),
+                ::testing::Eq(bomb_has_been_spawned));
 }
 
 TEST_F(LimitedBombLauncherWithAllBombsLunched,
        AfterNotfiedExplodedMoreTimesThenBombs_ShouldLaunchMaxNumberOfBombs)
 {
-    launcher.notifyExploded();
-    launcher.notifyExploded();
-    launcher.notifyExploded();
+    launcher.notify_exploded();
+    launcher.notify_exploded();
+    launcher.notify_exploded();
 
-    ASSERT_THAT(launcher.try_spawn_bomb(defaultPosition),
-                Eq(bombHasBeenSpawned));
-    ASSERT_THAT(launcher.try_spawn_bomb(defaultPosition),
-                Eq(bombHasBeenSpawned));
-    ASSERT_THAT(launcher.try_spawn_bomb(defaultPosition),
-                Eq(bombCannotBeSpawned));
+    ASSERT_THAT(launcher.try_spawn_bomb(default_position),
+                ::testing::Eq(bomb_has_been_spawned));
+    ASSERT_THAT(launcher.try_spawn_bomb(default_position),
+                ::testing::Eq(bomb_has_been_spawned));
+    ASSERT_THAT(launcher.try_spawn_bomb(default_position),
+                ::testing::Eq(bomb_cannot_be_spawned));
 }

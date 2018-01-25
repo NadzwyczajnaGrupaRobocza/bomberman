@@ -1,44 +1,44 @@
 #include "LimitedBombLauncher.hpp"
 
-LimitedBombLauncher::LimitedBombLauncher(const int maximumBombs)
-    : maxBombs{maximumBombs}
+LimitedBombLauncher::LimitedBombLauncher(const int maximum_bombs)
+    : max_bombs{maximum_bombs}
 {
 }
 
 bool LimitedBombLauncher::try_spawn_bomb(const math::Position2)
 {
-    const auto bombCanBeSpawned = canSpawnBomb();
+    const auto bombCanBeSpawned = can_spawn_bomb();
     if (bombCanBeSpawned)
     {
-        launchBomb();
+        launch_bomb();
     }
     return bombCanBeSpawned;
 }
 
-bool LimitedBombLauncher::canSpawnBomb() const
+bool LimitedBombLauncher::can_spawn_bomb() const
 {
-    return maxBombs > bombs;
+    return max_bombs > bombs;
 }
 
-void LimitedBombLauncher::launchBomb()
+void LimitedBombLauncher::launch_bomb()
 {
     ++bombs;
 }
 
-void LimitedBombLauncher::notifyExploded()
+void LimitedBombLauncher::notify_exploded()
 {
-    if (canRetrieveBomb())
+    if (can_retrieve_bomb())
     {
-        retrieveBomb();
+        retrieve_bomb();
     }
 }
 
-void LimitedBombLauncher::retrieveBomb()
+void LimitedBombLauncher::retrieve_bomb()
 {
     --bombs;
 }
 
-bool LimitedBombLauncher::canRetrieveBomb() const
+bool LimitedBombLauncher::can_retrieve_bomb() const
 {
     return bombs > 0;
 }
