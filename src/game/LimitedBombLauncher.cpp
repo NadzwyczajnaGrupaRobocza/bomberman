@@ -1,7 +1,11 @@
 #include "LimitedBombLauncher.hpp"
 
-LimitedBombLauncher::LimitedBombLauncher(const int maximum_bombs)
-    : max_bombs{maximum_bombs}
+#include "GameWorld.hpp"
+
+LimitedBombLauncher::LimitedBombLauncher(std::shared_ptr<GameWorld> gw,
+                                         const int maximum_bombs)
+    : game_world{std::move(gw)},
+      max_bombs{maximum_bombs}
 {
 }
 

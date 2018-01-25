@@ -14,8 +14,9 @@ struct LimitedBombLauncherTest : public ::testing::Test
     const bool bomb_cannot_be_spawned = false;
     const int max_bombs = 2;
 
-    fakeit::Mock<GameWorld> game_world;
-    LimitedBombLauncher launcher{max_bombs};
+    std::shared_ptr<Mock<GameWorld>> game_world = std::make_shared<Mock<GameWorld>>();
+    std::shared_ptr<GameWorld> gw = game_world;
+    LimitedBombLauncher launcher = LimitedBombLauncher{gw, max_bombs};
 };
 
 struct LimitedBombLauncherWithoutBombsLaunched : public LimitedBombLauncherTest
