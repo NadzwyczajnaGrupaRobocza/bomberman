@@ -27,10 +27,18 @@ void LimitedBombLauncher::launchBomb()
 
 void LimitedBombLauncher::notifyExploded()
 {
-    retrieveBomb();
+    if (canRetrieveBomb())
+    {
+        retrieveBomb();
+    }
 }
 
 void LimitedBombLauncher::retrieveBomb()
 {
     --bombs;
+}
+
+bool LimitedBombLauncher::canRetrieveBomb() const
+{
+    return bombs > 0;
 }

@@ -47,3 +47,18 @@ TEST_F(LimitedBombLauncherWithAllBombsLunched,
     ASSERT_THAT(launcher.try_spawn_bomb(defaultPosition),
                 Eq(bombHasBeenSpawned));
 }
+
+TEST_F(LimitedBombLauncherWithAllBombsLunched,
+       AfterNotfiedExplodedMoreTimesThenBombs_ShouldLaunchMaxNumberOfBombs)
+{
+    launcher.notifyExploded();
+    launcher.notifyExploded();
+    launcher.notifyExploded();
+
+    ASSERT_THAT(launcher.try_spawn_bomb(defaultPosition),
+                Eq(bombHasBeenSpawned));
+    ASSERT_THAT(launcher.try_spawn_bomb(defaultPosition),
+                Eq(bombHasBeenSpawned));
+    ASSERT_THAT(launcher.try_spawn_bomb(defaultPosition),
+                Eq(bombCannotBeSpawned));
+}
