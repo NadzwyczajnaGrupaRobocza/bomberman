@@ -13,4 +13,7 @@ public:
 private:
     const int maxBombs;
     int bombs{0};
+
+    bool canSpawnBomb() const;
+    void launchBomb();
 };

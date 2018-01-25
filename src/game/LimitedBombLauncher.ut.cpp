@@ -32,3 +32,9 @@ struct LimitedBombLauncherWithAllBombsLunched : public LimitedBombLauncherTest
         launcher.try_spawn_bomb(defaultPosition);
     }
 };
+
+TEST_F(LimitedBombLauncherWithAllBombsLunched, ShouldNotLaunchBomb)
+{
+    ASSERT_THAT(launcher.try_spawn_bomb(defaultPosition),
+                Eq(bombCannotBeSpawned));
+}
