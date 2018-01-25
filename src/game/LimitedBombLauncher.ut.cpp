@@ -38,3 +38,12 @@ TEST_F(LimitedBombLauncherWithAllBombsLunched, ShouldNotLaunchBomb)
     ASSERT_THAT(launcher.try_spawn_bomb(defaultPosition),
                 Eq(bombCannotBeSpawned));
 }
+
+TEST_F(LimitedBombLauncherWithAllBombsLunched,
+       AfterNotfiedExploded_ShouldLaunchBomb)
+{
+    launcher.notifyExploded();
+
+    ASSERT_THAT(launcher.try_spawn_bomb(defaultPosition),
+                Eq(bombHasBeenSpawned));
+}

@@ -16,4 +16,5 @@ private:
 
     bool canSpawnBomb() const;
     void launchBomb();
+    void retrieveBomb();
 };

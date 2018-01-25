@@ -27,4 +27,10 @@ void LimitedBombLauncher::launchBomb()
 
 void LimitedBombLauncher::notifyExploded()
 {
+    retrieveBomb();
+}
+
+void LimitedBombLauncher::retrieveBomb()
+{
+    --bombs;
 }
