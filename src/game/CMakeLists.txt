@@ -23,6 +23,7 @@ add_executable(game-ut
   Map.ut.cpp
   SimpleMap.ut.cpp
   TimeBomb.ut.cpp
+  Bomberman.ut.cpp
   )
 
 target_include_directories(game-ut SYSTEM PRIVATE
