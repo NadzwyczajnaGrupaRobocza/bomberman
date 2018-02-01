@@ -4,6 +4,9 @@ CMakeScripts
 cmake_install.cmake
 install_manifest.txt
 CTestTestfile.cmake
+
+TAGS
+
 # Compiled Object files
 *.slo
 *.lo

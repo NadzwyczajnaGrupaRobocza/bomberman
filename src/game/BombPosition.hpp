@@ -1,4 +1,7 @@
 #pragma once
-#include <boost/serialization/strong_typedef.hpp>
 
-BOOST_STRONG_TYPEDEF(math::Position2, BombPosition)
+#include "math/Position2f.hpp"
+
+struct BombPosition : math::Position2f
+{
+};

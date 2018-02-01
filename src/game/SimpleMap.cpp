@@ -4,27 +4,32 @@
 
 SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
                      const WallPositionsGenerator& generated_wallss_generator,
-                     graphics::RenderEngine& rEngine)
+                     graphics::RendererPool& rEngine)
     : physics_engine(pEngine), graphics_engine{rEngine}
 {
     for (const auto& generated_walls :
          generated_wallss_generator.generate_boundary_walls(map_size))
     {
         physics_ids.push_back(physics_engine.register_colider(
-            {generated_walls.first.first, generated_walls.first.second},
-            {generated_walls.second.first, generated_walls.second.second}));
-        render_ids.push_back(graphics_engine.register_renderable(
-            {generated_walls.second.first, generated_walls.second.second},
-            {generated_walls.first.first, generated_walls.first.second}));
+            {static_cast<float>(generated_walls.second.first),
+             static_cast<float>(generated_walls.second.second)},
+            {static_cast<float>(generated_walls.first.first),
+             static_cast<float>(generated_walls.first.second)}));
+        render_ids.push_back(graphics_engine.acquire(
+            {static_cast<float>(generated_walls.second.first),
+             static_cast<float>(generated_walls.second.second)},
+            {static_cast<float>(generated_walls.first.first),
+             static_cast<float>(generated_walls.first.second)}));
     }
-    render_ids.push_back(
-        graphics_engine.register_renderable({map_size, map_size}, {0, 0}));
+    render_ids.push_back(graphics_engine.acquire(
+        {static_cast<float>(map_size), static_cast<float>(map_size)},
+        {0.0f, 0.0f}));
 }
 
 SimpleMap::~SimpleMap()
 {
     boost::for_each(render_ids,
-                    [&](const auto id) { graphics_engine.deregister(id); });
+                    [&](const auto id) { graphics_engine.release(id); });
     boost::for_each(physics_ids,
                     [&](const auto id) { physics_engine.deregister(id); });
 }

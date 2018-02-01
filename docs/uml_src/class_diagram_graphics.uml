@@ -1,0 +1,86 @@
+@startuml
+
+namespace sf{
+	class RectangleShape
+    class Window
+    abstract class RenderTarget
+}
+
+namespace graphics {
+package public  <<Rectangle>> {
+
+    interface RendererPool{
+      + RendererId acquire(const math::Size2f&, const math::Position2f&)
+      + void release(const RendererId&)
+      + void render_all()
+      + void set_position(const RendererId&, const math::Position2f&)
+      + Position get_position(const RendererId&)
+    }
+    interface Window{
+      + bool is_open()
+      + void display()
+      + void update()
+    }
+    class RendererId
+  }
+  package private  <<Rectangle>> {
+
+  	package types{
+      math.Position2f <|-- Position2f
+      math.Size2f <|-- Size2f
+      math.Size2u <|-- WindowSize
+    }
+    
+    package sfml_adaptors  <<Rectangle>> {
+    
+        interface SfmlWindow{
+        	+ bool is_open()
+    		+ void display()
+    		+ bool poll_event(sf::Event&)
+    		+ void close()
+    		+ void create(sf::VideoMode, const sf::String& title)
+        }
+        
+        class SfmlWindowFacade
+        SfmlWindowFacade --|> SfmlWindow
+        SfmlWindowFacade *-down- sf.Window
+        
+        class SfmlRenderTarget
+    	SfmlRenderTarget -down-|> sf.RenderTarget 
+        
+        
+        class SfmlRectangleShape{
+        	+ Position2f getPosition()
+            + Size2f getSize()
+        }
+   		SfmlRectangleShape --|> sf.RectangleShape
+    
+    }
+  	class WindowSfml
+    WindowSfml --|> Window
+    WindowSfml *-- SfmlWindow
+    
+    interface ContextRenderer{
+    	+ initialize()
+        + clear(const sf::Color&)
+        + draw(const SfmlRectangleShape&)
+    }
+    ContextRenderer --> SfmlRectangleShape
+    ContextRenderer <|-- SfmlRenderTarget
+        
+    class RendererPoolSfml{
+    }
+    RendererPoolSfml --|> RendererPool
+    RendererPoolSfml o-- RendererId
+    RendererPoolSfml o-- SfmlRectangleShape
+    RendererPoolSfml *-- RendererIdGenerator
+    RendererPoolSfml *-- ContextRenderer
+    
+    class RendererIdGenerator
+    RendererIdGenerator --> RendererId
+  }
+  
+  
+}
+
+@enduml

@@ -30,9 +30,9 @@ matrix:
 # Build steps
 script:
   - mkdir boost-dl; cd boost-dl
-  - wget https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.bz2
-  - tar --bzip2 -xf ./boost_1_62_0.tar.bz2
-  - sudo mv ./boost_1_62_0/boost /usr/include
+  - wget https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2
+  - tar --bzip2 -xf ./boost_1_65_1.tar.bz2
+  - sudo mv ./boost_1_65_1/boost /usr/include
   - cd ..
   - mkdir build
   - cd build
@@ -40,4 +40,6 @@ script:
   - echo "We have" `nproc` "cores here"
   - make -j `nproc`
   - ctest -j `nproc` -V
+
+after_success:
   - bash <(curl -s https://codecov.io/bash)
