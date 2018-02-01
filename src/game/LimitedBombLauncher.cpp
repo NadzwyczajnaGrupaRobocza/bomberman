@@ -4,14 +4,13 @@
 
 LimitedBombLauncher::LimitedBombLauncher(std::shared_ptr<GameWorld> gw,
                                          const int maximum_bombs)
-    : game_world{std::move(gw)},
-      max_bombs{maximum_bombs}
+    : game_world{std::move(gw)}, max_bombs{maximum_bombs}
 {
 }
 
-bool LimitedBombLauncher::try_spawn_bomb(const math::Position2)
+bool LimitedBombLauncher::try_spawn_bomb(const math::Position2 pos)
 {
-    const auto bombCanBeSpawned = can_spawn_bomb();
+    const auto bombCanBeSpawned = can_spawn_bomb(pos);
     if (bombCanBeSpawned)
     {
         launch_bomb();
@@ -19,9 +18,9 @@ bool LimitedBombLauncher::try_spawn_bomb(const math::Position2)
     return bombCanBeSpawned;
 }
 
-bool LimitedBombLauncher::can_spawn_bomb() const
+bool LimitedBombLauncher::can_spawn_bomb(const math::Position2 pos) const
 {
-    return max_bombs > bombs;
+    return max_bombs > bombs && !game_world->is_bomb_at_pos(BombPosition{pos});
 }
 
 void LimitedBombLauncher::launch_bomb()

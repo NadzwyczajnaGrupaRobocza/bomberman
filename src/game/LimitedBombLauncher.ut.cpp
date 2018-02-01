@@ -9,9 +9,17 @@ using namespace ::fakeit;
 
 struct LimitedBombLauncherTest : public ::testing::Test
 {
+    LimitedBombLauncherTest()
+    {
+        When(Method(game_world, is_bomb_at_pos)).AlwaysReturn(no_bom_at_pos);
+    }
+
     const math::Position2 default_position{0.2f, 0.2f};
+    const BombPosition default_bomb_position{default_position};
     const bool bomb_has_been_spawned = true;
     const bool bomb_cannot_be_spawned = false;
+    const bool bomb_at_pos = true;
+    const bool no_bom_at_pos = false;
     const int max_bombs = 2;
 
     Mock<GameWorld> game_world;
@@ -28,6 +36,16 @@ TEST_F(LimitedBombLauncherWithoutBombsLaunched, ShouldLaunchBomb)
 {
     ASSERT_THAT(launcher.try_spawn_bomb(default_position),
                 ::testing::Eq(bomb_has_been_spawned));
+}
+
+TEST_F(LimitedBombLauncherWithoutBombsLaunched,
+       WhenThereIsBombAtPostition_ShouldNotSpawnBomb)
+{
+    When(Method(game_world, is_bomb_at_pos).Using(default_bomb_position))
+        .Return(bomb_at_pos);
+
+    ASSERT_THAT(launcher.try_spawn_bomb(default_position),
+                ::testing::Eq(bomb_cannot_be_spawned));
 }
 
 struct LimitedBombLauncherWithAllBombsLunched : public LimitedBombLauncherTest
