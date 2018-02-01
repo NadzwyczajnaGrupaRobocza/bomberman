@@ -14,7 +14,7 @@ struct LimitedBombLauncherTest : public ::testing::Test
         When(Method(game_world, is_bomb_at_pos)).AlwaysReturn(no_bom_at_pos);
     }
 
-    const math::Position2 default_position{0.2f, 0.2f};
+    const math::Position2f default_position{0.2f, 0.2f};
     const BombPosition default_bomb_position{default_position};
     const bool bomb_has_been_spawned = true;
     const bool bomb_cannot_be_spawned = false;
