@@ -1,11 +1,12 @@
 #pragma once
 
 #include <boost/operators.hpp>
+#include <tuple>
 
 namespace math
 {
 template <typename T>
-struct Size2 : boost::additive<Size2<T>>, boost::totally_ordered<Size2<T>>
+struct Size2 : boost::additive<Size2<T>>, boost::equality_comparable<Size2<T>>
 {
     constexpr Size2(const T width_, const T height_)
         : width{width_}, height{height_}
@@ -19,17 +20,16 @@ struct Size2 : boost::additive<Size2<T>>, boost::totally_ordered<Size2<T>>
         return *this;
     }
 
-    bool operator==(const Size2<T>& size)
-    {
-        return std::tie(width, height) == std::tie(size.width, size.height);
-    }
-
-    bool operator<(const Size2<T>& size)
-    {
-        return std::tie(width, height) < std::tie(size.width, size.height);
-    }
-
     T width;
     T height;
 };
+
+template <typename T>
+bool operator==(const Size2<T>& lhs, const Size2<T>& rhs)
+{
+    const auto tie = [](const Size2<T>& size) {
+        return std::tie(size.width, size.height);
+    };
+    return tie(lhs) == tie(rhs);
+}
 }

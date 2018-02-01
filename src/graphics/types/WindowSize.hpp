@@ -13,11 +13,11 @@ struct WindowSize : ::math::Size2u, boost::totally_ordered<WindowSize>
     {
     }
 
-    WindowSize(const ::math::Size2u& pos) : ::math::Size2u{pos}
+    WindowSize(const ::math::Size2u& size) : WindowSize{size.width, size.height}
     {
     }
 
-    WindowSize(const ::sf::Vector2u& pos) : ::math::Size2u{pos.x, pos.y}
+    WindowSize(const ::sf::Vector2u& size) : WindowSize{size.x, size.y}
     {
     }
 

@@ -34,9 +34,13 @@ public:
             });
     }
 
-    int prepare_events(std::vector<sf::Event::EventType>&& e)
+    void prepare_events(std::vector<sf::Event::EventType>&& e)
     {
         events = std::move(e);
+    }
+
+    int number_of_expected_events() const
+    {
         return static_cast<int>(events.size());
     }
 
@@ -73,28 +77,27 @@ TEST_F(WindowSfmlTest, displayWindow)
 TEST_F(WindowSfmlTest, updateWindow)
 {
     auto window = create_window();
-    const auto expected_polled_events =
-        prepare_events({sf::Event::MouseLeft, sf::Event::LostFocus,
-                        sf::Event::MouseMoved, sf::Event::MouseEntered});
+    prepare_events({sf::Event::MouseLeft, sf::Event::LostFocus,
+                    sf::Event::MouseMoved, sf::Event::MouseEntered});
+    const auto no_events = number_of_expected_events();
 
     expectPollEvent();
     window.update();
-    fakeit::Verify(Method(sfml_window, poll_event))
-        .Exactly(expected_polled_events);
+    fakeit::Verify(Method(sfml_window, poll_event)).Exactly(no_events);
 }
 
 TEST_F(WindowSfmlTest, updateAndCloseWindow)
 {
     fakeit::Fake(Method(sfml_window, close));
     auto window = create_window();
-    const auto expected_polled_events = prepare_events(
-        {sf::Event::MouseLeft, sf::Event::LostFocus, sf::Event::MouseMoved,
-         sf::Event::MouseEntered, sf::Event::Closed});
+    prepare_events({sf::Event::MouseLeft, sf::Event::LostFocus,
+                    sf::Event::MouseMoved, sf::Event::MouseEntered,
+                    sf::Event::Closed});
+    const auto no_events = number_of_expected_events();
 
     expectPollEvent();
     window.update();
-    fakeit::Verify(Method(sfml_window, poll_event))
-        .Exactly(expected_polled_events);
+    fakeit::Verify(Method(sfml_window, poll_event)).Exactly(no_events);
     fakeit::Verify(Method(sfml_window, close)).Once();
 }
 }

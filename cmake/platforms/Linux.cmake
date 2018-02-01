@@ -1,4 +1,4 @@
-message(STATUS "Detected GNU CXX compiler.")
+message(STATUS "Detected Linux kind system.")
 
 option(ENABLE_COVERAGE "Enable coverage reporting for gcc/clang" FALSE)
 

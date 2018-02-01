@@ -9,19 +9,41 @@
 
 namespace graphics
 {
-class SfmlRenderTarget : public ContextRenderer, private sf::RenderTarget
+template <typename BaseRenderTarget>
+class RenderTarget : public ContextRenderer, public BaseRenderTarget
 {
 public:
-    SfmlRenderTarget(const WindowSize& size);
+    RenderTarget(const WindowSize& size) : window_size{size}
+    {
+    }
 
-    void initialize() override;
-    void clear(const sf::Color& color) override;
-    void draw(const SfmlRectangleShape&) override;
+    void initialize() override
+    {
+        BaseRenderTarget::initialize();
+    }
 
-    sf::Vector2u getSize() const override;
-    bool activate(/*[[maybe_unused]]*/ bool) override;
+    void clear(const sf::Color& color) override
+    {
+        BaseRenderTarget::clear(color);
+    }
+
+    void draw(const SfmlRectangleShape& drawable) override
+    {
+        BaseRenderTarget::draw(drawable);
+    }
+
+    sf::Vector2u getSize() const override
+    {
+        return window_size;
+    }
+    bool activate([[maybe_unused]] bool active) override
+    {
+        return true;
+    }
 
 protected:
     WindowSize window_size;
 };
+
+using SfmlRenderTarget = RenderTarget<sf::RenderTarget>;
 }

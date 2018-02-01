@@ -9,7 +9,7 @@
 namespace graphics
 {
 class SfmlRectangleShape : public sf::RectangleShape,
-                           public boost::totally_ordered<SfmlRectangleShape>
+                           public boost::equality_comparable<SfmlRectangleShape>
 {
 public:
     SfmlRectangleShape(const Size2f&, const Position2f&);

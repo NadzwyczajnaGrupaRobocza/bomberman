@@ -1,12 +1,18 @@
-add_executable(physics_ut
+# add_library(physics "")
+
+# target_link_libraries(physics
+#   PUBLIC math)
+
+add_executable(physics-ut
   PhysicsId.ut.cpp
   PhysicsEngine.ut.cpp
   )
 
-target_include_directories(physics_ut SYSTEM PRIVATE
-  ${UT_INCLUDES}
+target_include_directories(physics-ut SYSTEM
+  PRIVATE ${UT_INCLUDES}
   )
 
+target_link_libraries(physics-ut
+  PRIVATE math gtest_main)
 
-target_link_libraries(physics_ut gtest_main)
-add_test(physics_ut ${EXECUTABLE_OUTPUT_PATH}/physics_ut --gtest_color=yes)
+add_test(physics-ut ${EXECUTABLE_OUTPUT_PATH}/physics-ut --gtest_color=yes)

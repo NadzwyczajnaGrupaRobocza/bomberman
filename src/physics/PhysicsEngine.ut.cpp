@@ -7,22 +7,27 @@
 class ConcretePhysicsEngine : public physics::PhysicsEngine
 {
 public:
-    void set_position(physics::PhysicsId, const Position&) override
+    void set_position(physics::PhysicsId, const math::Position2f&) override
     {
     }
 
-    Position get_position(physics::PhysicsId) const override
+    math::Position2f get_position(physics::PhysicsId) const override
     {
-        return {};
+        return {0, 0};
     }
 
     void solve_colisions() override
     {
     }
 
-    physics::PhysicsId register_colider(const Position&, const Position&) override
+    physics::PhysicsId register_colider(const math::Size2f&,
+                                        const math::Position2f&) override
     {
         return {};
+    }
+
+    void deregister(physics::PhysicsId) override
+    {
     }
 };
 
@@ -43,7 +48,7 @@ TEST_F(PhysicsEngineInterfaceTest, ShouldCreateDeriveFromPhysicsEngine)
 TEST_F(PhysicsEngineInterfaceTest, ShouldHaveSetPositionFunction)
 {
     auto testFunction = [](physics::PhysicsEngine& engineTested) {
-        engineTested.set_position(physics::PhysicsId{}, glm::vec2{});
+        engineTested.set_position(physics::PhysicsId{}, math::Position2f{0, 0});
     };
     testFunction(engine);
 }
@@ -67,8 +72,16 @@ TEST_F(PhysicsEngineInterfaceTest, ShouldHaveSolveColisionsFunction)
 TEST_F(PhysicsEngineInterfaceTest, ShouldHaveRegisterColiderFunction)
 {
     auto testFunction = [](physics::PhysicsEngine& engineTested) {
-        engineTested.register_colider(physics::PhysicsEngine::Position{},
-                                      physics::PhysicsEngine::Position{});
+        engineTested.register_colider(math::Size2f{0, 0},
+                                      math::Position2f{0, 0});
+    };
+    testFunction(engine);
+}
+
+TEST_F(PhysicsEngineInterfaceTest, ShouldHaveDeregisterColiderFunction)
+{
+    auto testFunction = [](physics::PhysicsEngine& engineTested) {
+        engineTested.deregister(physics::PhysicsId{1});
     };
     testFunction(engine);
 }

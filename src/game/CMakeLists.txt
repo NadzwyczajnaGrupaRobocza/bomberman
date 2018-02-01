@@ -1,9 +1,12 @@
 find_package(SFML 2 COMPONENTS graphics REQUIRED)
 
 add_library(game
-  TimeBomb.cpp
-  HumanPlayerSfml.cpp
   BombermanGameWorld.cpp
+  BoundaryWallsPositionsGenerator.cpp
+  ExplosionRange.cpp
+  HumanPlayerSfml.cpp
+  SimpleMap.cpp
+  TimeBomb.cpp
   )
 
 target_include_directories(game SYSTEM
@@ -11,15 +14,18 @@ target_include_directories(game SYSTEM
 
 target_link_libraries(game
   PUBLIC math
+  PRIVATE graphics
   )
 
-add_executable(game_test
-  TimeBomb.ut.cpp
+add_executable(game-ut
+  BoundaryWallsPositionsGenerator.ut.cpp
   Entity.ut.cpp
   Map.ut.cpp
+  SimpleMap.ut.cpp
+  TimeBomb.ut.cpp
   )
 
-target_include_directories(game_test SYSTEM PRIVATE
+target_include_directories(game-ut SYSTEM PRIVATE
   ${UT_INCLUDES}
   )
 
@@ -27,7 +33,7 @@ target_include_directories(game PRIVATE
   ${INTERNAL_LIBS_INCLUDE_PATH}
   )
 
-target_include_directories(game_test PRIVATE
+target_include_directories(game-ut PRIVATE
   ${INTERNAL_LIBS_INCLUDE_PATH}
   )
 
@@ -35,5 +41,7 @@ target_include_directories(game PRIVATE
   ${INTERNAL_LIBS_INCLUDE_PATH}
   )
 
-target_link_libraries(game_test gtest_main game)
-add_test(game_test ${EXECUTABLE_OUTPUT_PATH}/game_test --gtest_color=yes)
+target_link_libraries(game-ut
+  PRIVATE game graphics gtest_main gmock)
+
+add_test(game-ut ${EXECUTABLE_OUTPUT_PATH}/game-ut --gtest_color=yes)

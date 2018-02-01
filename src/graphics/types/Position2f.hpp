@@ -12,11 +12,11 @@ struct Position2f : public ::math::Position2f
     {
     }
 
-    Position2f(const ::math::Position2f& pos) : ::math::Position2f(pos.x, pos.y)
+    Position2f(const ::math::Position2f& pos) : Position2f(pos.x, pos.y)
     {
     }
 
-    Position2f(const ::sf::Vector2f& pos) : ::math::Position2f(pos.x, pos.y)
+    Position2f(const ::sf::Vector2f& pos) : Position2f(pos.x, pos.y)
     {
     }
 
