@@ -1,6 +1,6 @@
 #pragma once
 #include <boost/serialization/strong_typedef.hpp>
 
-#include "math/Position.hpp"
+#include "math/Position2f.hpp"
 
-BOOST_STRONG_TYPEDEF(math::Position2, BombPosition)
+BOOST_STRONG_TYPEDEF(math::Position2f, BombPosition)
