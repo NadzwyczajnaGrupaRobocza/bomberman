@@ -6,7 +6,7 @@
 
 class GameWorld;
 
-class LimitedBombLauncher : public  BombLauncher
+class LimitedBombLauncher : public BombLauncher
 {
 public:
     LimitedBombLauncher(std::shared_ptr<GameWorld>, int);

@@ -48,22 +48,22 @@ TEST_F(LimitedBombLauncherWithoutBombsLaunched,
                 ::testing::Eq(bomb_cannot_be_spawned));
 }
 
-struct LimitedBombLauncherWithAllBombsLunched : public LimitedBombLauncherTest
+struct LimitedBombLauncherWithAllBombsLaunched : public LimitedBombLauncherTest
 {
-    LimitedBombLauncherWithAllBombsLunched()
+    LimitedBombLauncherWithAllBombsLaunched()
     {
         launcher.try_spawn_bomb(default_position);
         launcher.try_spawn_bomb(default_position);
     }
 };
 
-TEST_F(LimitedBombLauncherWithAllBombsLunched, ShouldNotLaunchBomb)
+TEST_F(LimitedBombLauncherWithAllBombsLaunched, ShouldNotLaunchBomb)
 {
     ASSERT_THAT(launcher.try_spawn_bomb(default_position),
                 ::testing::Eq(bomb_cannot_be_spawned));
 }
 
-TEST_F(LimitedBombLauncherWithAllBombsLunched,
+TEST_F(LimitedBombLauncherWithAllBombsLaunched,
        AfterNotfiedExploded_ShouldLaunchBomb)
 {
     launcher.notify_exploded();
@@ -72,7 +72,7 @@ TEST_F(LimitedBombLauncherWithAllBombsLunched,
                 ::testing::Eq(bomb_has_been_spawned));
 }
 
-TEST_F(LimitedBombLauncherWithAllBombsLunched,
+TEST_F(LimitedBombLauncherWithAllBombsLaunched,
        AfterNotfiedExplodedMoreTimesThenBombs_ShouldLaunchMaxNumberOfBombs)
 {
     launcher.notify_exploded();
