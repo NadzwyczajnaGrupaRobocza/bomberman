@@ -78,7 +78,7 @@ TEST_F(PhysicsEngineInterfaceTest, ShouldHaveRegisterColiderFunction)
     testFunction(engine);
 }
 
-TEST_F(PhysicsEngineInterfaceTest, ShouldHaveDeegisterColiderFunction)
+TEST_F(PhysicsEngineInterfaceTest, ShouldHaveDeregisterColiderFunction)
 {
     auto testFunction = [](physics::PhysicsEngine& engineTested) {
         engineTested.deregister(physics::PhysicsId{1});
