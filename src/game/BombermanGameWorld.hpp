@@ -1,7 +1,6 @@
 #pragma once
 
 #include <memory>
-#include "math/Position.hpp"
 #include <boost/serialization/strong_typedef.hpp>
 #include "Bomb.hpp"
 #include <map>

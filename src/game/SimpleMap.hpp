@@ -7,15 +7,15 @@
 
 #include "glm/glm.hpp"
 #include "physics/PhysicsEngine.hpp"
-#include "graphics/RenderEngine.hpp"
-#include "graphics/RenderId.hpp"
+#include "graphics/RendererPool.hpp"
+#include "graphics/RendererId.hpp"
 
 class SimpleMap : public Map
 {
 public:
     SimpleMap(physics::PhysicsEngine& pEngine,
               const WallPositionsGenerator& wall_positions_generator,
-              graphics::RenderEngine& rEngine);
+              graphics::RendererPool& rEngine);
     ~SimpleMap() override;
 
     ExplosionRange get_explosion_range(std::pair<int, int> start_point,
@@ -24,10 +24,10 @@ public:
 private:
     physics::PhysicsEngine& physics_engine;
     std::vector<physics::PhysicsEngine> walls;
-    graphics::RenderEngine& graphics_engine;
-    const int map_size = 10;
+    graphics::RendererPool& graphics_engine;
+    const int map_size{10};
     std::vector<physics::PhysicsId> physics_ids;
-    std::vector<graphics::RenderId> render_ids;
+    std::vector<graphics::RendererId> render_ids;
 
     template <typename Distance>
     Distance get_range_in_decreasing_direction(const int start_point,
