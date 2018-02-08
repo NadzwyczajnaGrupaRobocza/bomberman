@@ -38,8 +38,12 @@ struct LimitedBombLauncherWithoutBombsLaunched : public LimitedBombLauncherTest
 
 TEST_F(LimitedBombLauncherWithoutBombsLaunched, ShouldLaunchBomb)
 {
+    When(Method(bomb_factory, create_time_bomb)).Return(nullptr);
+
     ASSERT_THAT(launcher.try_spawn_bomb(default_position),
                 ::testing::Eq(bomb_has_been_spawned));
+
+    Verify(Method(bomb_factory, create_time_bomb));
 }
 
 TEST_F(LimitedBombLauncherWithoutBombsLaunched,
@@ -56,6 +60,7 @@ struct LimitedBombLauncherWithAllBombsLaunched : public LimitedBombLauncherTest
 {
     LimitedBombLauncherWithAllBombsLaunched()
     {
+        When(Method(bomb_factory, create_time_bomb)).AlwaysReturn(nullptr);
         launcher.try_spawn_bomb(default_position);
         launcher.try_spawn_bomb(default_position);
     }

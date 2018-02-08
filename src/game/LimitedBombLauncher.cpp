@@ -27,6 +27,7 @@ bool LimitedBombLauncher::can_spawn_bomb(const math::Position2f pos) const
 void LimitedBombLauncher::launch_bomb()
 {
     ++bombs;
+    bomb_factory->create_time_bomb();
 }
 
 void LimitedBombLauncher::notify_exploded()
