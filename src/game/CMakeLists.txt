@@ -42,9 +42,8 @@ target_include_directories(game-ut PRIVATE
 
 add_executable(Bomberman main.cpp)
 
-target_include_directories(Bomberman PRIVATE
-  ${INTERNAL_LIBS_INCLUDE_PATH}
-  ${SFML_INCLUDE_DIR}
+target_include_directories(Bomberman SYSTEM
+     PRIVATE ${INTERNAL_LIBS_INCLUDE_PATH} ${SFML_INCLUDE_DIR}
 )
 
 target_link_libraries(game-ut
