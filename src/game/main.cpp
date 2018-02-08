@@ -3,11 +3,12 @@
 #include "SFML/Window/Window.hpp"
 #include <memory>
 #include <chrono>
+#include "math/Size2u.hpp"
 
 int main()
 {
-    const std::pair<int, int> window_size{800, 600};
-    sf::Window window(sf::VideoMode(window_size.first, window_size.second), "Bomberman Remake");
+    const math::Size2u window_size{800, 600};
+    sf::Window window(sf::VideoMode(window_size.width, window_size.height), "Bomberman Remake");
 
     BombermanGameWorld world;
     sf::Clock clock;
