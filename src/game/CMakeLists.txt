@@ -33,6 +33,7 @@ target_include_directories(game-ut SYSTEM PRIVATE
   
 target_include_directories(game PRIVATE
   ${INTERNAL_LIBS_INCLUDE_PATH}
+  ${SFML_INCLUDE_DIR}
   )
 
 target_include_directories(game-ut PRIVATE
