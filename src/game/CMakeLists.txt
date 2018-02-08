@@ -40,15 +40,12 @@ target_include_directories(game-ut PRIVATE
   ${INTERNAL_LIBS_INCLUDE_PATH}
   )
 
-target_include_directories(game PRIVATE
-  ${INTERNAL_LIBS_INCLUDE_PATH}
-  )
-
 add_executable(Bomberman main.cpp)
 
 target_include_directories(Bomberman PRIVATE
   ${INTERNAL_LIBS_INCLUDE_PATH}
-  )
+  ${SFML_INCLUDE_DIR}
+)
 
 target_link_libraries(game-ut
   PRIVATE game graphics gtest_main gmock)
