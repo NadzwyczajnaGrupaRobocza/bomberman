@@ -52,8 +52,8 @@ class HumanPlayer {
 
 class BombLauncher {
 - game_world : GameWorld
-- max_bombs_count : int
-- current_bombs_count : int
+- max_bombs : int
+- bombs : int
 + bool try_spawn_bomb(Vector2D position)
 + notify_exploded()
 }
