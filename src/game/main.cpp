@@ -21,7 +21,7 @@ int main()
                 window.close();
         }
 
-        std::chrono::milliseconds ms{clock.restart().asMilliseconds()};
+        const std::chrono::milliseconds ms{clock.restart().asMilliseconds()};
         world.update(ElapsedTime{ms});
 
         window.display();
