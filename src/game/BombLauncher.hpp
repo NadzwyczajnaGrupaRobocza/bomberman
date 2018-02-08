@@ -7,6 +7,6 @@ class BombLauncher
 public:
     virtual ~BombLauncher() noexcept = default;
 
-    virtual bool try_spawn_bomb(const math::Position2f) = 0;
+    virtual bool try_spawn_bomb(math::Position2f) = 0;
     virtual void notify_exploded() = 0;
 };
