@@ -11,7 +11,7 @@ class LimitedBombLauncher : public BombLauncher
 public:
     LimitedBombLauncher(std::shared_ptr<GameWorld>, int);
 
-    bool try_spawn_bomb(const math::Position2f) override;
+    bool try_spawn_bomb(math::Position2f) override;
     void notify_exploded() override;
 
 private:

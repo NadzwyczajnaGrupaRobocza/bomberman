@@ -17,11 +17,6 @@ struct Position2f : boost::additive<Position2f>,
     {
     }
 
-    constexpr Position2f(const Position2f&) = default;
-    constexpr Position2f(Position2f&&) = default;
-    constexpr Position2f& operator=(const Position2f&) = default;
-    constexpr Position2f& operator=(Position2f&&) = default;
-
     float x;
     float y;
 };
