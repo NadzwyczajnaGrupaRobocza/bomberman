@@ -1,5 +1,21 @@
 @startuml
 
+namespace graphics{
+  interface RendererPool{
+    + RendererId acquire(const math::Size2f&, const math::Position2f&)
+    + void release(const RendererId&)
+    + void render_all()
+    + void set_position(const RendererId&, const math::Position2f&)
+    + Position get_position(const RendererId&)
+  }
+  interface Window{
+    + bool is_open()
+    + void display()
+    + void update()
+  }
+  class RendererId
+}
+
 interface Entity {
 + update(delta_time)
 + bool areYouDead()
@@ -8,23 +24,26 @@ interface Entity {
 class Bomberman {
 - phys_id : PhysId
 - physics_engine : PhysicsEngine&
-- render_id : RenderId
-- render_engine : RenderEngine&
+- renderer_id : graphics::RendererId
+- renderer_pool : graphics::RendererPool&
 - human_player : HumanPlayer
 - bomb_launcher : BombLauncher
 }
+Bomberman o-- graphics.RendererPool
+Bomberman *-- graphics.RendererId
 
 class GameWorld {
 - bomberman : Entity
 - map : Map
 - physics_engine : std::unique_ptr<PhysicsEngine>
-- render_engine : std::unique_ptr<RenderEngine>
+- renderer_pool : std::unique_ptr<graphics::RendererPool>
 - bombs : std::vector<Bomb>
 - explosions : std::vector<Explosion>
 + bool is_bomb_at_pos(Vector2D position)
 + create_bomb(Vector2D position, int timeToExplode)
 + create_explosion(Vector2D povesition)
 }
+GameWorld o-down- graphics.RendererPool
 
 class HumanPlayer {
 + Vector2D get_direction()
@@ -40,11 +59,14 @@ class BombLauncher {
 }
 
 class Map {
-- background : RenderId
+- background : graphics::RendererId
 - static_element : std::vector<PhysId>
-- render_engine : RenderEngine&
+- renderer_pool : graphics::RendererPool&
 - physics_engine : PhysicsEngine&
++ ExplosionRange : get_explosion_range(const std::pair<int, int>, int)
 }
+Map o-- graphics.RendererPool
+Map *-- graphics.RendererId
 
 class PhysicsEngine{
 + void set_position(PhysId id, Vector2D position)
@@ -53,25 +75,23 @@ class PhysicsEngine{
 + PhysicId register_colider(const math::vec2d&, const math::vec2d&)
 }
 
-class RenderEngine{
-+ void set_position(RenderId id, Vector2D position)
-+ void render()
-+ RenderId register_rendarable(const math::vec2d&, const math:::vec2d&)
-}
-
 class Bomb {
 - phys_id : PhysId
-- render_id : RenderId
-- render_engine : RenderEngine&
+- renderer_id : graphics::RendererId
 - physics_engine : PhysicsEngine&
+- renderer_pool : RendererPool&
 }
+Bomb o-- graphics.RendererPool
+Bomb *-- graphics.RendererId
 
 class Explosion {
+- renderer_ids : std::vector<graphics::RendererId>
 - phys_ids : std::vector<PhysId>
-- render_ids : std::vector<RenderId>
-- render_engine : RenderEngine&
 - physics_engine : PhysicsEngine&
+- renderer_pool : graphics::RendererPool&
 }
+Explosion o-- graphics.RendererPool
+Explosion *-- graphics.RendererId
 
 Bomberman --|> Entity
 Bomb --|> Entity
@@ -86,10 +106,8 @@ HumanPlayer --* Bomberman
 BombLauncher --> GameWorld
 BombLauncher --* Bomberman
 
-
 Map --* GameWorld
 
-RenderEngine --* GameWorld
 PhysicsEngine --* GameWorld
 
 @enduml

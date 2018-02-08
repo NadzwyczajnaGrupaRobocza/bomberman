@@ -10,11 +10,11 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - g++-6
+            - g++-7
             - libsfml-dev
       env:
-      - C_COMPILER=gcc-6
-      - CXX_COMPILER=g++-6
+      - C_COMPILER=gcc-7
+      - CXX_COMPILER=g++-7
     # - compiler: clang
     #   addons:
     #     apt:
@@ -30,13 +30,16 @@ matrix:
 # Build steps
 script:
   - mkdir boost-dl; cd boost-dl
-  - wget https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.bz2
-  - tar --bzip2 -xf ./boost_1_62_0.tar.bz2
-  - sudo mv ./boost_1_62_0/boost /usr/include
+  - wget https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2
+  - tar --bzip2 -xf ./boost_1_65_1.tar.bz2
+  - sudo mv ./boost_1_65_1/boost /usr/include
   - cd ..
   - mkdir build
   - cd build
-  - env CC=${C_COMPILER} CXX=${CXX_COMPILER} cmake .. 
+  - env CC=${C_COMPILER} CXX=${CXX_COMPILER} cmake .. -DENABLE_COVERAGE:BOOL=TRUE
   - echo "We have" `nproc` "cores here"
   - make -j `nproc`
   - ctest -j `nproc` -V
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
