@@ -7,6 +7,7 @@ add_library(game
   HumanPlayerSfml.cpp
   SimpleMap.cpp
   TimeBomb.cpp
+  Bomberman.cpp
   )
 
 target_include_directories(game SYSTEM

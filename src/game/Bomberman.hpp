@@ -13,15 +13,18 @@
 class Bomberman : public Entity
 {
 public:
+    explicit Bomberman(physics::PhysicsId, graphics::RendererId,
+                       std::unique_ptr<HumanPlayer>,
+                       std::shared_ptr<physics::PhysicsEngine>,
+                       std::shared_ptr<graphics::RendererPool>);
+
     void update(DeltaTime) override;
     bool areYouDead() const override;
 
 private:
-    physics::PhysicsId physicsId;
-    std::shared_ptr<physics::PhysicsEngine> physicsEngine;
-
-    graphics::RendererId rendererId;
-    std::shared_ptr<graphics::RendererPool> rendererPool;
-
+    physics::PhysicsId physics_id;
+    graphics::RendererId renderer_id;
     std::unique_ptr<HumanPlayer> input;
+    std::shared_ptr<physics::PhysicsEngine> physics_engine;
+    std::shared_ptr<graphics::RendererPool> renderer_pool;
 };
