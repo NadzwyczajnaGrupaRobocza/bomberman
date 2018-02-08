@@ -2,6 +2,7 @@
 
 #include "fakeit.hpp"
 
+#include "BombFactory.hpp"
 #include "GameWorld.hpp"
 #include "LimitedBombLauncher.hpp"
 
@@ -23,9 +24,12 @@ struct LimitedBombLauncherTest : public ::testing::Test
     const int max_bombs = 2;
 
     Mock<GameWorld> game_world;
+    Mock<BombFactory> bomb_factory;
     std::shared_ptr<GameWorld> gw =
         std::shared_ptr<GameWorld>(&game_world.get(), [](...) {});
-    LimitedBombLauncher launcher = LimitedBombLauncher{gw, max_bombs};
+    std::shared_ptr<BombFactory> bf =
+        std::shared_ptr<BombFactory>(&bomb_factory.get(), [](...) {});
+    LimitedBombLauncher launcher = LimitedBombLauncher{gw, bf, max_bombs};
 };
 
 struct LimitedBombLauncherWithoutBombsLaunched : public LimitedBombLauncherTest

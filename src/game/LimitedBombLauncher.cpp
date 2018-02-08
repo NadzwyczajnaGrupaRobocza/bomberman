@@ -3,8 +3,9 @@
 #include "GameWorld.hpp"
 
 LimitedBombLauncher::LimitedBombLauncher(std::shared_ptr<GameWorld> gw,
+                                         std::shared_ptr<BombFactory> bf,
                                          const int maximum_bombs)
-    : game_world{std::move(gw)}, max_bombs{maximum_bombs}
+    : game_world{std::move(gw)}, bomb_factory{std::move(bf)}, max_bombs{maximum_bombs}
 {
 }
 

@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "BombFactory.hpp"
+
 #include "BombLauncher.hpp"
 
 class GameWorld;
@@ -9,13 +11,14 @@ class GameWorld;
 class LimitedBombLauncher : public BombLauncher
 {
 public:
-    LimitedBombLauncher(std::shared_ptr<GameWorld>, int);
+    LimitedBombLauncher(std::shared_ptr<GameWorld>, std::shared_ptr<BombFactory>, int);
 
     bool try_spawn_bomb(math::Position2f) override;
     void notify_exploded() override;
 
 private:
     std::shared_ptr<GameWorld> game_world;
+    std::shared_ptr<BombFactory> bomb_factory;
     const int max_bombs;
     int bombs{0};
 
