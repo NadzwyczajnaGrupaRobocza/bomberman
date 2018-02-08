@@ -1,5 +1,5 @@
 #include "BombermanGameWorld.hpp"
-#include "Window/Event.hpp"
+#include "SFML/Window/Event.hpp"
 #include "SFML/Window/Window.hpp"
 #include <memory>
 #include <chrono>
