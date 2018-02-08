@@ -8,6 +8,7 @@ add_library(game
   LimitedBombLauncher.cpp
   SimpleMap.cpp
   TimeBomb.cpp
+  DefaultBombFactory.cpp
   )
 
 target_include_directories(game SYSTEM
