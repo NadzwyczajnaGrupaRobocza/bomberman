@@ -39,6 +39,7 @@ struct LimitedBombLauncherWithoutBombsLaunched : public LimitedBombLauncherTest
 TEST_F(LimitedBombLauncherWithoutBombsLaunched, ShouldLaunchBomb)
 {
     When(Method(bomb_factory, create_time_bomb)).Return(nullptr);
+    //When(Method(game_world, register_bomb)).Using(default_position, );
 
     ASSERT_THAT(launcher.try_spawn_bomb(default_position),
                 ::testing::Eq(bomb_has_been_spawned));

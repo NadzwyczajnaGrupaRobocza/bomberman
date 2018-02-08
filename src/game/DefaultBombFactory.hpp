@@ -5,5 +5,5 @@
 class DefautlBombFactory : public BombFactory
 {
 public:
-    virtual std::shared_ptr<Bomb> create_time_bomb() const = 0;
+    virtual std::unique_ptr<Bomb> create_time_bomb() const = 0;
 };

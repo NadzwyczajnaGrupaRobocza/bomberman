@@ -1,6 +1,8 @@
 #include "DefaultBombFactory.hpp"
 
-std::shared_ptr<Bomb> DefautlBombFactory::create_time_bomb() const
+#include "TimeBomb.hpp"
+
+std::unique_ptr<Bomb> DefautlBombFactory::create_time_bomb() const
 {
     return nullptr;
 }

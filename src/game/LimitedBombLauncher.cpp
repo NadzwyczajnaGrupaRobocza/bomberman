@@ -2,6 +2,8 @@
 
 #include "GameWorld.hpp"
 
+#include "Bomb.hpp"
+
 LimitedBombLauncher::LimitedBombLauncher(std::shared_ptr<GameWorld> gw,
                                          std::shared_ptr<BombFactory> bf,
                                          const int maximum_bombs)
