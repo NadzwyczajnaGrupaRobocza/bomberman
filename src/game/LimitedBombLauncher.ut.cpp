@@ -30,6 +30,8 @@ struct LimitedBombLauncherTest : public ::testing::Test
         std::shared_ptr<GameWorld>(&game_world.get(), [](...) {});
     std::shared_ptr<BombFactory> bf =
         std::shared_ptr<BombFactory>(&bomb_factory.get(), [](...) {});
+    std::unique_ptr<Mock<Bomb>> unique_bomb = std::make_unique<Mock<Bomb>>();
+    Mock<Bomb>& bomb = *unique_bomb.get();
     LimitedBombLauncher launcher = LimitedBombLauncher{gw, bf, max_bombs};
 };
 
@@ -39,8 +41,8 @@ struct LimitedBombLauncherWithoutBombsLaunched : public LimitedBombLauncherTest
 
 TEST_F(LimitedBombLauncherWithoutBombsLaunched, ShouldLaunchBomb)
 {
-    When(Method(bomb_factory, create_time_bomb)).Do([&](){return nullptr;});
-    //When(Method(game_world, register_bomb)).Using(default_position, );
+    When(Method(bomb_factory, create_time_bomb)).Do([&]() { return nullptr; });
+    When(Method(game_world, register_bomb).Using(default_bomb_position, _));
 
     ASSERT_THAT(launcher.try_spawn_bomb(default_position),
                 ::testing::Eq(bomb_has_been_spawned));
@@ -62,7 +64,9 @@ struct LimitedBombLauncherWithAllBombsLaunched : public LimitedBombLauncherTest
 {
     LimitedBombLauncherWithAllBombsLaunched()
     {
-        When(Method(bomb_factory, create_time_bomb)).AlwaysDo([&](){return nullptr;});
+        When(Method(bomb_factory, create_time_bomb)).AlwaysDo([&]() {
+            return nullptr;
+        });
         launcher.try_spawn_bomb(default_position);
         launcher.try_spawn_bomb(default_position);
     }
