@@ -2,6 +2,7 @@
 
 #include "fakeit.hpp"
 
+#include "Bomb.hpp"
 #include "BombFactory.hpp"
 #include "GameWorld.hpp"
 #include "LimitedBombLauncher.hpp"
@@ -38,7 +39,7 @@ struct LimitedBombLauncherWithoutBombsLaunched : public LimitedBombLauncherTest
 
 TEST_F(LimitedBombLauncherWithoutBombsLaunched, ShouldLaunchBomb)
 {
-    When(Method(bomb_factory, create_time_bomb)).Return(nullptr);
+    When(Method(bomb_factory, create_time_bomb)).Do([&](){return nullptr;});
     //When(Method(game_world, register_bomb)).Using(default_position, );
 
     ASSERT_THAT(launcher.try_spawn_bomb(default_position),
@@ -61,7 +62,7 @@ struct LimitedBombLauncherWithAllBombsLaunched : public LimitedBombLauncherTest
 {
     LimitedBombLauncherWithAllBombsLaunched()
     {
-        When(Method(bomb_factory, create_time_bomb)).AlwaysReturn(nullptr);
+        When(Method(bomb_factory, create_time_bomb)).AlwaysDo([&](){return nullptr;});
         launcher.try_spawn_bomb(default_position);
         launcher.try_spawn_bomb(default_position);
     }
