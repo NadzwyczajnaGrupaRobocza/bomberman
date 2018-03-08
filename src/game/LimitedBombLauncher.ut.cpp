@@ -45,7 +45,7 @@ TEST_F(LimitedBombLauncherWithoutBombsLaunched, ShouldLaunchBomb)
 {
     Fake(Dtor(bomb));
     When(Method(bomb_factory, create_time_bomb)).Do([&]() { return std::unique_ptr<Bomb>{&unique_bomb->get()}; });
-    When(Method(game_world, register_bomb).Using(default_bomb_position, _));
+    When(Method(game_world, register_bomb).Using(default_bomb_position, unique_bomb->get()));
 
     ASSERT_THAT(launcher.try_spawn_bomb(default_position),
                 ::testing::Eq(bomb_has_been_spawned));
