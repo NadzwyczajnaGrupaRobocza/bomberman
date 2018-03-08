@@ -1,5 +1,7 @@
 #include "gmock/gmock.h"
 
+#include <iostream>
+
 #include "fakeit.hpp"
 
 #include "Bomb.hpp"
@@ -37,6 +39,13 @@ struct LimitedBombLauncherTest : public ::testing::Test
     LimitedBombLauncher launcher = LimitedBombLauncher{gw, bf, max_bombs};
 };
 
+std::ostream& operator<<(std::ostream& o, BombPosition pos);
+std::ostream& operator<<(std::ostream& o, BombPosition bp)
+{
+    math::Position2f pos(bp);
+    return o<< pos.x << ", " << pos.y;
+}
+
 struct LimitedBombLauncherWithoutBombsLaunched : public LimitedBombLauncherTest
 {
 };
@@ -44,13 +53,23 @@ struct LimitedBombLauncherWithoutBombsLaunched : public LimitedBombLauncherTest
 TEST_F(LimitedBombLauncherWithoutBombsLaunched, ShouldLaunchBomb)
 {
     Fake(Dtor(bomb));
-    When(Method(bomb_factory, create_time_bomb)).Do([&]() { return std::unique_ptr<Bomb>{&unique_bomb->get()}; });
-    When(Method(game_world, register_bomb).Using(default_bomb_position, unique_bomb->get()));
+    When(Method(bomb_factory, create_time_bomb)).Do([&]() {
+        return std::unique_ptr<Bomb>{&unique_bomb->get()};
+    });
+    When(Method(game_world, register_bomb)
+             .Matching([&](BombPosition &bombPosition,
+                           std::unique_ptr<Bomb>& uniq_bomb) {
+                           std::cout  << "\n" << bombPosition << " ? " << default_bomb_position  << "\n";
+                           std::cout  << "\n" << uniq_bomb.get() << " ? " << &unique_bomb->get() << "\n";
+                 return bombPosition == default_bomb_position &&
+                     uniq_bomb.get() == &unique_bomb->get();
+             }));
 
     ASSERT_THAT(launcher.try_spawn_bomb(default_position),
                 ::testing::Eq(bomb_has_been_spawned));
 
     Verify(Method(bomb_factory, create_time_bomb));
+    Verify(Method(game_world, register_bomb));
 }
 
 TEST_F(LimitedBombLauncherWithoutBombsLaunched,

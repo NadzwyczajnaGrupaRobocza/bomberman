@@ -23,7 +23,7 @@ private:
     int bombs{0};
 
     bool can_spawn_bomb(math::Position2f) const;
-    void launch_bomb();
+    void launch_bomb(math::Position2f);
     bool can_retrieve_bomb() const;
     void retrieve_bomb();
 };
