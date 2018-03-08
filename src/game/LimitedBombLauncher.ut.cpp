@@ -13,6 +13,8 @@ struct LimitedBombLauncherTest : public ::testing::Test
 {
     LimitedBombLauncherTest()
     {
+        Fake(Dtor(game_world));
+        Fake(Dtor(bomb_factory));
         When(Method(game_world, is_bomb_at_pos)).AlwaysReturn(no_bom_at_pos);
     }
 
@@ -27,9 +29,9 @@ struct LimitedBombLauncherTest : public ::testing::Test
     Mock<GameWorld> game_world;
     Mock<BombFactory> bomb_factory;
     std::shared_ptr<GameWorld> gw =
-        std::shared_ptr<GameWorld>(&game_world.get(), [](...) {});
+        std::shared_ptr<GameWorld>(&game_world.get());
     std::shared_ptr<BombFactory> bf =
-        std::shared_ptr<BombFactory>(&bomb_factory.get(), [](...) {});
+        std::shared_ptr<BombFactory>(&bomb_factory.get());
     std::unique_ptr<Mock<Bomb>> unique_bomb = std::make_unique<Mock<Bomb>>();
     Mock<Bomb>& bomb = *unique_bomb.get();
     LimitedBombLauncher launcher = LimitedBombLauncher{gw, bf, max_bombs};
