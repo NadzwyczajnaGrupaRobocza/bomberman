@@ -1,4 +1,5 @@
 find_package(SFML 2 COMPONENTS window graphics REQUIRED)
+find_package(Boost 1.6 REQUIRED)
 
 add_library(game
   BombermanGameWorld.cpp
@@ -12,7 +13,8 @@ add_library(game
   )
 
 target_include_directories(game SYSTEM
-  PRIVATE ${SFML_INCLUDE_DIR})
+  PRIVATE ${SFML_INCLUDE_DIR}
+          Boost::boost)
 
 target_link_libraries(game
   PUBLIC math
@@ -32,9 +34,9 @@ add_executable(game-ut
 
 target_include_directories(game-ut SYSTEM PRIVATE
   ${UT_INCLUDES}
+  Boost::boost
   )
 
-  
 target_include_directories(game PRIVATE
   ${INTERNAL_LIBS_INCLUDE_PATH}
   ${SFML_INCLUDE_DIR}
@@ -55,4 +57,3 @@ target_link_libraries(game-ut
 
 add_test(game-ut ${EXECUTABLE_OUTPUT_PATH}/game-ut --gtest_color=yes)
 target_link_libraries(Bomberman game ${SFML_LIBRARIES})
-
