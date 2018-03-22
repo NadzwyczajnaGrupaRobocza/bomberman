@@ -18,7 +18,7 @@ public:
         Fake(Dtor(renderer_pool));
     }
 
-    graphics::RendererId renderer_id{0x12};
+    graphics::RendererId renderer_id{{0x12}};
     physics::PhysicsId physics_id{0x3F};
 
     Mock<HumanPlayer> human_player;
