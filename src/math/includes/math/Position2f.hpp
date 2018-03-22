@@ -42,3 +42,10 @@ inline bool operator<(const Position2f& lhs, const Position2f& rhs)
     return tie(lhs) < tie(rhs);
 }
 }
+
+inline std::ostream& operator<<(std::ostream& out,
+                                const math::Position2f& position)
+{
+    return out << "Position2f{x:" << position.x << ", "
+               << "y:" << position.y << "}\n";
+}

@@ -3,7 +3,7 @@
 class TimeBomb : public Bomb
 {
 public:
-    void update(std::chrono::milliseconds) override;
+    void update(DeltaTime) override;
     bool areYouDead() const override;
     bool hasExploded() const override;
 
@@ -13,7 +13,7 @@ private:
     std::chrono::milliseconds timeElapsed{};
 
     bool shouldExplode() const;
-    void updateElapsedTime(std::chrono::milliseconds);
+    void updateElapsedTime(DeltaTime);
     void markExploded();
 };
 

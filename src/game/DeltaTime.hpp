@@ -2,4 +2,4 @@
 
 #include <chrono>
 
-using DeltaTime = std::chrono::milliseconds;
+using DeltaTime = std::chrono::duration<float>;

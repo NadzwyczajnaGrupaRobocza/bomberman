@@ -9,19 +9,19 @@ Bomberman::Bomberman(physics::PhysicsId phys_id, graphics::RendererId rend_id,
 {
 }
 
-void Bomberman::update(DeltaTime)
+void Bomberman::update(DeltaTime dt)
 {
     auto position = physics_engine->get_position(physics_id);
     renderer_pool->set_position(renderer_id, position);
 
     const auto new_direction = input->get_direction();
-    position.x += new_direction.x;
-    position.y += new_direction.y;
+    position.x += new_direction.x * dt.count();
+    position.y += new_direction.y * dt.count();
 
     physics_engine->set_position(physics_id, position);
 }
 
 bool Bomberman::areYouDead() const
 {
-    return true;
+    return false;
 }

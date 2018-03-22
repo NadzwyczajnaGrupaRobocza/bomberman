@@ -16,7 +16,7 @@ void BombermanGameWorld::register_explosion(ExplosionPosition p, std::unique_ptr
     explosions[p] = std::move(explosion);
 }
 
-void BombermanGameWorld::update(ElapsedTime dt)
+void BombermanGameWorld::update(DeltaTime dt)
 {
     for(const auto& b : bombs)
     {
