@@ -9,6 +9,10 @@ namespace math
 struct Position2f : boost::additive<Position2f>,
                     boost::totally_ordered<Position2f>
 {
+    constexpr Position2f() : Position2f(.0f, .0f)
+    {
+    }
+
     constexpr Position2f(const float x_, const float y_) : x{x_}, y{y_}
     {
     }
