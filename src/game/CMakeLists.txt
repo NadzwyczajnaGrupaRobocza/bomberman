@@ -14,7 +14,7 @@ add_library(game
 
 target_include_directories(game SYSTEM
   PRIVATE ${SFML_INCLUDE_DIR}
-          Boost::boost)
+          ${Boost_INCLUDE_DIRS})
 
 target_link_libraries(game
   PUBLIC math
@@ -34,7 +34,7 @@ add_executable(game-ut
 
 target_include_directories(game-ut SYSTEM PRIVATE
   ${UT_INCLUDES}
-  Boost::boost
+  ${Boost_INCLUDE_DIRS}
   )
 
 target_include_directories(game PRIVATE
