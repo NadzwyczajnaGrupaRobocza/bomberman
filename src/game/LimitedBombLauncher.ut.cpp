@@ -39,6 +39,14 @@ struct LimitedBombLauncherTest : public ::testing::Test
     LimitedBombLauncher launcher = LimitedBombLauncher{gw, bf, max_bombs};
 };
 
+struct D
+{
+    void operator ()(Bomb *)
+    {
+    }
+
+};
+
 std::ostream& operator<<(std::ostream& o, BombPosition pos);
 std::ostream& operator<<(std::ostream& o, BombPosition bp)
 {
@@ -54,12 +62,12 @@ TEST_F(LimitedBombLauncherWithoutBombsLaunched, ShouldLaunchBomb)
 {
     Fake(Dtor(bomb));
     When(Method(bomb_factory, create_time_bomb)).Do([&]() {
-        return std::unique_ptr<Bomb>{&unique_bomb->get()};
+            return std::unique_ptr<Bomb>{&unique_bomb->get()};
     });
     When(Method(game_world, register_bomb)
-             .Matching([&](BombPosition& bombPosition,
+         .Matching([&](BombPosition& bombPosition,
                            std::unique_ptr<Bomb>& uniq_bomb) {
-                 std::cout << "\n"
+                             std::cout << "\n"
                            << bombPosition << " ? " << default_bomb_position
                            << " res: " << (bombPosition == default_bomb_position)
                            << "\n";
@@ -67,9 +75,11 @@ TEST_F(LimitedBombLauncherWithoutBombsLaunched, ShouldLaunchBomb)
                            << uniq_bomb.get() << " ? " << &unique_bomb->get()
                            << " res: " << (uniq_bomb.get() == &unique_bomb->get())
                            << "\n";
+                 const auto uniq_bom_address = uniq_bomb.get();
+                 uniq_bomb.release();
                  return bombPosition == default_bomb_position &&
-                        uniq_bomb.get() == &unique_bomb->get();
-             }));
+                        uniq_bom_address == &unique_bomb->get();
+                   })).Return();
 
     ASSERT_THAT(launcher.try_spawn_bomb(default_position),
                 ::testing::Eq(bomb_has_been_spawned));
@@ -98,7 +108,10 @@ struct LimitedBombLauncherWithAllBombsLaunched : public LimitedBombLauncherTest
             Fake(Dtor(bomb_ref));
             return std::unique_ptr<Bomb>{&mock_bomb->get()};
         });
-        Fake(Method(game_world, register_bomb));
+        When(Method(game_world, register_bomb)).AlwaysDo([&] (auto &, auto &bomb_to_release)
+        {
+            bomb_to_release.release();
+        });
         launcher.try_spawn_bomb(default_position);
         launcher.try_spawn_bomb(default_position);
     }
