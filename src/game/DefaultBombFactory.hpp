@@ -20,6 +20,7 @@ public:
 
     virtual std::unique_ptr<Bomb> create_time_bomb() const = 0;
 
-    pribate : const physics::PhysicsEngine physics_engine;
-    const graphics::RendererPool renderer_pool;
+private:
+    const physics::PhysicsEngine& physics_engine;
+    const graphics::RendererPool& renderer_pool;
 };
