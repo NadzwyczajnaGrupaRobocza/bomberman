@@ -1,5 +1,7 @@
 #include "Bomb.hpp"
 
+class GameWorld;
+
 class TimeBomb : public Bomb
 {
 public:
@@ -16,5 +18,3 @@ private:
     void updateElapsedTime(std::chrono::milliseconds);
     void markExploded();
 };
-
-
