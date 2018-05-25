@@ -27,7 +27,7 @@ private:
     physics::PhysicsId physics_id;
     graphics::RendererId renderer_id;
     std::unique_ptr<HumanPlayer> input;
+    std::unique_ptr<BombLauncher> bomb_launcher;
     std::shared_ptr<physics::PhysicsEngine> physics_engine;
     std::shared_ptr<graphics::RendererPool> renderer_pool;
-    std::unique_ptr<BombLauncher> bomb_launcher;
 };

@@ -6,8 +6,8 @@ Bomberman::Bomberman(physics::PhysicsId phys_id, graphics::RendererId rend_id,
                      std::shared_ptr<graphics::RendererPool> pool,
                      std::unique_ptr<BombLauncher> launcher)
     : physics_id{phys_id}, renderer_id{rend_id}, input{std::move(player)},
-      physics_engine{physics}, renderer_pool{pool}, bomb_launcher{
-                                                        std::move(launcher)}
+      bomb_launcher{std::move(launcher)}, physics_engine{physics},
+      renderer_pool{pool}
 {
 }
 
@@ -16,7 +16,7 @@ void Bomberman::update(DeltaTime dt)
     auto position = physics_engine->get_position(physics_id);
     renderer_pool->set_position(renderer_id, position);
 
-    if(input->wants_bomb())
+    if (input->wants_bomb())
     {
         bomb_launcher->try_spawn_bomb(position);
     }
