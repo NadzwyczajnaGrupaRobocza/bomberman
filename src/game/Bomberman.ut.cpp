@@ -18,6 +18,38 @@ public:
         Fake(Dtor(renderer_pool));
     }
 
+    void expectGetPosFromPhysics()
+    {
+        When(Method(physics_engine, get_position).Using(physics_id))
+            .Return(current_position);
+    }
+
+    void expectSetCurrentPositionInRenderer()
+    {
+        When(Method(renderer_pool, set_position))
+            .Do([this](const auto&, const auto& position) mutable {
+                expected_current_renderer_position = position;
+            });
+    }
+
+    void expectPassNewPositionToPhysics()
+    {
+        When(Method(physics_engine, set_position))
+            .Do([this](const auto&, const auto& position) mutable {
+                expected_next_physics_position = position;
+            });
+    }
+
+    void expectGetDirectionFromInput(const VectorInt2D direction)
+    {
+        When(Method(human_player, get_direction)).Return(direction);
+    }
+
+    const math::Position2f current_position{20.0f, 120.0f};
+
+    math::Position2f expected_current_renderer_position{0.0f, 0.0f};
+    math::Position2f expected_next_physics_position{0.0f, 0.0f};
+
     graphics::RendererId renderer_id{{0x12}};
     physics::PhysicsId physics_id{0x3F};
 
@@ -39,33 +71,18 @@ TEST_F(BombermanTest, newlyCreatedBomermanShouldBeAlive)
 
 TEST_F(BombermanTest, update)
 {
-    const math::Position2f bomberman_position{20.0f, 120.0f};
-    const math::Position2f new_bomberman_position{20.003f, 120.003f};
-    const VectorInt2D player_direction = {1, 1};
-    const auto delta_time = 3ms;
+    expectGetPosFromPhysics();
+    expectSetCurrentPositionInRenderer();
+    expectGetDirectionFromInput(VectorInt2D{1, 1});
+    expectPassNewPositionToPhysics();
 
-    math::Position2f saved_renderer_position{0.0f, 0.0f};
-    math::Position2f saved_physics_position{0.0f, 0.0f};
-
-    When(Method(physics_engine, get_position).Using(physics_id))
-        .Return(bomberman_position);
-    When(Method(renderer_pool, set_position))
-        .Do([&saved_renderer_position](const auto&, const auto& position) mutable {
-            saved_renderer_position = position;
-        });
-    When(Method(physics_engine, set_position))
-        .Do([&saved_physics_position](const auto&, const auto& position) mutable {
-            saved_physics_position = position;
-        });
-    When(Method(human_player, get_direction)).Return(player_direction);
-
-    bomberman.update(delta_time);
+    bomberman.update(DeltaTime{3ms});
 
     Verify(Method(physics_engine, get_position).Using(physics_id));
     Verify(Method(renderer_pool, set_position).Using(renderer_id, _));
     Verify(Method(human_player, get_direction));
     Verify(Method(physics_engine, set_position).Using(physics_id, _));
 
-    EXPECT_EQ(bomberman_position, saved_renderer_position);
-    EXPECT_EQ(new_bomberman_position, saved_physics_position);
+    EXPECT_EQ(current_position, expected_current_renderer_position);
+    EXPECT_EQ(math::Position2f(20.003f, 120.003f), expected_next_physics_position);
 }
