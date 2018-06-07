@@ -15,6 +15,7 @@ public:
     ExpectRegistration(Mock<physics::PhysicsEngine>&,
                        Mock<graphics::RendererPool>&)
     {
+
     }
 };
 

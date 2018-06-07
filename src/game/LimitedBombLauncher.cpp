@@ -30,7 +30,7 @@ bool LimitedBombLauncher::can_spawn_bomb(const math::Position2f pos) const
 void LimitedBombLauncher::launch_bomb(math::Position2f pos)
 {
     ++bombs;
-    auto bomb = bomb_factory->create_time_bomb();
+    auto bomb = bomb_factory->create_time_bomb(pos);
     game_world->register_bomb(BombPosition{pos}, std::move(bomb));
 }
 

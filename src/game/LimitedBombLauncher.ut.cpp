@@ -51,9 +51,8 @@ struct LimitedBombLauncherWithoutBombsLaunched : public LimitedBombLauncherTest
 TEST_F(LimitedBombLauncherWithoutBombsLaunched, ShouldLaunchBomb)
 {
     Fake(Dtor(bomb));
-    When(Method(bomb_factory, create_time_bomb)).Do([&]() {
-        return std::unique_ptr<Bomb>{&unique_bomb->get()};
-    });
+    When(Method(bomb_factory, create_time_bomb).Using(default_bomb_position))
+        .Do([&](auto) { return std::unique_ptr<Bomb>{&unique_bomb->get()}; });
     When(Method(game_world, register_bomb)
              .Matching([&](BombPosition& bombPosition,
                            std::unique_ptr<Bomb>& uniq_bomb) {
@@ -85,7 +84,7 @@ struct LimitedBombLauncherWithAllBombsLaunched : public LimitedBombLauncherTest
 {
     LimitedBombLauncherWithAllBombsLaunched()
     {
-        When(Method(bomb_factory, create_time_bomb)).AlwaysDo([&]() {
+        When(Method(bomb_factory, create_time_bomb)).AlwaysDo([&](auto) {
             auto mock_bomb = std::make_unique<Mock<Bomb>>();
             Mock<Bomb>& bomb_ref = *mock_bomb.get();
             Fake(Dtor(bomb_ref));
