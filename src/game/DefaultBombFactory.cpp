@@ -5,8 +5,8 @@
 
 #include "TimeBomb.hpp"
 
-DefautlBombFactory::DefautlBombFactory(const physics::PhysicsEngine& pe,
-                                       const graphics::RendererPool& rp)
+DefautlBombFactory::DefautlBombFactory(physics::PhysicsEngine& pe,
+                                       graphics::RendererPool& rp)
     : physics_engine{pe}, renderer_pool{rp}
 {
 }

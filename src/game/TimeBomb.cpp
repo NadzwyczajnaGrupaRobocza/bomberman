@@ -1,5 +1,11 @@
 #include "TimeBomb.hpp"
 
+TimeBomb::TimeBomb(physics::PhysicsEngine& pe, graphics::RendererPool& rp)
+    :  physics_engine{pe}, renderer_pool{rp}
+{
+    
+}
+
 void TimeBomb::update(std::chrono::milliseconds dt)
 {
     updateElapsedTime(dt);

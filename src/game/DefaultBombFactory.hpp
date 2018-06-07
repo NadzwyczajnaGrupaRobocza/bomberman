@@ -15,12 +15,12 @@ class RendererPool;
 class DefautlBombFactory : public BombFactory
 {
 public:
-    DefautlBombFactory(const physics::PhysicsEngine&,
-                       const graphics::RendererPool&);
+    DefautlBombFactory(physics::PhysicsEngine&,
+                       graphics::RendererPool&);
 
     virtual std::unique_ptr<Bomb> create_time_bomb() const = 0;
 
 private:
-    const physics::PhysicsEngine& physics_engine;
-    const graphics::RendererPool& renderer_pool;
+    physics::PhysicsEngine& physics_engine;
+    graphics::RendererPool& renderer_pool;
 };
