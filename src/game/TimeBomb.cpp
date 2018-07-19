@@ -1,6 +1,6 @@
 #include "TimeBomb.hpp"
 
-void TimeBomb::update(std::chrono::milliseconds dt)
+void TimeBomb::update(DeltaTime dt)
 {
     updateElapsedTime(dt);
     if (shouldExplode())
@@ -9,9 +9,9 @@ void TimeBomb::update(std::chrono::milliseconds dt)
     }
 }
 
-void TimeBomb::updateElapsedTime(std::chrono::milliseconds dt )
+void TimeBomb::updateElapsedTime(DeltaTime dt )
 {
-    timeElapsed += dt;
+    timeElapsed += std::chrono::duration_cast<std::chrono::milliseconds>(dt);
 }
 
 bool TimeBomb::shouldExplode() const

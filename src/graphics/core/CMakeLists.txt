@@ -1,5 +1,4 @@
 find_package(SFML 2 COMPONENTS system graphics window REQUIRED)
-find_package(Boost 1.6 REQUIRED)
 
 ########################### SRC ###########################
 add_library(graphics
@@ -17,7 +16,7 @@ target_include_directories(graphics
 
 target_include_directories(graphics SYSTEM
   PRIVATE ${SFML_INCLUDE_DIR}
-          Boost::boost)
+          )
 
 target_link_libraries(graphics
   PRIVATE ${SFML_LIBRARIES}
@@ -34,8 +33,7 @@ target_include_directories(graphics-ut SYSTEM BEFORE
   PRIVATE ${CMAKE_CURRENT_LIST_DIR}
           ${CMAKE_CURRENT_LIST_DIR}/../types
           ${UT_INCLUDES}
-          ${SFML_INCLUDE_DIR}
-          Boost::boost)
+          ${SFML_INCLUDE_DIR})
 
 target_link_libraries(graphics-ut
   PRIVATE graphics gmock_main ${SFML_LIBRARIES})
