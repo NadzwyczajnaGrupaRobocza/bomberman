@@ -37,7 +37,7 @@ public:
         return size;
     }
 
-    bool activate([[maybe_unused]] bool active) override
+    bool setActive([[maybe_unused]] bool active) override
     {
         return true;
     }

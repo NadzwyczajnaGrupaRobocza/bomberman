@@ -29,7 +29,6 @@ add_executable(game-ut
   Bomberman.ut.cpp
   )
 
-
 target_include_directories(game-ut SYSTEM PRIVATE
   ${UT_INCLUDES}
   )
@@ -53,4 +52,4 @@ target_link_libraries(game-ut
   PRIVATE game graphics gtest_main gmock)
 
 add_test(game-ut ${EXECUTABLE_OUTPUT_PATH}/game-ut --gtest_color=yes)
-target_link_libraries(Bomberman game ${SFML_LIBRARIES})
+target_link_libraries(Bomberman PRIVATE game ${SFML_LIBRARIES} graphics physics math)

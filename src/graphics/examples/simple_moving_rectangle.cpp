@@ -104,7 +104,7 @@ int main()
         create_object_at_center(available_region, *renderer_pool);
     const auto center_position = renderer_pool->get_position(center_id);
 
-    constexpr auto circle_r = 200;
+    constexpr auto circle_r = 250;
     constexpr auto step = 40;
     auto clock_arrow  = create_arrow_from_point(center_position, circle_r, step,
                                          *renderer_pool);

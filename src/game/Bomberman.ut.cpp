@@ -104,7 +104,7 @@ TEST_F(BombermanTest, update_without_bombs)
     Verify(Method(physics_engine, set_position).Using(physics_id, _));
 
     EXPECT_EQ(current_position, expected_current_renderer_position);
-    EXPECT_EQ(math::Position2f(20.003f, 120.003f),
+    EXPECT_EQ(math::Position2f(20.3f, 120.3f),
               expected_next_physics_position);
 }
 
@@ -131,7 +131,7 @@ TEST_F(BombermanTest, update_with_bombs_not_spawned)
     Verify(Method(physics_engine, set_position).Using(physics_id, _));
 
     EXPECT_EQ(current_position, expected_current_renderer_position);
-    EXPECT_EQ(math::Position2f(20.003f, 120.003f),
+    EXPECT_EQ(math::Position2f(20.3f, 120.3f),
               expected_next_physics_position);
 }
 
@@ -158,6 +158,6 @@ TEST_F(BombermanTest, update_with_bombs_spawned)
     Verify(Method(physics_engine, set_position).Using(physics_id, _));
 
     EXPECT_EQ(current_position, expected_current_renderer_position);
-    EXPECT_EQ(math::Position2f(20.003f, 120.003f),
+    EXPECT_EQ(math::Position2f(20.3f, 120.3f),
               expected_next_physics_position);
 }
