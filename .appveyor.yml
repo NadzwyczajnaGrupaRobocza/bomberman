@@ -5,12 +5,13 @@ build:
 
 skip_commits:
   message: /\[ci skip\]/
-  # files:
-  #   - README.md
-  #   - .gitignore
-  #   - .clang-tidy
-  #   - .clang-format
-  #   - docs/
+  files:
+    - README.md
+    - .gitignore
+    - .clang-tidy
+    - .clang-format
+    - Dockerfile
+    - docs/*
 
 environment:
   matrix:
