@@ -8,6 +8,7 @@ add_library(game
   LimitedBombLauncher.cpp
   SimpleMap.cpp
   TimeBomb.cpp
+  Bomberman.cpp
   )
 
 target_include_directories(game SYSTEM
@@ -25,6 +26,7 @@ add_executable(game-ut
   Map.ut.cpp
   SimpleMap.ut.cpp
   TimeBomb.ut.cpp
+  Bomberman.ut.cpp
   )
 
 target_include_directories(game-ut SYSTEM PRIVATE
@@ -51,4 +53,3 @@ target_link_libraries(game-ut
 
 add_test(game-ut ${EXECUTABLE_OUTPUT_PATH}/game-ut --gtest_color=yes)
 target_link_libraries(Bomberman PRIVATE game ${SFML_LIBRARIES} graphics physics math)
-

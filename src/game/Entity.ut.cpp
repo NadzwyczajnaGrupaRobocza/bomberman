@@ -6,7 +6,7 @@
 class ConcreteEntity : public Entity
 {
 public:
-    void update(std::chrono::milliseconds) override
+    void update(DeltaTime) override
     {
         ASSERT_TRUE(true);
     }

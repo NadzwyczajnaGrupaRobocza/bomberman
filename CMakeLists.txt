@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 3.2.2)
 project("bomberman" CXX)
 
+find_package(Boost 1.6 REQUIRED)
+
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
@@ -36,5 +38,6 @@ endif()
 include_directories(SYSTEM ${RANGEV3_INCLUDE_DIR})
 include_directories(SYSTEM ${GSL_INCLUDE_DIR})
 include_directories(SYSTEM ${GLM_INCLUDE_DIR})
+include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 
 add_subdirectory(src)

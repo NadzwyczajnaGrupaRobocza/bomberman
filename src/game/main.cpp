@@ -30,7 +30,7 @@ int main()
     }
 
     const std::chrono::milliseconds ms{clock.restart().asMilliseconds()};
-    world.update(ElapsedTime{ms});
+        world.update(DeltaTime{ms});
 
     window.display();
   }
