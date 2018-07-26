@@ -28,16 +28,16 @@ class renderer_pool_sfml_test : public ::testing::Test
 public:
     void SetUp() override
     {
-        Fake(Dtor(renderer_id_generator));
-        Fake(Dtor(context_renderer));
-        Fake(Method(context_renderer, initialize));
+        Fake(Dtor(id_generator));
+        Fake(Dtor(renderer));
+        Fake(Method(renderer, initialize));
 
         renderer_pool = std::make_unique<renderer_pool_sfml>(
-            std::unique_ptr<context_renderer>(&context_renderer.get()),
-            std::unique_ptr<renderer_id_generator>(
-                &renderer_id_generator.get()));
+            std::unique_ptr<renderer>(&renderer.get()),
+            std::unique_ptr<id_generator>(
+                &id_generator.get()));
 
-        Verify(Method(context_renderer, initialize));
+        Verify(Method(renderer, initialize));
     }
 
     auto create_dummy_shape(const size2f& size = dummy_size,
@@ -50,8 +50,8 @@ public:
     {
         std::vector<sfml_rectangle_shape> shapes;
         shapes.reserve(expected_shapes.size());
-        Fake(Method(context_renderer, clear));
-        When(Method(context_renderer, draw)).AlwaysDo([&](const auto& shape) {
+        Fake(Method(renderer, clear));
+        When(Method(renderer, draw)).AlwaysDo([&](const auto& shape) {
             shapes.push_back(shape);
         });
 
@@ -83,17 +83,17 @@ public:
         expect_eq_position(new_position, id);
     }
 
-    Mock<renderer_id_generator> renderer_id_generator;
-    Mock<context_renderer> context_renderer;
+    Mock<renderer_id_generator> id_generator;
+    Mock<context_renderer> renderer;
     std::unique_ptr<renderer_pool_sfml> renderer_pool;
 
-    const renderer_id id1{renderer_id_generator{}.generate()};
-    const renderer_id id2{renderer_id_generator{}.generate()};
+    const renderer_id id1{id_generator{}.generate()};
+    const renderer_id id2{id_generator{}.generate()};
 };
 
 TEST_F(renderer_pool_sfml_test, acquireTwoRenderableObject_positionShouldMatch)
 {
-    When(Method(renderer_id_generator, generate)).Return(id1).Return(id2);
+    When(Method(id_generator, generate)).Return(id1).Return(id2);
 
     expect_acquire_renderable(dummy_size, dummy_position, id1);
     expect_acquire_renderable(another_dummy_size, dummy_position, id2);
@@ -103,7 +103,7 @@ TEST_F(renderer_pool_sfml_test, acquireTwoRenderableObject_positionShouldMatch)
 
 TEST_F(renderer_pool_sfml_test, renderableObjectShouldBeMovable)
 {
-    When(Method(renderer_id_generator, generate)).Return(id1);
+    When(Method(id_generator, generate)).Return(id1);
     expect_acquire_renderable(dummy_size, dummy_position, id1);
     expect_eq_position(dummy_position, id1);
 
@@ -126,8 +126,8 @@ TEST_F(renderer_pool_sfml_test, setPositiontOfInvalidIdShouldThrow)
 
 TEST_F(renderer_pool_sfml_test, renderAll)
 {
-    When(Method(renderer_id_generator, generate)).AlwaysDo([]() {
-        return renderer_id_generator{}.generate();
+    When(Method(id_generator, generate)).AlwaysDo([]() {
+        return id_generator{}.generate();
     });
 
     auto expected_shapes = {
@@ -141,23 +141,23 @@ TEST_F(renderer_pool_sfml_test, renderAll)
 
     expect_render_all({expected_shapes});
 
-    Verify(Method(context_renderer, clear).Using(sf::Color::Black));
-    Verify(Method(context_renderer, draw))
+    Verify(Method(renderer, clear).Using(sf::Color::Black));
+    Verify(Method(renderer, draw))
         .Exactly(static_cast<int>(expected_shapes.size()));
 }
 
 TEST_F(renderer_pool_sfml_test, releaseWithoutAcquire_doNothing)
 {
     renderer_pool->release(id1);
-    Fake(Method(context_renderer, clear));
-    Fake(Method(context_renderer, draw));
+    Fake(Method(renderer, clear));
+    Fake(Method(renderer, draw));
     renderer_pool->render_all();
-    Verify(Method(context_renderer, draw)).Exactly(0);
+    Verify(Method(renderer, draw)).Exactly(0);
 }
 
 TEST_F(renderer_pool_sfml_test, acquireTwoReleaseOne_shouldRenderOnlyOne)
 {
-    When(Method(renderer_id_generator, generate)).Return(id1).Return(id2);
+    When(Method(id_generator, generate)).Return(id1).Return(id2);
 
     EXPECT_EQ(id1, renderer_pool->acquire(dummy_size, dummy_position));
     EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position));
@@ -168,13 +168,13 @@ TEST_F(renderer_pool_sfml_test, acquireTwoReleaseOne_shouldRenderOnlyOne)
 
     expect_render_all(expected_shapes);
 
-    Verify(Method(context_renderer, clear).Using(sf::Color::Black));
-    Verify(Method(context_renderer, draw)).Once();
+    Verify(Method(renderer, clear).Using(sf::Color::Black));
+    Verify(Method(renderer, draw)).Once();
 }
 
 TEST_F(renderer_pool_sfml_test, reacquirenShouldBeRendered)
 {
-    When(Method(renderer_id_generator, generate))
+    When(Method(id_generator, generate))
         .Return(id1)
         .Return(id2)
         .Return(id2);

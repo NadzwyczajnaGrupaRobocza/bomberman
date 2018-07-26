@@ -1,9 +1,9 @@
 #include "Bomberman.hpp"
 
-Bomberman::Bomberman(physics::PhysicsId phys_id, graphics::RendererId rend_id,
+Bomberman::Bomberman(physics::PhysicsId phys_id, graphics::renderer_id rend_id,
                      std::unique_ptr<HumanPlayer> player,
                      std::shared_ptr<physics::PhysicsEngine> physics,
-                     std::shared_ptr<graphics::RendererPool> pool,
+                     std::shared_ptr<graphics::renderer_pool> pool,
                      std::unique_ptr<BombLauncher> launcher)
     : physics_id{phys_id}, renderer_id{rend_id}, input{std::move(player)},
       bomb_launcher{std::move(launcher)}, physics_engine{physics},

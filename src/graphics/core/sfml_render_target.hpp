@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include <SFML/Graphics/render_target.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 
 #include "window_size.hpp"
 #include "context_renderer.hpp"
@@ -13,7 +13,7 @@ template <typename BaseRenderTarget>
 class render_target : public context_renderer, public BaseRenderTarget
 {
 public:
-    render_target(const window_size& size) : window_size{size}
+    render_target(const window_size& s) : size{s}
     {
     }
 
@@ -27,23 +27,24 @@ public:
         BaseRenderTarget::clear(color);
     }
 
-    void draw(const SfmlRectangleShape& drawable) override
+    void draw(const sfml_rectangle_shape& drawable) override
     {
         BaseRenderTarget::draw(drawable);
     }
 
     sf::Vector2u getSize() const override
     {
-        return window_size;
+        return size;
     }
+
     bool activate([[maybe_unused]] bool active) override
     {
         return true;
     }
 
 protected:
-    window_size window_size;
+    window_size size;
 };
 
-using sfml_render_target = render_target<sf::render_target>;
+using sfml_render_target = render_target<sf::RenderTarget>;
 }

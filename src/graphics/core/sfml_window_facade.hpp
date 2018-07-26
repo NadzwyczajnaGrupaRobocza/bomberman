@@ -1,15 +1,15 @@
-#include "SfmlWindow.hpp"
+#include "sfml_window.hpp"
 
 #include <SFML/Window/Window.hpp>
 
-#include "WindowSize.hpp"
+#include "window_size.hpp"
 
 namespace graphics
 {
-class SfmlWindowFacade : public SfmlWindow
+class sfml_window_facade : public sfml_window
 {
 public:
-    SfmlWindowFacade(const WindowSize&, const std::string& title);
+    sfml_window_facade(const window_size&, const std::string& title);
     bool is_open() const override;
     void display() override;
     bool poll_event(sf::Event&) override;

@@ -10,18 +10,17 @@ namespace graphics
 {
 
 renderer_pool_sfml::renderer_pool_sfml(
-    std::unique_ptr<ContextRenderer> renderer,
-    std::unique_ptr<renderer_id_generator> generator)
-    : context_renderer{std::move(renderer)}, renderer_id_generator{
-                                                 std::move(generator)}
+    std::unique_ptr<context_renderer> r,
+    std::unique_ptr<renderer_id_generator> g)
+    : renderer{std::move(r)}, id_generator{std::move(g)}
 {
-    context_renderer->initialize();
+    renderer->initialize();
 }
 
 renderer_id renderer_pool_sfml::acquire(const math::Size2f& size,
-                                     const math::Position2f& position)
+                                        const math::Position2f& position)
 {
-    auto id = renderer_id_generator->generate();
+    auto id = id_generator->generate();
     shapes.emplace(std::piecewise_construct, std::forward_as_tuple(id),
                    std::forward_as_tuple(size, position));
     return id;
@@ -41,15 +40,14 @@ void renderer_pool_sfml::cleanup_unused()
 void renderer_pool_sfml::render_all()
 {
     cleanup_unused();
-    context_renderer->clear(sf::Color::Black);
+    renderer->clear(sf::Color::Black);
 
-    ranges::for_each(shapes, [&](const auto& shape) {
-        context_renderer->draw(shape.second);
-    });
+    ranges::for_each(shapes,
+                     [&](const auto& shape) { renderer->draw(shape.second); });
 }
 
 void renderer_pool_sfml::set_position(const renderer_id& id,
-                                    const math::Position2f& position)
+                                      const math::Position2f& position)
 {
     shapes.at(id).setPosition({position.x, position.y});
 }

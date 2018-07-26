@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RendererId.hpp"
+#include "renderer_id.hpp"
 #include "math/Position2f.hpp"
 #include "math/Size2f.hpp"
 

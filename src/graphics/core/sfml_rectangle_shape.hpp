@@ -3,23 +3,23 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <boost/operators.hpp>
 
-#include "Position2f.hpp"
-#include "Size2f.hpp"
+#include "position2f.hpp"
+#include "size2f.hpp"
 
 namespace graphics
 {
-class SfmlRectangleShape : public sf::RectangleShape,
-                           public boost::equality_comparable<SfmlRectangleShape>
+class sfml_rectangle_shape : public sf::RectangleShape,
+                           public boost::equality_comparable<sfml_rectangle_shape>
 {
 public:
-    SfmlRectangleShape(const Size2f&, const Position2f&);
+    sfml_rectangle_shape(const size2f&, const position2f&);
 
-    Position2f getPosition() const;
-    Size2f getSize() const;
+    position2f getPosition() const;
+    size2f getSize() const;
 };
 
-inline bool operator==(const SfmlRectangleShape& lhs,
-                       const SfmlRectangleShape& rhs)
+inline bool operator==(const sfml_rectangle_shape& lhs,
+                       const sfml_rectangle_shape& rhs)
 {
     return lhs.getPosition() == rhs.getPosition() &&
            lhs.getSize() == rhs.getSize();

@@ -4,7 +4,7 @@
 
 namespace graphics
 {
-window_sfml::window_sfml(const WindowSize& size, const std::string& title,
+window_sfml::window_sfml(const window_size& size, const std::string& title,
                          std::unique_ptr<sfml_window> w)
     : window{std::move(w)}
 {

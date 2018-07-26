@@ -1,10 +1,10 @@
 #include "graphics/factory.hpp"
 
 #include "renderer_pool_sfml.hpp"
-#include "SfmlRenderTarget.hpp"
+#include "sfml_render_target.hpp"
 #include "renderer_id_generator.hpp"
-#include "WindowSfml.hpp"
-#include "SfmlWindowFacade.hpp"
+#include "window_sfml.hpp"
+#include "sfml_window_facade.hpp"
 
 namespace graphics
 {

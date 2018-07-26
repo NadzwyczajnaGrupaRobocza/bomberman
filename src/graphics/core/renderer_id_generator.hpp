@@ -4,10 +4,10 @@
 
 namespace graphics
 {
-class RendererIdGenerator
+class renderer_id_generator
 {
 public:
-    virtual ~RendererIdGenerator() noexcept = default;
-    virtual RendererId generate() const;
+    virtual ~renderer_id_generator() noexcept = default;
+    virtual renderer_id generate() const;
 };
 }

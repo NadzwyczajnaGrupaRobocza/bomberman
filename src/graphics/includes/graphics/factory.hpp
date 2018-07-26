@@ -6,7 +6,7 @@
 #include "math/Size2u.hpp"
 
 #include "renderer_pool.hpp"
-#include "Window.hpp"
+#include "window.hpp"
 
 namespace graphics
 {

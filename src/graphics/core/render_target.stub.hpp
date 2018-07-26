@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include "SfmlRectangleShape.hpp"
+#include "sfml_rectangle_shape.hpp"
 
 namespace graphics
 {

@@ -1,33 +1,32 @@
-#include "SfmlWindowFacade.hpp"
+#include "sfml_window_facade.hpp"
 
 namespace graphics
 {
-SfmlWindowFacade::SfmlWindowFacade(const WindowSize& ,
-                                   const std::string& )
+sfml_window_facade::sfml_window_facade(const window_size&, const std::string&)
 {
 }
 
-bool SfmlWindowFacade::is_open() const
+bool sfml_window_facade::is_open() const
 {
     return window.isOpen();
 }
 
-void SfmlWindowFacade::display()
+void sfml_window_facade::display()
 {
     window.display();
 }
 
-bool SfmlWindowFacade::poll_event(sf::Event& event)
+bool sfml_window_facade::poll_event(sf::Event& event)
 {
     return window.pollEvent(event);
 }
 
-void SfmlWindowFacade::close()
+void sfml_window_facade::close()
 {
     return window.close();
 }
 
-void SfmlWindowFacade::create(sf::VideoMode mode, const sf::String& title)
+void sfml_window_facade::create(sf::VideoMode mode, const sf::String& title)
 {
     return window.create(mode, title);
 }
