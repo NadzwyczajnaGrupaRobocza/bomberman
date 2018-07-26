@@ -38,7 +38,7 @@ script:
   - tar xzf SFML-2.5.0-linux-gcc-64-bit.tar.gz
   - cd ../
   - export SFML=`pwd`/sfml-dl/SFML-2.5.0/lib/cmake/SFML/
-  - echo "sflm: $SFML"
+  - echo "sflm $SFML"
   - mkdir build
   - cd build
   - env CC=${C_COMPILER} CXX=${CXX_COMPILER} cmake .. -DENABLE_COVERAGE:BOOL=TRUE -DSFML_ROOT=$SFML
