@@ -1,5 +1,11 @@
 #include "BombermanGameWorld.hpp"
+#include "BoundaryWallsPositionsGenerator.hpp"
 
+
+BombermanGameWorld::BombermanGameWorld(std::unique_ptr<physics::PhysicsEngine> a, std::unique_ptr<graphics::RendererPool> b)
+ : gen(std::make_unique<BoundaryWallsPositionsGenerator>()),
+   simpleMap{*a, *gen, *b}
+{}
 
 bool BombermanGameWorld::is_bomb_at_pos(const BombPosition& p) const
 {

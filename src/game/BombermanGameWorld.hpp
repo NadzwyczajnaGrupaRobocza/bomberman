@@ -6,10 +6,17 @@
 #include <map>
 #include <vector>
 #include "GameWorld.hpp"
+#include "physics/PhysicsEngine.hpp"
+#include "graphics/RendererPool.hpp"
+
+#include "SimpleMap.hpp"
 
 class BombermanGameWorld : public GameWorld
 {
 public:
+    BombermanGameWorld(std::unique_ptr<physics::PhysicsEngine>,
+                       std::unique_ptr<graphics::RendererPool>);
+
     virtual bool is_bomb_at_pos(const BombPosition&) const override;
 
     virtual void register_bomb(BombPosition, std::unique_ptr<Bomb>) override;
@@ -21,6 +28,10 @@ private:
     std::vector<std::unique_ptr<Entity>> entity;
     std::map<BombPosition, std::unique_ptr<Bomb>> bombs;
     std::map<ExplosionPosition, std::unique_ptr<Explosion>> explosions;
+
+
+    std::unique_ptr<WallPositionsGenerator> gen;
+    SimpleMap simpleMap;
 };
 
 
