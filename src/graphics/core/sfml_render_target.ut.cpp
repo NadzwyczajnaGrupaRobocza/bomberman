@@ -49,8 +49,8 @@ TEST(RenderTargetOverridedFuncionsTest, setAndGetSize)
 TEST(RenderTargetOverridedFuncionsTest,
      setActive_dummyMethodShouldJustReturnTrue)
 {
-    const WindowSize dummy_size{200, 300};
-    SfmlRenderTarget renderTarget{dummy_size};
+    const window_size dummy_size{200, 300};
+    sfml_render_target renderTarget{dummy_size};
     EXPECT_TRUE(renderTarget.setActive(true));
     EXPECT_TRUE(renderTarget.setActive(true));
     EXPECT_TRUE(renderTarget.setActive(false));

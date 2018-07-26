@@ -4,7 +4,7 @@
 #include <memory>
 #include <chrono>
 #include "math/Size2u.hpp"
-#include "graphics/Factory.hpp"
+#include "graphics/factory.hpp"
 #include "physics/PhysicsEngine.hpp"
 #include "physics/ConcretePhysicsEngine.hpp"
 
