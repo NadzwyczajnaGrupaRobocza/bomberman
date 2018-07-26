@@ -2,18 +2,18 @@
 
 #include <memory>
 
-#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/render_target.hpp>
 
-#include "WindowSize.hpp"
-#include "ContextRenderer.hpp"
+#include "window_size.hpp"
+#include "context_renderer.hpp"
 
 namespace graphics
 {
 template <typename BaseRenderTarget>
-class RenderTarget : public ContextRenderer, public BaseRenderTarget
+class render_target : public context_renderer, public BaseRenderTarget
 {
 public:
-    RenderTarget(const WindowSize& size) : window_size{size}
+    render_target(const window_size& size) : window_size{size}
     {
     }
 
@@ -42,8 +42,8 @@ public:
     }
 
 protected:
-    WindowSize window_size;
+    window_size window_size;
 };
 
-using SfmlRenderTarget = RenderTarget<sf::RenderTarget>;
+using sfml_render_target = render_target<sf::render_target>;
 }

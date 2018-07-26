@@ -4,5 +4,5 @@
 
 namespace graphics
 {
-using RendererId = boost::uuids::uuid;
+using renderer_id = boost::uuids::uuid;
 }

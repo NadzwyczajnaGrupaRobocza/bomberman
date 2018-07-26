@@ -9,16 +9,16 @@
 namespace graphics
 {
 
-RendererPoolSfml::RendererPoolSfml(
+renderer_pool_sfml::renderer_pool_sfml(
     std::unique_ptr<ContextRenderer> renderer,
-    std::unique_ptr<RendererIdGenerator> generator)
+    std::unique_ptr<renderer_id_generator> generator)
     : context_renderer{std::move(renderer)}, renderer_id_generator{
                                                  std::move(generator)}
 {
     context_renderer->initialize();
 }
 
-RendererId RendererPoolSfml::acquire(const math::Size2f& size,
+renderer_id renderer_pool_sfml::acquire(const math::Size2f& size,
                                      const math::Position2f& position)
 {
     auto id = renderer_id_generator->generate();
@@ -27,18 +27,18 @@ RendererId RendererPoolSfml::acquire(const math::Size2f& size,
     return id;
 }
 
-void RendererPoolSfml::release(const RendererId& id)
+void renderer_pool_sfml::release(const renderer_id& id)
 {
     trash.emplace(id);
 }
 
-void RendererPoolSfml::cleanup_unused()
+void renderer_pool_sfml::cleanup_unused()
 {
     ranges::for_each(trash, [this](const auto& id) { shapes.erase(id); });
     trash.clear();
 }
 
-void RendererPoolSfml::render_all()
+void renderer_pool_sfml::render_all()
 {
     cleanup_unused();
     context_renderer->clear(sf::Color::Black);
@@ -48,13 +48,13 @@ void RendererPoolSfml::render_all()
     });
 }
 
-void RendererPoolSfml::set_position(const RendererId& id,
+void renderer_pool_sfml::set_position(const renderer_id& id,
                                     const math::Position2f& position)
 {
     shapes.at(id).setPosition({position.x, position.y});
 }
 
-math::Position2f RendererPoolSfml::get_position(const RendererId& id)
+math::Position2f renderer_pool_sfml::get_position(const renderer_id& id)
 {
     return shapes.at(id).getPosition();
 }

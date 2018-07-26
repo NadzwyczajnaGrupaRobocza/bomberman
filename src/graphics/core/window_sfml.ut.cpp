@@ -7,7 +7,7 @@
 
 namespace graphics
 {
-class WindowSfmlTest : public ::testing::Test
+class window_sfml_test : public ::testing::Test
 {
 public:
     void SetUp() override
@@ -52,13 +52,13 @@ public:
     std::vector<sf::Event::EventType> events;
 };
 
-TEST_F(WindowSfmlTest, windowShouldCreated)
+TEST_F(window_sfml_test, windowShouldCreated)
 {
     auto window = create_window();
     fakeit::Verify(Method(sfml_window, create)).Once();
 }
 
-TEST_F(WindowSfmlTest, windowShouldBeOpenendImmediatelyAfterCreation)
+TEST_F(window_sfml_test, windowShouldBeOpenendImmediatelyAfterCreation)
 {
     auto window = create_window();
 
@@ -66,7 +66,7 @@ TEST_F(WindowSfmlTest, windowShouldBeOpenendImmediatelyAfterCreation)
     fakeit::Verify(Method(sfml_window, is_open)).Once();
 }
 
-TEST_F(WindowSfmlTest, displayWindow)
+TEST_F(window_sfml_test, displayWindow)
 {
     auto window = create_window();
 
@@ -74,7 +74,7 @@ TEST_F(WindowSfmlTest, displayWindow)
     fakeit::Verify(Method(sfml_window, display)).Once();
 }
 
-TEST_F(WindowSfmlTest, updateWindow)
+TEST_F(window_sfml_test, updateWindow)
 {
     auto window = create_window();
     prepare_events({sf::Event::MouseLeft, sf::Event::LostFocus,
@@ -86,7 +86,7 @@ TEST_F(WindowSfmlTest, updateWindow)
     fakeit::Verify(Method(sfml_window, poll_event)).Exactly(no_events);
 }
 
-TEST_F(WindowSfmlTest, updateAndCloseWindow)
+TEST_F(window_sfml_test, updateAndCloseWindow)
 {
     fakeit::Fake(Method(sfml_window, close));
     auto window = create_window();
