@@ -32,6 +32,8 @@ private:
 
     std::unique_ptr<WallPositionsGenerator> gen;
     SimpleMap simpleMap;
+    std::shared_ptr<physics::PhysicsEngine> ppool;
+    std::shared_ptr<graphics::RendererPool> rpool;
 };
 
 
