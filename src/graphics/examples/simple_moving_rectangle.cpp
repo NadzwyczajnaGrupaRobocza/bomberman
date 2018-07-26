@@ -10,7 +10,7 @@
 #include "math/Size2u.hpp"
 #include "math/Position2f.hpp"
 #include "graphics/factory.hpp"
-#include "graphics/Window.hpp"
+#include "graphics/window.hpp"
 
 using namespace math;
 using arrow = std::vector<std::pair<int, graphics::renderer_id>>;
@@ -57,26 +57,26 @@ inline auto update_alfa(double& alfa, const double& delta_time)
 
 inline auto update_arrows_after_one_turn(double& alfa,
                                          graphics::renderer_pool& renderer_pool,
-                                         arrow& arrow,
+                                         arrow& clock_arrow,
                                          const double& alfa_of_one_turn,
                                          const double& double_pi)
 {
     if (alfa > alfa_of_one_turn)
     {
         alfa -= double_pi;
-        renderer_pool.release(arrow.back().second);
-        arrow.pop_back();
+        renderer_pool.release(clock_arrow.back().second);
+        clock_arrow.pop_back();
     }
 }
 
-inline auto update_arrow(const double& alfa, arrow& arrow,
+inline auto update_arrow(const double& alfa, arrow& clock_arrow,
                          graphics::renderer_pool& renderer_pool,
                          const Position2f& center_position)
 {
     auto sinus = std::sin(alfa);
     auto cosinus = std::cos(alfa);
 
-    ranges::for_each(arrow, [&](auto& point) {
+    ranges::for_each(clock_arrow, [&](auto& point) {
         auto new_x = gsl::narrow_cast<float>(point.first * cosinus);
         auto new_y = gsl::narrow_cast<float>(point.first * sinus);
 
@@ -106,7 +106,7 @@ int main()
 
     constexpr auto circle_r = 200;
     constexpr auto step = 40;
-    auto arrow = create_arrow_from_point(center_position, circle_r, step,
+    auto clock_arrow  = create_arrow_from_point(center_position, circle_r, step,
                                          *renderer_pool);
 
     const auto pi = calculate_pi();
@@ -116,12 +116,12 @@ int main()
     const auto alfa_of_one_turn = alfa + double_pi;
 
     auto last = std::chrono::system_clock::now();
-    while (window->is_open() && arrow.size() > 0)
+    while (window->is_open() && clock_arrow.size() > 0)
     {
         const auto delta_time = update_time(last);
-        update_arrow(alfa, arrow, *renderer_pool, center_position);
+        update_arrow(alfa, clock_arrow, *renderer_pool, center_position);
         update_alfa(alfa, delta_time);
-        update_arrows_after_one_turn(alfa, *renderer_pool, arrow,
+        update_arrows_after_one_turn(alfa, *renderer_pool, clock_arrow,
                                      alfa_of_one_turn, double_pi);
         renderer_pool->render_all();
         window->display();

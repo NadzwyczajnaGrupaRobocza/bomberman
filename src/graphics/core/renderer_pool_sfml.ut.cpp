@@ -33,8 +33,8 @@ public:
         Fake(Method(renderer, initialize));
 
         renderer_pool = std::make_unique<renderer_pool_sfml>(
-            std::unique_ptr<renderer>(&renderer.get()),
-            std::unique_ptr<id_generator>(
+            std::unique_ptr<context_renderer>(&renderer.get()),
+            std::unique_ptr<renderer_id_generator>(
                 &id_generator.get()));
 
         Verify(Method(renderer, initialize));
@@ -87,8 +87,8 @@ public:
     Mock<context_renderer> renderer;
     std::unique_ptr<renderer_pool_sfml> renderer_pool;
 
-    const renderer_id id1{id_generator{}.generate()};
-    const renderer_id id2{id_generator{}.generate()};
+    const renderer_id id1{renderer_id_generator{}.generate()};
+    const renderer_id id2{renderer_id_generator{}.generate()};
 };
 
 TEST_F(renderer_pool_sfml_test, acquireTwoRenderableObject_positionShouldMatch)
@@ -127,13 +127,13 @@ TEST_F(renderer_pool_sfml_test, setPositiontOfInvalidIdShouldThrow)
 TEST_F(renderer_pool_sfml_test, renderAll)
 {
     When(Method(id_generator, generate)).AlwaysDo([]() {
-        return id_generator{}.generate();
+        return renderer_id_generator{}.generate();
     });
 
     auto expected_shapes = {
-        create_dummy_shape(Size2f{10, 10}), create_dummy_shape(Size2f{710, 30}),
-        create_dummy_shape(Size2f{80, 8}), create_dummy_shape(Size2f{107, 180}),
-        create_dummy_shape(Size2f{60, 30})};
+        create_dummy_shape(size2f{10, 10}), create_dummy_shape(size2f{710, 30}),
+        create_dummy_shape(size2f{80, 8}), create_dummy_shape(size2f{107, 180}),
+        create_dummy_shape(size2f{60, 30})};
 
     ranges::for_each(expected_shapes, [this](auto& shape) {
         this->renderer_pool->acquire(shape.getSize(), dummy_position);
