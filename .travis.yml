@@ -36,13 +36,10 @@ script:
   - mkdir sfml-dl; cd sfml-dl
   - wget https://www.sfml-dev.org/files/SFML-2.5.0-linux-gcc-64-bit.tar.gz
   - tar xzf SFML-2.5.0-linux-gcc-64-bit.tar.gz
-  - cd SFML-2.5.0
-  - cmake 
-  - make -j `nproc` install
   - cd ../
   - mkdir build
   - cd build
-  - env CC=${C_COMPILER} CXX=${CXX_COMPILER} cmake .. -DENABLE_COVERAGE:BOOL=TRUE
+  - env CC=${C_COMPILER} CXX=${CXX_COMPILER} cmake .. -DENABLE_COVERAGE:BOOL=TRUE -DSFML_ROOT=../sfml-dl/SFML-2.5.0
   - echo "We have" `nproc` "cores here"
   - make -j `nproc`
   - ctest -j `nproc` -V
