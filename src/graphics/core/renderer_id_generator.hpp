@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graphics/RendererId.hpp"
+#include "graphics/renderer_id.hpp"
 
 namespace graphics
 {

@@ -9,7 +9,7 @@
 
 #include "math/Size2u.hpp"
 #include "math/Position2f.hpp"
-#include "graphics/Factory.hpp"
+#include "graphics/factory.hpp"
 #include "graphics/Window.hpp"
 
 using namespace math;

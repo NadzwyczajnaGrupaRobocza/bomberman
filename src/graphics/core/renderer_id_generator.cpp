@@ -1,4 +1,4 @@
-#include "RendererIdGenerator.hpp"
+#include "renderer_id_generator.hpp"
 
 #include <boost/uuid/uuid_generators.hpp>
 

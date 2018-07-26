@@ -5,7 +5,7 @@
 #include "math/Position2f.hpp"
 #include "math/Size2u.hpp"
 
-#include "RendererPool.hpp"
+#include "renderer_pool.hpp"
 #include "Window.hpp"
 
 namespace graphics

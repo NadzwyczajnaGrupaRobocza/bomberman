@@ -1,8 +1,8 @@
-#include "graphics/Factory.hpp"
+#include "graphics/factory.hpp"
 
-#include "RendererPoolSfml.hpp"
+#include "renderer_pool_sfml.hpp"
 #include "SfmlRenderTarget.hpp"
-#include "RendererIdGenerator.hpp"
+#include "renderer_id_generator.hpp"
 #include "WindowSfml.hpp"
 #include "SfmlWindowFacade.hpp"
 

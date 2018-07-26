@@ -1,4 +1,4 @@
-#include "RendererPoolSfml.hpp"
+#include "renderer_pool_sfml.hpp"
 
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/CircleShape.hpp>

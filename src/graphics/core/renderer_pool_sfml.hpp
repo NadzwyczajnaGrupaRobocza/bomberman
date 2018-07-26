@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graphics/RendererPool.hpp"
+#include "graphics/renderer_pool.hpp"
 
 #include <vector>
 #include <memory>
@@ -9,7 +9,7 @@
 #include <boost/functional/hash.hpp>
 
 #include "ContextRenderer.hpp"
-#include "RendererIdGenerator.hpp"
+#include "renderer_id_generator.hpp"
 
 namespace graphics
 {

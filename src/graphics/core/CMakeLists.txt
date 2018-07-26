@@ -2,12 +2,12 @@ find_package(SFML 2 COMPONENTS system graphics window REQUIRED)
 
 ########################### SRC ###########################
 add_library(graphics
-  Factory.cpp
-  RendererPoolSfml.cpp
-  RendererIdGenerator.cpp
-  SfmlRectangleShape.cpp
-  WindowSfml.cpp
-  SfmlWindowFacade.cpp)
+  factory.cpp
+  renderer_pool_sfml.cpp
+  renderer_id_generator.cpp
+  sfml_rectangle_shape.cpp
+  window_sfml.cpp
+  sfml_window_facade.cpp)
 
 target_include_directories(graphics
   PUBLIC ${CMAKE_CURRENT_LIST_DIR}/../includes
@@ -24,10 +24,10 @@ target_link_libraries(graphics
 
 ########################### UT ###########################
 add_executable(graphics-ut
-  RendererPoolSfml.ut.cpp
-  SfmlRenderTarget.ut.cpp
-  SfmlRectangleShape.ut.cpp
-  WindowSfml.ut.cpp)
+  renderer_pool_sfml.ut.cpp
+  sfml_render_target.ut.cpp
+  sfml_rectangle_shape.ut.cpp
+  window_sfml.ut.cpp)
 
 target_include_directories(graphics-ut SYSTEM BEFORE
   PRIVATE ${CMAKE_CURRENT_LIST_DIR}

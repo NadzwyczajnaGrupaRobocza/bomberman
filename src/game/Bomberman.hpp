@@ -6,8 +6,8 @@
 
 #include "physics/PhysicsId.hpp"
 #include "physics/PhysicsEngine.hpp"
-#include "graphics/RendererId.hpp"
-#include "graphics/RendererPool.hpp"
+#include "graphics/renderer_id.hpp"
+#include "graphics/renderer_pool.hpp"
 #include "BombLauncher.hpp"
 #include "HumanPlayer.hpp"
 

@@ -7,8 +7,8 @@
 
 #include "glm/glm.hpp"
 #include "physics/PhysicsEngine.hpp"
-#include "graphics/RendererPool.hpp"
-#include "graphics/RendererId.hpp"
+#include "graphics/renderer_pool.hpp"
+#include "graphics/renderer_id.hpp"
 
 class SimpleMap : public Map
 {
