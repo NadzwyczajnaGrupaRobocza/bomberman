@@ -39,7 +39,7 @@ script:
   - cd ../
   - mkdir build
   - cd build
-  - env CC=${C_COMPILER} CXX=${CXX_COMPILER} cmake .. -DENABLE_COVERAGE:BOOL=TRUE -DSFML_ROOT=../sfml-dl/SFML-2.5.0
+  - env CC=${C_COMPILER} CXX=${CXX_COMPILER} cmake .. -DENABLE_COVERAGE:BOOL=TRUE -DSFML_ROOT=../sfml-dl/SFML-2.5.0/lib/cmake/SFML/
   - echo "We have" `nproc` "cores here"
   - make -j `nproc`
   - ctest -j `nproc` -V
