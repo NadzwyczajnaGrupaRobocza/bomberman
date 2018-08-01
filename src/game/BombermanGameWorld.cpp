@@ -18,7 +18,8 @@ BombermanGameWorld::BombermanGameWorld(std::unique_ptr<physics::PhysicsEngine> a
    auto bl = std::make_unique<LimitedBombLauncher>(world, 10);
 
    physics::PhysicsId pid{};
-   graphics::RendererId rid = rpool->acquire(math::Size2f{15, 15}, math::Position2f{70, 70});
+  
+   auto rid = rpool->acquire(math::Size2f{30, 30}, math::Position2f{70, 70});
    entity.emplace_back(std::make_unique<Bomberman>(pid, rid, std::move(hp), ppool, rpool, std::move(bl)));
 }
 

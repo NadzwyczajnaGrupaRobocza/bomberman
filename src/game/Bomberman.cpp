@@ -1,4 +1,5 @@
 #include "Bomberman.hpp"
+#include <iostream>
 
 Bomberman::Bomberman(physics::PhysicsId phys_id, graphics::RendererId rend_id,
                      std::unique_ptr<HumanPlayer> player,
@@ -13,6 +14,7 @@ Bomberman::Bomberman(physics::PhysicsId phys_id, graphics::RendererId rend_id,
 
 void Bomberman::update(DeltaTime dt)
 {
+    constexpr float speedup_factor{100};
     auto position = physics_engine->get_position(physics_id);
     renderer_pool->set_position(renderer_id, position);
 
@@ -22,8 +24,8 @@ void Bomberman::update(DeltaTime dt)
     }
 
     const auto new_direction = input->get_direction();
-    position.x += new_direction.x * dt.count();
-    position.y += new_direction.y * dt.count();
+    position.x += (speedup_factor * new_direction.x) * dt.count();
+    position.y += (speedup_factor * new_direction.y) * dt.count();
 
     physics_engine->set_position(physics_id, position);
 }
