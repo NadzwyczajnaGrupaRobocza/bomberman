@@ -17,7 +17,7 @@ int main()
   auto r = graphics::create_renderer_pool(window_size);
   auto p = std::make_unique<physics::ConcretePhysicsEngine>();
 
-  BombermanGameWorld world(std::move(p), std::move(r));
+  auto world = std::make_shared<BombermanGameWorld>(std::move(p), std::move(r));
   sf::Clock clock;
 
   while (window.isOpen())
@@ -30,7 +30,7 @@ int main()
     }
 
     const std::chrono::milliseconds ms{clock.restart().asMilliseconds()};
-    world.update(DeltaTime{ms});
+    world->update(DeltaTime{ms});
 
     window.display();
   }

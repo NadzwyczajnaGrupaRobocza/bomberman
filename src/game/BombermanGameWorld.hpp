@@ -25,10 +25,10 @@ public:
     virtual void update(DeltaTime) override;
 
 private:
+
     std::vector<std::unique_ptr<Entity>> entity;
     std::map<BombPosition, std::unique_ptr<Bomb>> bombs;
     std::map<ExplosionPosition, std::unique_ptr<Explosion>> explosions;
-
 
     std::unique_ptr<WallPositionsGenerator> gen;
     SimpleMap simpleMap;
