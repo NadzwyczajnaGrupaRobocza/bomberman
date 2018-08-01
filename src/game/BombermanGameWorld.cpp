@@ -3,6 +3,7 @@
 #include "HumanPlayerSfml.hpp"
 #include "LimitedBombLauncher.hpp"
 #include "Bomberman.hpp"
+#include <boost/core/null_deleter.hpp>
 
 BombermanGameWorld::BombermanGameWorld(std::unique_ptr<physics::PhysicsEngine> a, std::unique_ptr<graphics::RendererPool> b)
  : gen(std::make_unique<BoundaryWallsPositionsGenerator>()),
@@ -11,19 +12,13 @@ BombermanGameWorld::BombermanGameWorld(std::unique_ptr<physics::PhysicsEngine> a
    rpool{std::move(b)}
 
 {
+   std::shared_ptr<GameWorld> world(this, boost::null_deleter());
 
-//    explicit Bomberman(physics::PhysicsId, graphics::RendererId,
-//                       std::unique_ptr<HumanPlayer>,
-//                       std::shared_ptr<physics::PhysicsEngine>,
-//                       std::shared_ptr<graphics::RendererPool>,
-//                       std::unique_ptr<BombLauncher>);
+   auto hp = std::make_unique<HumanPlayerSfml>();
+   auto bl = std::make_unique<LimitedBombLauncher>(world, 10);
 
    physics::PhysicsId pid{};
-   graphics::RendererId rid{};
-
-   std::unique_ptr<HumanPlayerSfml> hp{};
-   std::unique_ptr<BombLauncher> bl{};
-
+   graphics::RendererId rid = rpool->acquire(math::Size2f{15, 15}, math::Position2f{70, 70});
    entity.emplace_back(std::make_unique<Bomberman>(pid, rid, std::move(hp), ppool, rpool, std::move(bl)));
 }
 
@@ -61,4 +56,5 @@ void BombermanGameWorld::update(DeltaTime dt)
         e.second->update(dt);
     }
     */
+    rpool->render_all();
 }
