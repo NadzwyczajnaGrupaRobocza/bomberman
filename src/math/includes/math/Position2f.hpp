@@ -40,7 +40,7 @@ inline Position2f& operator+=(Position2f& lhs, const Position2f& rhs)
 inline bool operator==(const Position2f& lhs, const Position2f& rhs)
 {
     auto fequals = [](float a, float b, float ulp = 0) {
-        return (std::abs(a - b))() <= (std::max(std::abs(a), std::abs(b)))() * std::numeric_limits<float>::epsilon() * ulp;
+        return (std::abs)(a - b) <= (std::max)((std::abs)(a), (std::abs)(b)) * std::numeric_limits<float>::epsilon() * ulp;
     };
 
     return fequals(lhs.x, rhs.x) && fequals(lhs.y, rhs.y);
