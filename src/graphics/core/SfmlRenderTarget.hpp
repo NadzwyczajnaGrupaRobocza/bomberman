@@ -36,7 +36,7 @@ public:
     {
         return window_size;
     }
-    bool activate([[maybe_unused]] bool active)
+    bool activate([[maybe_unused]] bool active) override
     {
         return true;
     }
