@@ -7,6 +7,7 @@
 ## 1.1 Requirments
 
 Beside of code You also need to install:
+- compilator that supports C++ 17
 - git
 - cmake
 - boost
@@ -61,6 +62,15 @@ To  check available targets run command:
 cmake --build <build_directory> --target help
 ```
 
+# 1.3 Running code
+
+It's time to run code. By default cmake will put binaries in directory:
+'''sh
+<build_directory>\bin
+'''
+To check if everything wokrs fine You may run:
+simple-rectangle-draw (it should open window with white rectangle on black background)
+simple-moving-rectangle (You should see some moving white rectangles)
 
 # 2. How To Write And Make Changes
 
@@ -73,8 +83,10 @@ cmake --build <build_directory> --target help
 
 All updates should be done on dedicated branch, so please don't use master for changes (by the way master is blocked for not administrator users :) ). After cloning repository create Your branch and switch to it. After Your changes are ready You can push them.
 
+## 2.3 Writing UTs
+...
 
-## 2.3 Recompiling
+## 2.4 Recompiling
 
 Please remember, that Cmake create make files, that tell, how to compile Your code, so If You change anything in file structure or You add new dependencies, then probably You should also update cmake files.
 
@@ -90,7 +102,7 @@ cmake --build <build_directory> --target <target>
 
 If there are changes in cmake files, then cmake automaticly regenerate make files before compilation.
 
-## 2.4 CI and reviews
+## 2.5 CI and reviews
 
 Pushing Your changes won't apply them on master. Before it there are some steps that must success:
 - creating pull request
@@ -101,21 +113,21 @@ Pushing Your changes won't apply them on master. Before it there are some steps 
 
 If Your changes will pass all that steps then they will be merged to master. You can start to work on next task :)
 
-### 2.4.1 Creating pull request
+### 2.5.1 Creating pull request
 After pushing changes go to Bomberman's github page and select Your repository. In riught top corner You should find green button "Create pull request"
 
-### 2.4.2 Compilation for linux
+### 2.5.2 Compilation for linux
 ...
 
-### 2.4.3 Compilation for windows
+### 2.5.3 Compilation for windows
 ...
 
-### 2.4.4 All UTs should pass
+### 2.5.4 All UTs should pass
 ...
 
-### 2.4.5 Closed code review
+### 2.5.5 Closed code review
 There should be at least one ship it to close review. If someone start new thread in review, then that person should give You ship it. If all persons involved in review give You "Ship it" You can close review and merge Your branch to master.
 
-## 2.5 Merging branch to master
+## 2.6 Merging branch to master
 ...
 
