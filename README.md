@@ -65,9 +65,9 @@ cmake --build <build_directory> --target help
 # 1.3 Running code
 
 It's time to run code. By default cmake will put binaries in directory:
-'''sh
+```sh
 <build_directory>\bin
-'''
+```
 To check if everything wokrs fine You may run:
 simple-rectangle-draw (it should open window with white rectangle on black background)
 simple-moving-rectangle (You should see some moving white rectangles)
