@@ -104,11 +104,17 @@ If Your changes will pass all that steps then they will be merged to master. You
 After pushing changes go to Bomberman's github page and select Your repository. In riught top corner You should find green button "Create pull request"
 
 ### 2.4.2 Compilation for linux
+...
 
 ### 2.4.3 Compilation for windows
+...
 
 ### 2.4.4 All UTs should pass
+...
 
 ### 2.4.5 Closed code review
+There should be at least one ship it to close review. If someone start new thread in review, then that person should give You ship it. If all persons involved in review give You "Ship it" You can close review and merge Your branch to master.
 
+## 2.5 Merging branch to master
+...
 
