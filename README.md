@@ -61,7 +61,20 @@ To  check available targets run command:
 cmake --build <build_directory> --target help
 ```
 
-## 1.3 Recompiling
+
+# 2. How To Write And Make Changes
+
+## 2.1 Code standard
+
+- We are using snake_case for all names (variables, classes, functions, ...)
+- All code that You write should be covered by UTs. We are using TDD. Test are written in gtest, for mocking we are using fakeit.
+
+## 2.2 Making changes in code
+
+All updates should be done on dedicated branch, so please don't use master for changes (by the way master is blocked for not administrator users :) ). After cloning repository create Your branch and switch to it. After Your changes are ready You can push them.
+
+
+## 2.3 Recompiling
 
 Please remember, that Cmake create make files, that tell, how to compile Your code, so If You change anything in file structure or You add new dependencies, then probably You should also update cmake files.
 
@@ -75,19 +88,7 @@ For single target:
 cmake --build <build_directory> --target <target>
 ```
 
-If there are changes in cmake files, then cmake automaticly regenerate them before recompilation.
-
-
-# 2. How To Write and make changes
-
-## 2.1 Code Standard
-
-- We are using snake_case for all names (variables, classes, functions, ...)
-- All code that You write should be covered by UTs. We are using TDD. Test are written in gtest, for mocking we are using fakeit.
-
-## 2.2 Making changes in code
-
-All updates should be done on dedicated branch, so please don't use master for changes (by the way master is blocked for not administrator users :) ). After cloning repository create Your branch and switch to it. After Your changes are ready You can push them.
+If there are changes in cmake files, then cmake automaticly regenerate make files before compilation.
 
 ## 2.4 CI and reviews
 
