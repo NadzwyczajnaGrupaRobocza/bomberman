@@ -76,7 +76,7 @@ public:
         std::unique_ptr<HumanPlayer>(&human_player.get()),
         std::shared_ptr<physics::PhysicsEngine>(&physics_engine.get()),
         std::shared_ptr<graphics::RendererPool>(&renderer_pool.get()),
-        std::unique_ptr<BombLauncher>(&bomb_launcher.get())};
+        std::shared_ptr<BombLauncher>(&bomb_launcher.get())};
 };
 
 TEST_F(BombermanTest, newlyCreatedBomermanShouldBeAlive)

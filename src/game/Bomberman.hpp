@@ -18,7 +18,7 @@ public:
                        std::unique_ptr<HumanPlayer>,
                        std::shared_ptr<physics::PhysicsEngine>,
                        std::shared_ptr<graphics::RendererPool>,
-                       std::unique_ptr<BombLauncher>);
+                       std::shared_ptr<BombLauncher>);
 
     void update(DeltaTime) override;
     bool areYouDead() const override;
@@ -27,7 +27,7 @@ private:
     physics::PhysicsId physics_id;
     graphics::RendererId renderer_id;
     std::unique_ptr<HumanPlayer> input;
-    std::unique_ptr<BombLauncher> bomb_launcher;
+    std::shared_ptr<BombLauncher> bomb_launcher;
     std::shared_ptr<physics::PhysicsEngine> physics_engine;
     std::shared_ptr<graphics::RendererPool> renderer_pool;
 };
