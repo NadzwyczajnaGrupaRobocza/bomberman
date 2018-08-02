@@ -47,7 +47,7 @@ public:
     }
 
     virtual sf::Vector2u getSize() const = 0;
-    virtual bool activate(bool) = 0;
+    virtual bool setActive(bool) = 0;
 
     void expectClear(const sf::Color& color)
     {
