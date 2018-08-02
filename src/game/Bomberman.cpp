@@ -1,5 +1,4 @@
 #include "Bomberman.hpp"
-#include <iostream>
 
 Bomberman::Bomberman(physics::PhysicsId phys_id, graphics::RendererId rend_id,
                      std::unique_ptr<HumanPlayer> player,
