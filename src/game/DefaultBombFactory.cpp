@@ -12,7 +12,8 @@ DefautlBombFactory::DefautlBombFactory(physics::PhysicsEngine& pe,
 }
 
 std::unique_ptr<Bomb>
-    DefautlBombFactory::create_time_bomb(math::Position2f) const
+DefautlBombFactory::create_time_bomb(math::Position2f bomb_position) const
 {
-    return std::make_unique<TimeBomb>(physics_engine, renderer_pool);
+    return std::make_unique<TimeBomb>(physics_engine, renderer_pool,
+                                      bomb_position);
 }

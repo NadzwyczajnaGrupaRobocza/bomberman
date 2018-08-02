@@ -1,9 +1,11 @@
 #include "TimeBomb.hpp"
 
-TimeBomb::TimeBomb(physics::PhysicsEngine& pe, graphics::RendererPool& rp)
-    :  physics_engine{pe}, renderer_pool{rp}
+TimeBomb::TimeBomb(physics::PhysicsEngine& pe, graphics::RendererPool& rp,
+                   math::Position2f bomb_position)
+    : physics_engine{pe}, renderer_pool{rp}
 {
-    
+    physics_engine.register_colider(bomb_size, bomb_position);
+    renderer_pool.acquire(bomb_size, bomb_position);
 }
 
 void TimeBomb::update(DeltaTime dt)
@@ -15,7 +17,7 @@ void TimeBomb::update(DeltaTime dt)
     }
 }
 
-void TimeBomb::updateElapsedTime(DeltaTime dt )
+void TimeBomb::updateElapsedTime(DeltaTime dt)
 {
     timeElapsed += std::chrono::duration_cast<std::chrono::milliseconds>(dt);
 }
