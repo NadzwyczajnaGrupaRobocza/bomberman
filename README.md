@@ -89,7 +89,7 @@ If there are changes in cmake files, then cmake automaticly regenerate them befo
 
 2.2 Making changes in code
 -------------------------------------------
-All updates should be done on dedicated branch, so please don't use master for changes. After cloning repository create Your branch and switch to it. After Your changes are ready You can push them.
+All updates should be done on dedicated branch, so please don't use master for changes (by the way master is blocked for not administrator users :) ). After cloning repository create Your branch and switch to it. After Your changes are ready You can push them.
 
 2.4 CI and reviews
 ------------------
