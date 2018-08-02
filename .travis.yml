@@ -37,7 +37,7 @@ script:
   - wget https://www.sfml-dev.org/files/SFML-2.5.0-linux-gcc-64-bit.tar.gz
   - tar xzf SFML-2.5.0-linux-gcc-64-bit.tar.gz
   - cd ../
-  - export SFML=`pwd`/sfml-dl/SFML-2.5.0/lib/cmake/SFML/
+  - export SFML=`pwd`/sfml-dl/SFML-2.5.0
   - echo "sflm $SFML"
   - mkdir build
   - cd build
