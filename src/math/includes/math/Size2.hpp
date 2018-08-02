@@ -2,6 +2,8 @@
 
 #include <boost/operators.hpp>
 #include <tuple>
+#include <ostream>
+#include <typeinfo>
 
 namespace math
 {
@@ -32,4 +34,12 @@ bool operator==(const Size2<T>& lhs, const Size2<T>& rhs)
     };
     return tie(lhs) == tie(rhs);
 }
+}
+
+template <typename T>
+inline std::ostream& operator<<(std::ostream& out, const math::Size2<T>& size)
+{
+    return out << "Size2<" << typeid(T).name() << ">{width:" << size.width
+               << ", "
+               << "height:" << size.height << "}\n";
 }

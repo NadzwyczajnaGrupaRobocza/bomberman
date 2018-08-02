@@ -15,7 +15,7 @@ public:
     virtual void register_bomb(BombPosition, std::unique_ptr<Bomb>) override;
     virtual void register_explosion(ExplosionPosition, std::unique_ptr<Explosion>) override;
 
-    virtual void update(ElapsedTime) override;
+    virtual void update(DeltaTime) override;
 
 private:
     std::vector<std::unique_ptr<Entity>> entity;
