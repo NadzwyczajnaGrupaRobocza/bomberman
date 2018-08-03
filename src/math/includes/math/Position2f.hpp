@@ -29,7 +29,6 @@ auto tie(const Position2f& pos)
 }
 }
 
-
 inline Position2f& operator+=(Position2f& lhs, const Position2f& rhs)
 {
     lhs.x += rhs.x;
@@ -39,7 +38,8 @@ inline Position2f& operator+=(Position2f& lhs, const Position2f& rhs)
 
 inline bool operator==(const Position2f& lhs, const Position2f& rhs)
 {
-    auto fequals = [](float a, float b, float ulp = 0) {
+    auto fequals = [](float a, float b, float ulp = 1)
+    {
         return (std::abs)(a - b) <= (std::max)((std::abs)(a), (std::abs)(b)) * std::numeric_limits<float>::epsilon() * ulp;
     };
 
@@ -50,6 +50,7 @@ inline bool operator<(const Position2f& lhs, const Position2f& rhs)
 {
     return tie(lhs) < tie(rhs);
 }
+
 }
 
 inline std::ostream& operator<<(std::ostream& out,
