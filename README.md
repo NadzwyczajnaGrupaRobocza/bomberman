@@ -72,6 +72,10 @@ To check if everything wokrs fine You may run:
 simple-rectangle-draw (it should open window with white rectangle on black background)
 simple-moving-rectangle (You should see some moving white rectangles)
 
+# 1.4 Running UTs
+
+...
+
 # 2. How To Write And Make Changes
 
 ## 2.1 Code standard
