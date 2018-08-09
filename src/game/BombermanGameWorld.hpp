@@ -36,5 +36,3 @@ private:
     std::shared_ptr<graphics::RendererPool> rpool;
 };
 
-
-
