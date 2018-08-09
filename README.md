@@ -4,10 +4,10 @@
 
 # 1. How To Start
 
-## 1.1 Requirments
+## 1.1 Requirements
 
 Beside of code You also need to install:
-- compilator that supports C++ 17
+- compiler that supports C++ 17
 - git
 - cmake
 - boost
@@ -146,5 +146,5 @@ There should be at least one ship it to close review. If someone start new threa
 
 ## 2.6 Merging branch to master
 
-...
+... #ToDo (this will be added just after my branch will be merged)
 
