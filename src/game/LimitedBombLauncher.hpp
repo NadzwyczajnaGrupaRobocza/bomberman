@@ -8,7 +8,9 @@
 
 class GameWorld;
 
-class LimitedBombLauncher : public BombLauncher
+class LimitedBombLauncher
+    : public BombLauncher,
+      public std::enable_shared_from_this<LimitedBombLauncher>
 {
 public:
     LimitedBombLauncher(std::shared_ptr<GameWorld>,

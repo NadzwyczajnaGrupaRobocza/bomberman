@@ -1,8 +1,9 @@
 #include "TimeBomb.hpp"
 
 TimeBomb::TimeBomb(physics::PhysicsEngine& pe, graphics::RendererPool& rp,
-                   math::Position2f bomb_position)
-    : physics_engine{pe}, renderer_pool{rp}
+                   math::Position2f bomb_position,
+                   std::shared_ptr<BombLauncher> bl)
+    : physics_engine{pe}, renderer_pool{rp}, bombLauncher{std::move(bl)}
 {
     physics_engine.register_colider(bomb_size, bomb_position);
     renderer_pool.acquire(bomb_size, bomb_position);

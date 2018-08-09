@@ -15,10 +15,11 @@ class RendererPool;
 class DefautlBombFactory : public BombFactory
 {
 public:
-    DefautlBombFactory(physics::PhysicsEngine&,
-                       graphics::RendererPool&);
+    DefautlBombFactory(physics::PhysicsEngine&, graphics::RendererPool&);
 
-    virtual std::unique_ptr<Bomb> create_time_bomb(math::Position2f) const = 0;
+    std::unique_ptr<Bomb>
+        create_time_bomb(math::Position2f,
+                         std::shared_ptr<BombLauncher>) const override;
 
 private:
     physics::PhysicsEngine& physics_engine;

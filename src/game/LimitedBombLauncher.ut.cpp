@@ -30,11 +30,15 @@ struct LimitedBombLauncherTest : public ::testing::Test
 
     Mock<GameWorld> game_world;
     Mock<BombFactory> bomb_factory;
+    // std::shared_ptr<Mock<BombFactory>> bomb_factory =
+    // std::make_shared<Mock<BombFactory>>();
     std::unique_ptr<Mock<Bomb>> unique_bomb = std::make_unique<Mock<Bomb>>();
     Mock<Bomb>& bomb = *unique_bomb.get();
-    LimitedBombLauncher launcher = LimitedBombLauncher{
-        std::shared_ptr<GameWorld>(&game_world.get()),
-        std::shared_ptr<BombFactory>(&bomb_factory.get()), max_bombs};
+    std::shared_ptr<LimitedBombLauncher> launcher =
+        std::make_shared<LimitedBombLauncher>(
+            std::shared_ptr<GameWorld>(&game_world.get()),
+            std::shared_ptr<BombFactory>(&bomb_factory.get(), [](auto) {}),
+            max_bombs);
 };
 
 std::ostream& operator<<(std::ostream& o, BombPosition pos);
@@ -51,8 +55,14 @@ struct LimitedBombLauncherWithoutBombsLaunched : public LimitedBombLauncherTest
 TEST_F(LimitedBombLauncherWithoutBombsLaunched, ShouldLaunchBomb)
 {
     Fake(Dtor(bomb));
-    When(Method(bomb_factory, create_time_bomb).Using(default_bomb_position))
-        .Do([&](auto) { return std::unique_ptr<Bomb>{&unique_bomb->get()}; });
+    When(Method(bomb_factory, create_time_bomb)
+             .Matching([&](auto& bomb_position, auto& givenLauncher) {
+                 return bomb_position == default_bomb_position &&
+                        givenLauncher == launcher;
+             }))
+        .Do([&](auto, auto) {
+            return std::unique_ptr<Bomb>{&unique_bomb->get()};
+        });
     When(Method(game_world, register_bomb)
              .Matching([&](BombPosition& bombPosition,
                            std::unique_ptr<Bomb>& uniq_bomb) {
@@ -63,7 +73,7 @@ TEST_F(LimitedBombLauncherWithoutBombsLaunched, ShouldLaunchBomb)
              }))
         .Return();
 
-    ASSERT_THAT(launcher.try_spawn_bomb(default_position),
+    ASSERT_THAT(launcher->try_spawn_bomb(default_position),
                 ::testing::Eq(bomb_has_been_spawned));
 
     Verify(Method(bomb_factory, create_time_bomb));
@@ -76,7 +86,7 @@ TEST_F(LimitedBombLauncherWithoutBombsLaunched,
     When(Method(game_world, is_bomb_at_pos).Using(default_bomb_position))
         .Return(bomb_at_pos);
 
-    ASSERT_THAT(launcher.try_spawn_bomb(default_position),
+    ASSERT_THAT(launcher->try_spawn_bomb(default_position),
                 ::testing::Eq(bomb_cannot_be_spawned));
 }
 
@@ -84,7 +94,7 @@ struct LimitedBombLauncherWithAllBombsLaunched : public LimitedBombLauncherTest
 {
     LimitedBombLauncherWithAllBombsLaunched()
     {
-        When(Method(bomb_factory, create_time_bomb)).AlwaysDo([&](auto) {
+        When(Method(bomb_factory, create_time_bomb)).AlwaysDo([&](auto, auto) {
             auto mock_bomb = std::make_unique<Mock<Bomb>>();
             Mock<Bomb>& bomb_ref = *mock_bomb.get();
             Fake(Dtor(bomb_ref));
@@ -94,37 +104,37 @@ struct LimitedBombLauncherWithAllBombsLaunched : public LimitedBombLauncherTest
             .AlwaysDo([&](auto&, auto& bomb_to_release) {
                 bomb_to_release.release();
             });
-        launcher.try_spawn_bomb(default_position);
-        launcher.try_spawn_bomb(default_position);
+        launcher->try_spawn_bomb(default_position);
+        launcher->try_spawn_bomb(default_position);
     }
 };
 
 TEST_F(LimitedBombLauncherWithAllBombsLaunched, ShouldNotLaunchBomb)
 {
-    ASSERT_THAT(launcher.try_spawn_bomb(default_position),
+    ASSERT_THAT(launcher->try_spawn_bomb(default_position),
                 ::testing::Eq(bomb_cannot_be_spawned));
 }
 
 TEST_F(LimitedBombLauncherWithAllBombsLaunched,
        AfterNotfiedExploded_ShouldLaunchBomb)
 {
-    launcher.notify_exploded();
+    launcher->notify_exploded();
 
-    ASSERT_THAT(launcher.try_spawn_bomb(default_position),
+    ASSERT_THAT(launcher->try_spawn_bomb(default_position),
                 ::testing::Eq(bomb_has_been_spawned));
 }
 
 TEST_F(LimitedBombLauncherWithAllBombsLaunched,
        AfterNotfiedExplodedMoreTimesThenBombs_ShouldLaunchMaxNumberOfBombs)
 {
-    launcher.notify_exploded();
-    launcher.notify_exploded();
-    launcher.notify_exploded();
+    launcher->notify_exploded();
+    launcher->notify_exploded();
+    launcher->notify_exploded();
 
-    ASSERT_THAT(launcher.try_spawn_bomb(default_position),
+    ASSERT_THAT(launcher->try_spawn_bomb(default_position),
                 ::testing::Eq(bomb_has_been_spawned));
-    ASSERT_THAT(launcher.try_spawn_bomb(default_position),
+    ASSERT_THAT(launcher->try_spawn_bomb(default_position),
                 ::testing::Eq(bomb_has_been_spawned));
-    ASSERT_THAT(launcher.try_spawn_bomb(default_position),
+    ASSERT_THAT(launcher->try_spawn_bomb(default_position),
                 ::testing::Eq(bomb_cannot_be_spawned));
 }

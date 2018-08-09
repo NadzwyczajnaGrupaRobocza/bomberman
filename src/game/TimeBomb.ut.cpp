@@ -4,6 +4,7 @@
 
 #include "physics/PhysicsEngine.hpp"
 #include "graphics/RendererPool.hpp"
+#include "BombLauncher.hpp"
 
 #include "TimeBomb.hpp"
 
@@ -16,8 +17,9 @@ public:
     {
         Method(renderer_pool, acquire).Using(bomb_size, bomb_position) =
             bomb_render_id;
-        Method(physics_engine, register_colider).Using(bomb_size, bomb_position) =
-            bomb_physics_id;
+        Method(physics_engine, register_colider)
+            .Using(bomb_size, bomb_position) = bomb_physics_id;
+        Fake(Dtor(bomb_launcher));
     }
 
     ~ExpectRegistration()
@@ -28,6 +30,7 @@ public:
 
     Mock<physics::PhysicsEngine> physics_engine;
     Mock<graphics::RendererPool> renderer_pool;
+    Mock<BombLauncher> bomb_launcher;
     const math::Position2f bomb_position{5.0, 7.0};
     const math::Size2f bomb_size{1.0, 1.0};
     const graphics::RendererId bomb_render_id{66};
@@ -35,10 +38,11 @@ public:
     const int oneTime{1};
 };
 
-class TimeBombTest : public ExpectRegistration,  public ::testing::Test
+class TimeBombTest : public ExpectRegistration, public ::testing::Test
 {
 public:
-    TimeBomb bomb{physics_engine.get(), renderer_pool.get(), bomb_position};
+    TimeBomb bomb{physics_engine.get(), renderer_pool.get(), bomb_position,
+    std::shared_ptr<BombLauncher>(&bomb_launcher.get())};
 };
 
 TEST_F(TimeBombTest, TimeBombIsNotDead)
