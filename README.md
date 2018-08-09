@@ -110,10 +110,10 @@ If there are changes in cmake files, then cmake automatically regenerate make fi
 ## 2.5 CI and reviews
 
 Pushing Your changes won't apply them on master. Before it there are some steps that must success:
-- creating pull request
-- compilation for linux. It is done automatically after push by Travis
-- compilation for windows. It is done automatically after push by AppVeyor
-- all UTs should pass. Please remember that You should cover as much code as You can.
+- creating pull request (You should do this only once after first push of Your branch).
+- compilation for linux. It is done automatically by Travis after each push for Your branch.
+- compilation for windows. It is done automatically by AppVeyor after each push for Your branch.
+- all UTs should pass. UTs run is checked after each push for Your branch.
 - closed code review.
 
 If Your changes will pass all that steps then they will be merged to master. You can start to work on next task :)
