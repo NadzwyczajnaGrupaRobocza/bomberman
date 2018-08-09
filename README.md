@@ -100,14 +100,14 @@ For single target:
 cmake --build <build_directory> --target <target>
 ```
 
-If there are changes in cmake files, then cmake automaticly regenerate make files before compilation.
+If there are changes in cmake files, then cmake automatically regenerate make files before compilation.
 
 ## 2.5 CI and reviews
 
 Pushing Your changes won't apply them on master. Before it there are some steps that must success:
 - creating pull request
-- compilation for linux. It is done automaticly after push by Travis
-- compilation for windows. It is done automaticly after push by AppVeyor
+- compilation for linux. It is done automatically after push by Travis
+- compilation for windows. It is done automatically after push by AppVeyor
 - all UTs should pass. Please remember that You should cover as much code as You can.
 - closed code review.
 
@@ -117,13 +117,19 @@ If Your changes will pass all that steps then they will be merged to master. You
 After pushing changes go to Bomberman's github page and select Your repository. In riught top corner You should find green button "Create pull request"
 
 ### 2.5.2 Compilation for linux
-...
+Compilation for linux is done automatically by Travis (using gcc compiler). After pushing new changes Travis will take code with Your changes and run compilation. To check compilation status go to "Pull requests" tab on github and click on Your pull request.
+On bottom of the site You will see continuous-integration/travis-ci/pr  and continuous-integration/travis-ci/push. If You click on details You will get output from Travis.
+
+Be aware that Travis compiles all targets and then run ctest, so even if compilation will pass Travis job may fail due to broken tests.
 
 ### 2.5.3 Compilation for windows
-...
+Compilation for windows is done automatically by AppVeyor. After pushing new changes AppVeyor will take code with Your changes and run compilation. To check compilation status go to "Pull requests" tab on github and click on Your pull request.
+On bottom of the site You will see continuous-integration/appveyor/pr  and continuous-integration/appveyor/branch. If You click on details You will get output from AppVeyor.
+
+Be aware that AppVeyor compiles all targets and then run ctest, so even if compilation will pass AppVeyor job may fail due to broken tests.
 
 ### 2.5.4 All UTs should pass
-...
+As mentioned above UTs are run automatically by Travis and AppVeyor when they are check Your changes. If even one test won't pass then all job is treated as broken.
 
 ### 2.5.5 Closed code review
 There should be at least one ship it to close review. If someone start new thread in review, then that person should give You ship it. If all persons involved in review give You "Ship it" You can close review and merge Your branch to master.
