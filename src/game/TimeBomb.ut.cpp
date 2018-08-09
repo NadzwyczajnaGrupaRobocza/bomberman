@@ -41,6 +41,15 @@ public:
 class TimeBombTest : public ExpectRegistration, public ::testing::Test
 {
 public:
+    TimeBombTest()
+    {
+        When(Method(bomb_launcher, notify_exploded)).Return();
+    }
+
+    void verify_notify_bomb_launcher()
+    {
+        Verify(Method(bomb_launcher, notify_exploded)).Exactly(1_Time);
+    }
     TimeBomb bomb{physics_engine.get(), renderer_pool.get(), bomb_position,
     std::shared_ptr<BombLauncher>(&bomb_launcher.get())};
 };
@@ -65,16 +74,21 @@ TEST_F(TimeBombTest, AfterCreation_shouldHasntExploded)
 
 TEST_F(TimeBombTest, AfterDeltaTimeBiggerThenTimeBombTimer_shouldExplode)
 {
+    
     using namespace std::chrono_literals;
     bomb.update(3100ms);
+
     ASSERT_TRUE(bomb.hasExploded());
+    verify_notify_bomb_launcher();
 }
 
 TEST_F(TimeBombTest, AfterDeltaTimeEqualToTimeBombTimer_shouldExplode)
 {
     using namespace std::chrono_literals;
     bomb.update(3s);
+
     ASSERT_TRUE(bomb.hasExploded());
+    verify_notify_bomb_launcher();
 }
 
 TEST_F(TimeBombTest, AfterSumOfDeltaTimesEqualToTimeBombTimer_shouldExplode)
@@ -82,5 +96,7 @@ TEST_F(TimeBombTest, AfterSumOfDeltaTimesEqualToTimeBombTimer_shouldExplode)
     using namespace std::chrono_literals;
     bomb.update(2s);
     bomb.update(1s);
+
     ASSERT_TRUE(bomb.hasExploded());
+    verify_notify_bomb_launcher();
 }

@@ -32,5 +32,6 @@ private:
 
     bool shouldExplode() const;
     void updateElapsedTime(DeltaTime);
+    void explode();
     void markExploded();
 };

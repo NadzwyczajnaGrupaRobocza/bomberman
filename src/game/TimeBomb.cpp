@@ -14,7 +14,7 @@ void TimeBomb::update(DeltaTime dt)
     updateElapsedTime(dt);
     if (shouldExplode())
     {
-        markExploded();
+        explode();
     }
 }
 
@@ -26,6 +26,12 @@ void TimeBomb::updateElapsedTime(DeltaTime dt)
 bool TimeBomb::shouldExplode() const
 {
     return timeElapsed >= bombTimer;
+}
+
+void TimeBomb::explode()
+{
+    bombLauncher->notify_exploded();
+    markExploded();
 }
 
 void TimeBomb::markExploded()
