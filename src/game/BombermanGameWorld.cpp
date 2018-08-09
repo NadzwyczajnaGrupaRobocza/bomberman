@@ -1,5 +1,27 @@
 #include "BombermanGameWorld.hpp"
+#include "BoundaryWallsPositionsGenerator.hpp"
+#include "HumanPlayerSfml.hpp"
+#include "LimitedBombLauncher.hpp"
+#include "Bomberman.hpp"
+#include <boost/core/null_deleter.hpp>
 
+BombermanGameWorld::BombermanGameWorld(std::unique_ptr<physics::PhysicsEngine> a, std::unique_ptr<graphics::RendererPool> b)
+ : gen(std::make_unique<BoundaryWallsPositionsGenerator>()),
+   simpleMap{*a, *gen, *b},
+   ppool{std::move(a)},
+   rpool{std::move(b)}
+
+{
+   std::shared_ptr<GameWorld> world(this, boost::null_deleter());
+
+   auto hp = std::make_unique<HumanPlayerSfml>();
+   auto bl = std::make_unique<LimitedBombLauncher>(world, 10);
+
+   physics::PhysicsId pid{};
+  
+   auto rid = rpool->acquire(math::Size2f{30, 40}, math::Position2f{70, 70});
+   entity.emplace_back(std::make_unique<Bomberman>(pid, rid, std::move(hp), ppool, rpool, std::move(bl)));
+}
 
 bool BombermanGameWorld::is_bomb_at_pos(const BombPosition& p) const
 {
@@ -35,4 +57,5 @@ void BombermanGameWorld::update(DeltaTime dt)
         e.second->update(dt);
     }
     */
+    rpool->render_all();
 }
