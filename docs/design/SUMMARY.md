@@ -1,6 +1,6 @@
 # Summary
 
-* [Domain model diagrams](01-DomainModel.md)
-* [Use case diagrams](02-UseCases.md)
+* [Domain model diagrams](01-DomainModelDiagrams.md)
+* [Use case diagrams](02-UseCaseDiagrams.md)
 * [Activity diagrams](03-ActivityDiagrams.md)
-* [Class diagram](04-ClassDiagram.md)
+* [Class diagrams](04-ClassDiagrams.md)
