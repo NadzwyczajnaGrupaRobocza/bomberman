@@ -3,7 +3,7 @@
 ## 1 Code standard
 
 - We are using snake_case for all names (variables, classes, functions, ...)
-- All code that You write should be covered by UTs. We are using TDD. Test are written in gtest, for mocking we are using fakeit.
+- All code that You write should be covered by UTs. We are using TDD. Tests are written in gtest, for mocking we are using fakeit.
 
 ## 2 Making changes in code
 
@@ -46,7 +46,7 @@ If Your changes will pass all that steps then they will be merged to master. You
 
 ### 5.1 Creating pull request
 
-After pushing changes go to Bomberman's github page and select Your repository. In riught top corner You should find green button "Create pull request"
+After pushing changes go to Bomberman's github page and select Your repository. In right top corner You should find green button "Create pull request"
 
 ### 5.2 Compilation for linux
 
