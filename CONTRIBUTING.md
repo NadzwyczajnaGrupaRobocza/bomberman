@@ -68,7 +68,7 @@ As mentioned above UTs are run automatically by Travis and AppVeyor when they ar
 
 ### 5.5 Closed code review
 
-There should be at least one ship it to close review. If someone start new thread in review, then that person should give You ship it. If all persons involved in review give You "Ship it" You can close review and merge Your branch to master.
+There should be at least one "Ship it" to close review. If someone start new thread in review, then You wouldn't be able to close review until that person give You "Ship it". If all persons involved in review give You "Ship it" You can close review and merge Your branch to master.
 
 ## 6 Merging branch to master
 
