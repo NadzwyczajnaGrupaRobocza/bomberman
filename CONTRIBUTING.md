@@ -73,3 +73,8 @@ There should be at least one "Ship it" to close review. If someone start new thr
 ## 6 Merging branch to master
 
 ... #ToDo (this will be added just after my branch will be merged)
+On Github go to "Pull requests" tab and select Your pull request. Scroll to the bottom of the site. There You have should press "Squash and merge" button to merge master with Your branch.
+
+Sometimes this button won't be active. In such case You should probably update Your branch (do this manually or by pressing "Update branch" button). After branch update wait until required jobs will pass. If everything will be ok then "Squash and merge" button should be active.
+
+Your changes should be now on master. You can remove Your branch and start working on new task :)
