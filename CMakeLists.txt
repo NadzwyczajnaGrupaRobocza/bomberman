@@ -17,6 +17,8 @@ set(GMOCK_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/googletest/googlemock/includ
 set(GTEST_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/googletest/googletest/include")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGSL_THROW_ON_CONTRACT_VIOLATION")
 
+set(SFML_MINIMAL_VERSION 2.5)
+
 enable_testing()
 
 add_subdirectory(external/googletest/)
