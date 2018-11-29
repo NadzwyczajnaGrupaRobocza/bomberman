@@ -1,4 +1,4 @@
-find_package(SFML 2 COMPONENTS window graphics REQUIRED)
+find_package(SFML ${SFML_MINIMAL_VERSION} COMPONENTS window REQUIRED)
 
 add_library(game
   BombermanGameWorld.cpp

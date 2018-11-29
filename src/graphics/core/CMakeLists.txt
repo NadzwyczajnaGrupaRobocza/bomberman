@@ -1,4 +1,4 @@
-find_package(SFML 2 COMPONENTS system graphics window REQUIRED)
+find_package(SFML ${SFML_MINIMAL_VERSION} COMPONENTS system graphics window REQUIRED)
 
 ########################### SRC ###########################
 add_library(graphics
