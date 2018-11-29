@@ -50,6 +50,7 @@ public:
     {
         Verify(Method(bomb_launcher, notify_exploded)).Exactly(1_Time);
     }
+
     TimeBomb bomb{physics_engine.get(), renderer_pool.get(), bomb_position,
     std::shared_ptr<BombLauncher>(&bomb_launcher.get())};
 };
