@@ -1,4 +1,4 @@
-find_package(SFML 2 COMPONENTS window REQUIRED)
+find_package(SFML ${SFML_MINIMAL_VERSION} COMPONENTS window REQUIRED)
 
 include_directories(SYSTEM ${SFML_INCLUDE_DIR})
 link_libraries(graphics ${SFML_LIBRARIES})
