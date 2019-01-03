@@ -2,20 +2,20 @@
 
 #include <gtest/gtest.h>
 
-#include "SfmlRectangleShape.hpp"
+#include "sfml_rectangle_shape.hpp"
 
 namespace graphics
 {
 namespace
 {
-const Position2f pos{0, 0};
-const Size2f size{0, 0};
+const position2f pos{0, 0};
+const size2f size{0, 0};
 }
 
-class RenderTargetStub
+class render_target_stub
 {
 public:
-    virtual ~RenderTargetStub()
+    virtual ~render_target_stub()
     {
         EXPECT_EQ(shouldInitialize, initialized);
         EXPECT_EQ(shouldClear, cleared);
@@ -40,7 +40,7 @@ public:
         clearedColor = color;
     }
 
-    void draw(const SfmlRectangleShape& shape)
+    void draw(const sfml_rectangle_shape& shape)
     {
         drawn = true;
         drawnShape = shape;
@@ -55,7 +55,7 @@ public:
         expectedColor = color;
     }
 
-    void expectDraw(const SfmlRectangleShape& shape)
+    void expectDraw(const sfml_rectangle_shape& shape)
     {
         shouldDraw = true;
         expectedShape = shape;
@@ -65,13 +65,13 @@ public:
     bool cleared{false};
     sf::Color clearedColor{sf::Color::Transparent};
     bool drawn{false};
-    SfmlRectangleShape drawnShape{size, pos};
+    sfml_rectangle_shape drawnShape{size, pos};
 
     bool shouldInitialize{false};
     bool shouldClear{false};
     bool shouldDraw{false};
 
     sf::Color expectedColor{sf::Color::Transparent};
-    SfmlRectangleShape expectedShape{size, pos};
+    sfml_rectangle_shape expectedShape{size, pos};
 };
 }

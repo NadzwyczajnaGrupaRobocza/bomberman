@@ -1,10 +1,10 @@
-#include "RendererIdGenerator.hpp"
+#include "renderer_id_generator.hpp"
 
 #include <boost/uuid/uuid_generators.hpp>
 
 namespace graphics
 {
-RendererId RendererIdGenerator::generate() const
+renderer_id renderer_id_generator::generate() const
 {
     return boost::uuids::random_generator()();
 }
