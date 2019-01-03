@@ -5,7 +5,7 @@
 
 #include "physics/PhysicsEngine.mock.hpp"
 #include "graphics/RendererPool.mock.hpp"
-#include "BombLauncher.hpp"
+#include "BombLauncher.mock.hpp"
 
 #include "TimeBomb.hpp"
 
