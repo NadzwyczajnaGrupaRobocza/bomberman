@@ -4,7 +4,7 @@
 #include "fakeit.hpp"
 
 #include "physics/PhysicsEngine.mock.hpp"
-#include "graphics/RendererPool.hpp"
+#include "graphics/RendererPool.mock.hpp"
 #include "BombLauncher.hpp"
 
 #include "TimeBomb.hpp"
