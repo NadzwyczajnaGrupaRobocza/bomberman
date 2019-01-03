@@ -53,8 +53,7 @@ public:
 
     void expectTrySpawnBomb(const bool is_spawned)
     {
-        When(Method(bomb_launcher, try_spawn_bomb))
-            .Return(is_spawned);
+        When(Method(bomb_launcher, try_spawn_bomb)).Return(is_spawned);
     }
 
     const math::Position2f current_position{20.0f, 120.0f};
@@ -62,12 +61,12 @@ public:
     math::Position2f expected_current_renderer_position{0.0f, 0.0f};
     math::Position2f expected_next_physics_position{0.0f, 0.0f};
 
-    graphics::RendererId renderer_id{{0x12}};
+    graphics::renderer_id renderer_id{{0x12}};
     physics::PhysicsId physics_id{0x3F};
 
     Mock<HumanPlayer> human_player;
     Mock<physics::PhysicsEngine> physics_engine;
-    Mock<graphics::RendererPool> renderer_pool;
+    Mock<graphics::renderer_pool> renderer_pool;
     Mock<BombLauncher> bomb_launcher;
 
     Bomberman bomberman{
@@ -75,7 +74,7 @@ public:
         renderer_id,
         std::unique_ptr<HumanPlayer>(&human_player.get()),
         std::shared_ptr<physics::PhysicsEngine>(&physics_engine.get()),
-        std::shared_ptr<graphics::RendererPool>(&renderer_pool.get()),
+        std::shared_ptr<graphics::renderer_pool>(&renderer_pool.get()),
         std::unique_ptr<BombLauncher>(&bomb_launcher.get())};
 };
 

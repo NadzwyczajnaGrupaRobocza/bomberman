@@ -1,27 +1,27 @@
-#include "WindowSfml.hpp"
+#include "window_sfml.hpp"
 
 #include <iostream>
 
 namespace graphics
 {
-WindowSfml::WindowSfml(const WindowSize& size, const std::string& title,
-                       std::unique_ptr<SfmlWindow> w)
+window_sfml::window_sfml(const window_size& size, const std::string& title,
+                         std::unique_ptr<sfml_window> w)
     : window{std::move(w)}
 {
     window->create(sf::VideoMode{size.width, size.height}, title);
 }
 
-bool WindowSfml::is_open() const
+bool window_sfml::is_open() const
 {
     return window->is_open();
 }
 
-void WindowSfml::display()
+void window_sfml::display()
 {
     window->display();
 }
 
-void WindowSfml::update()
+void window_sfml::update()
 {
     sf::Event event;
     while (window->poll_event(event))

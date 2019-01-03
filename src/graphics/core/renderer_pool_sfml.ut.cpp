@@ -1,4 +1,4 @@
-#include "RendererPoolSfml.hpp"
+#include "renderer_pool_sfml.hpp"
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
@@ -9,7 +9,7 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Window.hpp>
 
-#include "SfmlRectangleShape.hpp"
+#include "sfml_rectangle_shape.hpp"
 
 using namespace ::fakeit;
 
@@ -23,34 +23,35 @@ constexpr math::Size2f dummy_size{20, 30};
 constexpr math::Size2f another_dummy_size{100, 100};
 constexpr math::Position2f dummy_position{0, 10};
 }
-class RendererPoolSfmlTest : public ::testing::Test
+class renderer_pool_sfml_test : public ::testing::Test
 {
 public:
     void SetUp() override
     {
-        Fake(Dtor(renderer_id_generator));
-        Fake(Dtor(context_renderer));
-        Fake(Method(context_renderer, initialize));
+        Fake(Dtor(id_generator));
+        Fake(Dtor(renderer));
+        Fake(Method(renderer, initialize));
 
-        renderer_pool = std::make_unique<RendererPoolSfml>(
-            std::unique_ptr<ContextRenderer>(&context_renderer.get()),
-            std::unique_ptr<RendererIdGenerator>(&renderer_id_generator.get()));
+        renderer_pool = std::make_unique<renderer_pool_sfml>(
+            std::unique_ptr<context_renderer>(&renderer.get()),
+            std::unique_ptr<renderer_id_generator>(
+                &id_generator.get()));
 
-        Verify(Method(context_renderer, initialize));
+        Verify(Method(renderer, initialize));
     }
 
-    auto create_dummy_shape(const Size2f& size = dummy_size,
-                            const Position2f& position = dummy_position)
+    auto create_dummy_shape(const size2f& size = dummy_size,
+                            const position2f& position = dummy_position)
     {
-        return SfmlRectangleShape{size, position};
+        return sfml_rectangle_shape{size, position};
     }
 
-    void expect_render_all(std::vector<SfmlRectangleShape> expected_shapes)
+    void expect_render_all(std::vector<sfml_rectangle_shape> expected_shapes)
     {
-        std::vector<SfmlRectangleShape> shapes;
+        std::vector<sfml_rectangle_shape> shapes;
         shapes.reserve(expected_shapes.size());
-        Fake(Method(context_renderer, clear));
-        When(Method(context_renderer, draw)).AlwaysDo([&](const auto& shape) {
+        Fake(Method(renderer, clear));
+        When(Method(renderer, draw)).AlwaysDo([&](const auto& shape) {
             shapes.push_back(shape);
         });
 
@@ -60,19 +61,19 @@ public:
 
     void expect_acquire_renderable(const math::Size2f& size,
                                    const math::Position2f& position,
-                                   const RendererId& id)
+                                   const renderer_id& id)
     {
         EXPECT_EQ(id, renderer_pool->acquire(size, position));
     }
 
     void expect_eq_position(const math::Position2f& position,
-                            const RendererId& id)
+                            const renderer_id& id)
     {
         EXPECT_FLOAT_EQ(position.x, renderer_pool->get_position(id).x);
         EXPECT_FLOAT_EQ(position.y, renderer_pool->get_position(id).y);
     }
 
-    void expect_move_object(const float x, const float y, const RendererId& id)
+    void expect_move_object(const float x, const float y, const renderer_id& id)
     {
         auto new_position = dummy_position;
         new_position.x += x;
@@ -82,17 +83,17 @@ public:
         expect_eq_position(new_position, id);
     }
 
-    Mock<RendererIdGenerator> renderer_id_generator;
-    Mock<ContextRenderer> context_renderer;
-    std::unique_ptr<RendererPoolSfml> renderer_pool;
+    Mock<renderer_id_generator> id_generator;
+    Mock<context_renderer> renderer;
+    std::unique_ptr<renderer_pool_sfml> renderer_pool;
 
-    const RendererId id1{RendererIdGenerator{}.generate()};
-    const RendererId id2{RendererIdGenerator{}.generate()};
+    const renderer_id id1{renderer_id_generator{}.generate()};
+    const renderer_id id2{renderer_id_generator{}.generate()};
 };
 
-TEST_F(RendererPoolSfmlTest, acquireTwoRenderableObject_positionShouldMatch)
+TEST_F(renderer_pool_sfml_test, acquireTwoRenderableObject_positionShouldMatch)
 {
-    When(Method(renderer_id_generator, generate)).Return(id1).Return(id2);
+    When(Method(id_generator, generate)).Return(id1).Return(id2);
 
     expect_acquire_renderable(dummy_size, dummy_position, id1);
     expect_acquire_renderable(another_dummy_size, dummy_position, id2);
@@ -100,9 +101,9 @@ TEST_F(RendererPoolSfmlTest, acquireTwoRenderableObject_positionShouldMatch)
     expect_eq_position(dummy_position, id2);
 }
 
-TEST_F(RendererPoolSfmlTest, renderableObjectShouldBeMovable)
+TEST_F(renderer_pool_sfml_test, renderableObjectShouldBeMovable)
 {
-    When(Method(renderer_id_generator, generate)).Return(id1);
+    When(Method(id_generator, generate)).Return(id1);
     expect_acquire_renderable(dummy_size, dummy_position, id1);
     expect_eq_position(dummy_position, id1);
 
@@ -112,27 +113,27 @@ TEST_F(RendererPoolSfmlTest, renderableObjectShouldBeMovable)
     expect_move_object(10, -231, id1);
 }
 
-TEST_F(RendererPoolSfmlTest, getPositionOfInvalidIdShouldThrow)
+TEST_F(renderer_pool_sfml_test, getPositionOfInvalidIdShouldThrow)
 {
     EXPECT_THROW(renderer_pool->get_position(id1), std::out_of_range);
 }
 
-TEST_F(RendererPoolSfmlTest, setPositiontOfInvalidIdShouldThrow)
+TEST_F(renderer_pool_sfml_test, setPositiontOfInvalidIdShouldThrow)
 {
     EXPECT_THROW(renderer_pool->set_position(id1, dummy_position),
                  std::out_of_range);
 }
 
-TEST_F(RendererPoolSfmlTest, renderAll)
+TEST_F(renderer_pool_sfml_test, renderAll)
 {
-    When(Method(renderer_id_generator, generate)).AlwaysDo([]() {
-        return RendererIdGenerator{}.generate();
+    When(Method(id_generator, generate)).AlwaysDo([]() {
+        return renderer_id_generator{}.generate();
     });
 
     auto expected_shapes = {
-        create_dummy_shape(Size2f{10, 10}), create_dummy_shape(Size2f{710, 30}),
-        create_dummy_shape(Size2f{80, 8}), create_dummy_shape(Size2f{107, 180}),
-        create_dummy_shape(Size2f{60, 30})};
+        create_dummy_shape(size2f{10, 10}), create_dummy_shape(size2f{710, 30}),
+        create_dummy_shape(size2f{80, 8}), create_dummy_shape(size2f{107, 180}),
+        create_dummy_shape(size2f{60, 30})};
 
     ranges::for_each(expected_shapes, [this](auto& shape) {
         this->renderer_pool->acquire(shape.getSize(), dummy_position);
@@ -140,23 +141,23 @@ TEST_F(RendererPoolSfmlTest, renderAll)
 
     expect_render_all({expected_shapes});
 
-    Verify(Method(context_renderer, clear).Using(sf::Color::Black));
-    Verify(Method(context_renderer, draw))
+    Verify(Method(renderer, clear).Using(sf::Color::Black));
+    Verify(Method(renderer, draw))
         .Exactly(static_cast<int>(expected_shapes.size()));
 }
 
-TEST_F(RendererPoolSfmlTest, releaseWithoutAcquire_doNothing)
+TEST_F(renderer_pool_sfml_test, releaseWithoutAcquire_doNothing)
 {
     renderer_pool->release(id1);
-    Fake(Method(context_renderer, clear));
-    Fake(Method(context_renderer, draw));
+    Fake(Method(renderer, clear));
+    Fake(Method(renderer, draw));
     renderer_pool->render_all();
-    Verify(Method(context_renderer, draw)).Exactly(0);
+    Verify(Method(renderer, draw)).Exactly(0);
 }
 
-TEST_F(RendererPoolSfmlTest, acquireTwoReleaseOne_shouldRenderOnlyOne)
+TEST_F(renderer_pool_sfml_test, acquireTwoReleaseOne_shouldRenderOnlyOne)
 {
-    When(Method(renderer_id_generator, generate)).Return(id1).Return(id2);
+    When(Method(id_generator, generate)).Return(id1).Return(id2);
 
     EXPECT_EQ(id1, renderer_pool->acquire(dummy_size, dummy_position));
     EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position));
@@ -167,13 +168,13 @@ TEST_F(RendererPoolSfmlTest, acquireTwoReleaseOne_shouldRenderOnlyOne)
 
     expect_render_all(expected_shapes);
 
-    Verify(Method(context_renderer, clear).Using(sf::Color::Black));
-    Verify(Method(context_renderer, draw)).Once();
+    Verify(Method(renderer, clear).Using(sf::Color::Black));
+    Verify(Method(renderer, draw)).Once();
 }
 
-TEST_F(RendererPoolSfmlTest, reacquirenShouldBeRendered)
+TEST_F(renderer_pool_sfml_test, reacquirenShouldBeRendered)
 {
-    When(Method(renderer_id_generator, generate))
+    When(Method(id_generator, generate))
         .Return(id1)
         .Return(id2)
         .Return(id2);
@@ -181,7 +182,7 @@ TEST_F(RendererPoolSfmlTest, reacquirenShouldBeRendered)
     EXPECT_EQ(id1, renderer_pool->acquire(dummy_size, dummy_position));
     EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position));
 
-    std::vector<SfmlRectangleShape> expected_shapes{create_dummy_shape()};
+    std::vector<sfml_rectangle_shape> expected_shapes{create_dummy_shape()};
 
     renderer_pool->release(id2);
     expect_render_all(expected_shapes);

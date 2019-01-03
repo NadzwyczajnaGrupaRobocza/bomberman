@@ -5,7 +5,7 @@
 #include "Bomberman.hpp"
 #include <boost/core/null_deleter.hpp>
 
-BombermanGameWorld::BombermanGameWorld(std::unique_ptr<physics::PhysicsEngine> a, std::unique_ptr<graphics::RendererPool> b)
+BombermanGameWorld::BombermanGameWorld(std::unique_ptr<physics::PhysicsEngine> a, std::unique_ptr<graphics::renderer_pool> b)
  : gen(std::make_unique<BoundaryWallsPositionsGenerator>()),
    simpleMap{*a, *gen, *b},
    ppool{std::move(a)},

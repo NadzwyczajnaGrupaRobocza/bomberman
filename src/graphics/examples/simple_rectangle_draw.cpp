@@ -2,7 +2,7 @@
 #include <SFML/Window/Window.hpp>
 #include <memory>
 
-#include "graphics/Factory.hpp"
+#include "graphics/factory.hpp"
 
 using namespace math;
 

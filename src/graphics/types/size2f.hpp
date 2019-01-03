@@ -6,18 +6,18 @@
 
 namespace graphics
 {
-struct Size2f : ::math::Size2f
+struct size2f : ::math::Size2f
 {
-    Size2f(const float width_, const float height_)
+    size2f(const float width_, const float height_)
         : ::math::Size2f{width_, height_}
     {
     }
 
-    Size2f(const ::math::Size2f& size) : Size2f{size.width, size.height}
+    size2f(const ::math::Size2f& size) : size2f{size.width, size.height}
     {
     }
 
-    Size2f(const ::sf::Vector2f& size) : Size2f{size.x, size.y}
+    size2f(const ::sf::Vector2f& size) : size2f{size.x, size.y}
     {
     }
 
