@@ -1,8 +1,9 @@
 #include "gtest/gtest.h"
+#include "gmock/gmock.h"
 
 #include "fakeit.hpp"
 
-#include "physics/PhysicsEngine.hpp"
+#include "physics/PhysicsEngine.mock.hpp"
 #include "graphics/RendererPool.hpp"
 #include "BombLauncher.hpp"
 
