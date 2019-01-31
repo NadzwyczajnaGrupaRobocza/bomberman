@@ -6,7 +6,7 @@
 
 namespace graphics
 {
-class mock_window_proxy
+class mock_window_proxy : public window_proxy
 {
 public:
     MOCK_CONST_METHOD0(is_open, bool());
