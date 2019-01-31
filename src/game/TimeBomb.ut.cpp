@@ -20,7 +20,6 @@ public:
             bomb_render_id;
         Method(physics_engine, register_colider)
             .Using(bomb_size, bomb_position) = bomb_physics_id;
-        Fake(Dtor(bomb_launcher));
     }
 
     ~ExpectRegistration()
@@ -30,8 +29,11 @@ public:
     }
 
     Mock<physics::PhysicsEngine> physics_engine;
+    physics::MockPhysicsEngine physics_engine2;
     Mock<graphics::RendererPool> renderer_pool;
-    Mock<BombLauncher> bomb_launcher;
+    graphics::MockRendererPool renderer_pool2;
+    std::shared_ptr<MockBombLauncher> bomb_launcher =
+        std::make_shared<MockBombLauncher>();
     const math::Position2f bomb_position{5.0, 7.0};
     const math::Size2f bomb_size{1.0, 1.0};
     const graphics::RendererId bomb_render_id{66};
@@ -44,16 +46,18 @@ class TimeBombTest : public ExpectRegistration, public ::testing::Test
 public:
     TimeBombTest()
     {
-        When(Method(bomb_launcher, notify_exploded)).Return();
+        ON_CALL(*bomb_launcher, notify_exploded())
+            .WillByDefault(::testing::Return());
     }
 
-    void verify_notify_bomb_launcher()
+    void expect_notify_bomb_launcher()
     {
-        Verify(Method(bomb_launcher, notify_exploded)).Exactly(1_Time);
+        EXPECT_CALL(*bomb_launcher, notify_exploded())
+            .WillOnce(::testing::Return());
     }
 
     TimeBomb bomb{physics_engine.get(), renderer_pool.get(), bomb_position,
-    std::shared_ptr<BombLauncher>(&bomb_launcher.get())};
+                  bomb_launcher};
 };
 
 TEST_F(TimeBombTest, TimeBombIsNotDead)
@@ -76,29 +80,31 @@ TEST_F(TimeBombTest, AfterCreation_shouldHasntExploded)
 
 TEST_F(TimeBombTest, AfterDeltaTimeBiggerThenTimeBombTimer_shouldExplode)
 {
-    
+    expect_notify_bomb_launcher();
+
     using namespace std::chrono_literals;
     bomb.update(3100ms);
 
     ASSERT_TRUE(bomb.hasExploded());
-    verify_notify_bomb_launcher();
 }
 
 TEST_F(TimeBombTest, AfterDeltaTimeEqualToTimeBombTimer_shouldExplode)
 {
+    expect_notify_bomb_launcher();
+
     using namespace std::chrono_literals;
     bomb.update(3s);
 
     ASSERT_TRUE(bomb.hasExploded());
-    verify_notify_bomb_launcher();
 }
 
 TEST_F(TimeBombTest, AfterSumOfDeltaTimesEqualToTimeBombTimer_shouldExplode)
 {
+    expect_notify_bomb_launcher();
+
     using namespace std::chrono_literals;
     bomb.update(2s);
     bomb.update(1s);
 
     ASSERT_TRUE(bomb.hasExploded());
-    verify_notify_bomb_launcher();
 }
