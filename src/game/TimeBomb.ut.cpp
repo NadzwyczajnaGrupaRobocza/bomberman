@@ -27,10 +27,10 @@ public:
             .WillOnce(Return());
     }
 
-    physics::MockPhysicsEngine physics_engine;
-    graphics::MockRendererPool renderer_pool;
+    StrictMock<physics::MockPhysicsEngine> physics_engine;
+    StrictMock<graphics::MockRendererPool> renderer_pool;
     std::shared_ptr<MockBombLauncher> bomb_launcher =
-        std::make_shared<MockBombLauncher>();
+        std::make_shared<StrictMock<MockBombLauncher>>();
     const math::Position2f bomb_position{5.0, 7.0};
     const math::Size2f bomb_size{1.0, 1.0};
     const graphics::RendererId bomb_render_id{66};
