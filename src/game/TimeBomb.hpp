@@ -14,21 +14,23 @@ class GameWorld;
 class TimeBomb : public Bomb
 {
 public:
-    TimeBomb(physics::PhysicsEngine&, graphics::RendererPool&,
-             math::Position2f, std::shared_ptr<BombLauncher>);
+    TimeBomb(physics::PhysicsEngine&, graphics::RendererPool&, math::Position2f,
+             std::shared_ptr<BombLauncher>);
 
     void update(DeltaTime) override;
     bool areYouDead() const override;
     bool hasExploded() const override;
 
 private:
+    const math::Size2f bomb_size{1.0, 1.0};
+    bool exploded{false};
+    const std::chrono::seconds bombTimer{3};
     physics::PhysicsEngine& physics_engine;
     graphics::RendererPool& renderer_pool;
     const std::shared_ptr<BombLauncher> bombLauncher;
-    bool exploded{false};
-    const std::chrono::seconds bombTimer{3};
+    physics::PhysicsId physics_id;
+    graphics::RendererId renderer_id;
     std::chrono::milliseconds timeElapsed{};
-    const math::Size2f bomb_size{1.0, 1.0};
 
     bool shouldExplode() const;
     void updateElapsedTime(DeltaTime);

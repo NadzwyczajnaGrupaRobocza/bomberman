@@ -3,10 +3,10 @@
 TimeBomb::TimeBomb(physics::PhysicsEngine& pe, graphics::RendererPool& rp,
                    math::Position2f bomb_position,
                    std::shared_ptr<BombLauncher> bl)
-    : physics_engine{pe}, renderer_pool{rp}, bombLauncher{std::move(bl)}
+    : physics_engine{pe}, renderer_pool{rp}, bombLauncher{std::move(bl)},
+      physics_id{physics_engine.register_colider(bomb_size, bomb_position)},
+      renderer_id{renderer_pool.acquire(bomb_size, bomb_position)}
 {
-    physics_engine.register_colider(bomb_size, bomb_position);
-    renderer_pool.acquire(bomb_size, bomb_position);
 }
 
 void TimeBomb::update(DeltaTime dt)
@@ -31,6 +31,8 @@ bool TimeBomb::shouldExplode() const
 void TimeBomb::explode()
 {
     bombLauncher->notify_exploded();
+    physics_engine.deregister(physics_id);
+    renderer_pool.release(renderer_id);
     markExploded();
 }
 
