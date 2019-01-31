@@ -22,7 +22,7 @@ namespace
 constexpr math::Size2f dummy_size{20, 30};
 constexpr math::Size2f another_dummy_size{100, 100};
 constexpr math::Position2f dummy_position{0, 10};
-}
+} // namespace
 class renderer_pool_sfml_test : public ::testing::Test
 {
 public:
@@ -34,8 +34,7 @@ public:
 
         renderer_pool = std::make_unique<renderer_pool_sfml>(
             std::unique_ptr<context_renderer>(&renderer.get()),
-            std::unique_ptr<renderer_id_generator>(
-                &id_generator.get()));
+            std::unique_ptr<renderer_id_generator>(&id_generator.get()));
 
         Verify(Method(renderer, initialize));
     }
@@ -174,10 +173,7 @@ TEST_F(renderer_pool_sfml_test, acquireTwoReleaseOne_shouldRenderOnlyOne)
 
 TEST_F(renderer_pool_sfml_test, reacquirenShouldBeRendered)
 {
-    When(Method(id_generator, generate))
-        .Return(id1)
-        .Return(id2)
-        .Return(id2);
+    When(Method(id_generator, generate)).Return(id1).Return(id2).Return(id2);
 
     EXPECT_EQ(id1, renderer_pool->acquire(dummy_size, dummy_position));
     EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position));
@@ -192,4 +188,4 @@ TEST_F(renderer_pool_sfml_test, reacquirenShouldBeRendered)
 
     expect_render_all(expected_shapes);
 }
-}
+} // namespace graphics

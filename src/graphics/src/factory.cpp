@@ -3,8 +3,8 @@
 #include "renderer_pool_sfml.hpp"
 #include "sfml_render_target.hpp"
 #include "renderer_id_generator.hpp"
-#include "window_sfml.hpp"
-#include "sfml_window_facade.hpp"
+#include "window/sfml_window.hpp"
+#include "window/sfml_window_proxy.hpp"
 
 namespace graphics
 {
@@ -19,7 +19,7 @@ create_renderer_pool(const math::Size2u& rendering_region_size)
 std::unique_ptr<window> create_window(const math::Size2u& size,
                                       const std::string& title)
 {
-    return std::make_unique<window_sfml>(
-        size, title, std::make_unique<sfml_window_facade>(size, title));
+    return std::make_unique<sfml_window>(
+        size, title, std::make_unique<sfml_window_proxy>(size, title));
 }
-}
+} // namespace graphics

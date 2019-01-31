@@ -10,4 +10,4 @@ public:
     virtual ~renderer_id_generator() noexcept = default;
     virtual renderer_id generate() const;
 };
-}
+} // namespace graphics

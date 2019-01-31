@@ -21,4 +21,4 @@ size2f sfml_rectangle_shape::getSize() const
 {
     return sf::RectangleShape::getSize();
 }
-}
+} // namespace graphics

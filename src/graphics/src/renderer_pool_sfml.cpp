@@ -9,9 +9,8 @@
 namespace graphics
 {
 
-renderer_pool_sfml::renderer_pool_sfml(
-    std::unique_ptr<context_renderer> r,
-    std::unique_ptr<renderer_id_generator> g)
+renderer_pool_sfml::renderer_pool_sfml(std::unique_ptr<context_renderer> r,
+                                       std::unique_ptr<renderer_id_generator> g)
     : renderer{std::move(r)}, id_generator{std::move(g)}
 {
     renderer->initialize();
@@ -56,4 +55,4 @@ math::Position2f renderer_pool_sfml::get_position(const renderer_id& id)
 {
     return shapes.at(id).getPosition();
 }
-}
+} // namespace graphics

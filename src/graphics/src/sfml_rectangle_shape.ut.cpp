@@ -9,7 +9,7 @@ namespace
 {
 const position2f pos{0.7f, 73.0f};
 const size2f size{200, 100};
-}
+} // namespace
 
 TEST(sfml_rectangle_shape_test, getPosition)
 {
@@ -42,4 +42,4 @@ TEST(sfml_rectangle_shape_test, inequality)
 
     EXPECT_NE(rect_1, rect_2);
 }
-}
+} // namespace graphics

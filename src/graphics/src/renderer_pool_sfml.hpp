@@ -37,4 +37,4 @@ private:
         shapes;
     std::unordered_set<renderer_id, boost::hash<renderer_id>> trash;
 };
-}
+} // namespace graphics

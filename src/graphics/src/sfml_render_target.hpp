@@ -47,4 +47,4 @@ protected:
 };
 
 using sfml_render_target = render_target<sf::RenderTarget>;
-}
+} // namespace graphics

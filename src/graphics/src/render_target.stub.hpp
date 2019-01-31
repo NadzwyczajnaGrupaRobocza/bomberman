@@ -10,7 +10,7 @@ namespace
 {
 const position2f pos{0, 0};
 const size2f size{0, 0};
-}
+} // namespace
 
 class render_target_stub
 {
@@ -74,4 +74,4 @@ public:
     sf::Color expectedColor{sf::Color::Transparent};
     sfml_rectangle_shape expectedShape{size, pos};
 };
-}
+} // namespace graphics

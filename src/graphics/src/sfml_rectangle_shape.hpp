@@ -8,8 +8,9 @@
 
 namespace graphics
 {
-class sfml_rectangle_shape : public sf::RectangleShape,
-                           public boost::equality_comparable<sfml_rectangle_shape>
+class sfml_rectangle_shape
+    : public sf::RectangleShape,
+      public boost::equality_comparable<sfml_rectangle_shape>
 {
 public:
     sfml_rectangle_shape(const size2f&, const position2f&);
@@ -24,4 +25,4 @@ inline bool operator==(const sfml_rectangle_shape& lhs,
     return lhs.getPosition() == rhs.getPosition() &&
            lhs.getSize() == rhs.getSize();
 }
-}
+} // namespace graphics

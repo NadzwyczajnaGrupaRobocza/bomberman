@@ -6,10 +6,10 @@
 
 namespace graphics
 {
-class sfml_window
+class window_proxy
 {
 public:
-    virtual ~sfml_window() noexcept = default;
+    virtual ~window_proxy() noexcept = default;
 
     virtual bool is_open() const = 0;
     virtual void display() = 0;
@@ -17,4 +17,4 @@ public:
     virtual void close() = 0;
     virtual void create(sf::VideoMode, const sf::String& title) = 0;
 };
-}
+} // namespace graphics

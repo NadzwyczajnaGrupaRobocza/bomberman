@@ -1,4 +1,4 @@
-#include "sfml_window.hpp"
+#include "sfml/window_proxy.hpp"
 
 #include <SFML/Window/Window.hpp>
 
@@ -6,10 +6,10 @@
 
 namespace graphics
 {
-class sfml_window_facade : public sfml_window
+class sfml_window_proxy : public window_proxy
 {
 public:
-    sfml_window_facade(const window_size&, const std::string& title);
+    sfml_window_proxy(const window_size&, const std::string& title);
     bool is_open() const override;
     void display() override;
     bool poll_event(sf::Event&) override;
@@ -17,6 +17,6 @@ public:
     void create(sf::VideoMode, const sf::String& title) override;
 
 private:
-    sf::Window window;
+    sf::Window m_window;
 };
-}
+} // namespace graphics

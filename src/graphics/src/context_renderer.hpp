@@ -18,4 +18,4 @@ public:
     virtual void clear(const sf::Color&) = 0;
     virtual void draw(const sfml_rectangle_shape&) = 0;
 };
-}
+} // namespace graphics
