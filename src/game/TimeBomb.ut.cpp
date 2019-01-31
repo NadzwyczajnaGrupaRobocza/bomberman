@@ -16,20 +16,14 @@ class ExpectRegistration
 public:
     ExpectRegistration()
     {
-        Method(renderer_pool, acquire).Using(bomb_size, bomb_position) =
-            bomb_render_id;
+        EXPECT_CALL(renderer_pool, acquire(bomb_size, bomb_position))
+            .WillOnce(::testing::Return(bomb_render_id));
         EXPECT_CALL(physics_engine, register_colider(bomb_size, bomb_position))
             .WillOnce(::testing::Return(bomb_physics_id));
     }
 
-    ~ExpectRegistration()
-    {
-        Verify(Method(renderer_pool, acquire)).Exactly(oneTime);
-    }
-
     physics::MockPhysicsEngine physics_engine;
-    Mock<graphics::RendererPool> renderer_pool;
-    graphics::MockRendererPool renderer_pool2;
+    graphics::MockRendererPool renderer_pool;
     std::shared_ptr<MockBombLauncher> bomb_launcher =
         std::make_shared<MockBombLauncher>();
     const math::Position2f bomb_position{5.0, 7.0};
@@ -54,8 +48,7 @@ public:
             .WillOnce(::testing::Return());
     }
 
-    TimeBomb bomb{physics_engine, renderer_pool.get(), bomb_position,
-                  bomb_launcher};
+    TimeBomb bomb{physics_engine, renderer_pool, bomb_position, bomb_launcher};
 };
 
 TEST_F(TimeBombTest, TimeBombIsNotDead)
