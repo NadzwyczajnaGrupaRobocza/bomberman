@@ -4,7 +4,7 @@
 
 SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
                      const WallPositionsGenerator& generated_wallss_generator,
-                     graphics::RendererPool& rEngine)
+                     graphics::renderer_pool& rEngine)
     : physics_engine(pEngine), graphics_engine{rEngine}
 {
     for (const auto& generated_walls :

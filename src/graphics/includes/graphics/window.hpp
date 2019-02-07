@@ -2,10 +2,10 @@
 
 namespace graphics
 {
-class Window
+class window
 {
 public:
-    virtual ~Window() noexcept = default;
+    virtual ~window() noexcept = default;
 
     virtual bool is_open() const = 0;
     virtual void display() = 0;

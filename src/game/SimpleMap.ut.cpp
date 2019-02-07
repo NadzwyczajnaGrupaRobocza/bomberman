@@ -33,7 +33,7 @@ public:
                 static uint8_t id = 0;
                 render_wall_positions.push_back(position);
                 render_wall_sizes.push_back(size);
-                const auto rid = graphics::RendererId{{id++}};
+                const auto rid = graphics::renderer_id{{id++}};
                 render_ids.push_back(rid);
                 return rid;
             });
@@ -60,17 +60,17 @@ public:
                                                         {{2, 8}, {4, 4}},
                                                         {{88, 123}, {4, 67}}};
     Mock<physics::PhysicsEngine> physics_engine;
-    Mock<graphics::RendererPool> render_engine;
+    Mock<graphics::renderer_pool> render_engine;
     Mock<WallPositionsGenerator> wall_positions_generator;
     std::vector<physics::PhysicsId> physicsIds;
     std::vector<physics::PhysicsId> deregistered_physics_ids;
     std::vector<math::Position2f> physics_wall_positions;
     std::vector<math::Size2f> physics_wall_sizes;
-    std::vector<graphics::RendererId> render_ids;
+    std::vector<graphics::renderer_id> render_ids;
     std::vector<math::Position2f> render_wall_positions;
     std::vector<math::Size2f> render_wall_sizes;
-    std::vector<graphics::RendererId> deregistered_render_ids;
-    graphics::RendererId background_id{{uint8_t(1024)}};
+    std::vector<graphics::renderer_id> deregistered_render_ids;
+    graphics::renderer_id background_id{{uint8_t(1024)}};
 };
 
 class SimpleMapTest : public SimpleMapConstructorExpectations

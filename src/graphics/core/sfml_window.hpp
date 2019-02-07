@@ -6,10 +6,10 @@
 
 namespace graphics
 {
-class SfmlWindow
+class sfml_window
 {
 public:
-    virtual ~SfmlWindow() noexcept = default;
+    virtual ~sfml_window() noexcept = default;
 
     virtual bool is_open() const = 0;
     virtual void display() = 0;

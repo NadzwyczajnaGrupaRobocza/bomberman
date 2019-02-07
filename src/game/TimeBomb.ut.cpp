@@ -2,7 +2,7 @@
 #include "gmock/gmock.h"
 
 #include "physics/PhysicsEngine.mock.hpp"
-#include "graphics/RendererPool.mock.hpp"
+#include "graphics/renderer_pool.mock.hpp"
 #include "BombLauncher.mock.hpp"
 
 #include "TimeBomb.hpp"
@@ -28,12 +28,12 @@ public:
     }
 
     StrictMock<physics::MockPhysicsEngine> physics_engine;
-    StrictMock<graphics::MockRendererPool> renderer_pool;
+    StrictMock<graphics::mock_renderer_pool> renderer_pool;
     std::shared_ptr<MockBombLauncher> bomb_launcher =
         std::make_shared<StrictMock<MockBombLauncher>>();
     const math::Position2f bomb_position{5.0, 7.0};
     const math::Size2f bomb_size{1.0, 1.0};
-    const graphics::RendererId bomb_render_id{66};
+    const graphics::renderer_id bomb_render_id{66};
     const physics::PhysicsId bomb_physics_id{88};
 };
 

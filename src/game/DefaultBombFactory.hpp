@@ -9,13 +9,13 @@ class PhysicsEngine;
 
 namespace graphics
 {
-class RendererPool;
+class renderer_pool;
 }
 
 class DefautlBombFactory : public BombFactory
 {
 public:
-    DefautlBombFactory(physics::PhysicsEngine&, graphics::RendererPool&);
+    DefautlBombFactory(physics::PhysicsEngine&, graphics::renderer_pool&);
 
     std::unique_ptr<Bomb>
         create_time_bomb(math::Position2f,
@@ -23,5 +23,5 @@ public:
 
 private:
     physics::PhysicsEngine& physics_engine;
-    graphics::RendererPool& renderer_pool;
+    graphics::renderer_pool& renderer_pool;
 };

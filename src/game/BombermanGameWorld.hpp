@@ -7,7 +7,7 @@
 #include <vector>
 #include "GameWorld.hpp"
 #include "physics/PhysicsEngine.hpp"
-#include "graphics/RendererPool.hpp"
+#include "graphics/renderer_pool.hpp"
 
 #include "SimpleMap.hpp"
 
@@ -15,7 +15,7 @@ class BombermanGameWorld : public GameWorld
 {
 public:
     BombermanGameWorld(std::unique_ptr<physics::PhysicsEngine>,
-                       std::unique_ptr<graphics::RendererPool>);
+                       std::unique_ptr<graphics::renderer_pool>);
 
     virtual bool is_bomb_at_pos(const BombPosition&) const override;
 
@@ -33,6 +33,6 @@ private:
     std::unique_ptr<WallPositionsGenerator> gen;
     SimpleMap simpleMap;
     std::shared_ptr<physics::PhysicsEngine> ppool;
-    std::shared_ptr<graphics::RendererPool> rpool;
+    std::shared_ptr<graphics::renderer_pool> rpool;
 };
 

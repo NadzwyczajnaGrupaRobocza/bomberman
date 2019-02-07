@@ -1,6 +1,6 @@
 #include "TimeBomb.hpp"
 
-TimeBomb::TimeBomb(physics::PhysicsEngine& pe, graphics::RendererPool& rp,
+TimeBomb::TimeBomb(physics::PhysicsEngine& pe, graphics::renderer_pool& rp,
                    math::Position2f bomb_position,
                    std::shared_ptr<BombLauncher> bl)
     : physics_engine{pe}, renderer_pool{rp}, bombLauncher{std::move(bl)},

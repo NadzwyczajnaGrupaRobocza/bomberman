@@ -1,12 +1,12 @@
 #include "DefaultBombFactory.hpp"
 
 #include "physics/PhysicsEngine.hpp"
-#include "graphics/RendererPool.hpp"
+#include "graphics/renderer_pool.hpp"
 
 #include "TimeBomb.hpp"
 
 DefautlBombFactory::DefautlBombFactory(physics::PhysicsEngine& pe,
-                                       graphics::RendererPool& rp)
+                                       graphics::renderer_pool& rp)
     : physics_engine{pe}, renderer_pool{rp}
 {
 }

@@ -6,7 +6,7 @@
 #include "math/Position2f.hpp"
 
 #include "physics/PhysicsEngine.hpp"
-#include "graphics/RendererPool.hpp"
+#include "graphics/renderer_pool.hpp"
 #include "BombLauncher.hpp"
 
 class GameWorld;
@@ -14,8 +14,8 @@ class GameWorld;
 class TimeBomb : public Bomb
 {
 public:
-    TimeBomb(physics::PhysicsEngine&, graphics::RendererPool&, math::Position2f,
-             std::shared_ptr<BombLauncher>);
+    TimeBomb(physics::PhysicsEngine&, graphics::renderer_pool&,
+             math::Position2f, std::shared_ptr<BombLauncher>);
 
     void update(DeltaTime) override;
     bool areYouDead() const override;
@@ -26,10 +26,10 @@ private:
     bool exploded{false};
     const std::chrono::seconds bombTimer{3};
     physics::PhysicsEngine& physics_engine;
-    graphics::RendererPool& renderer_pool;
+    graphics::renderer_pool& renderer_pool;
     const std::shared_ptr<BombLauncher> bombLauncher;
     physics::PhysicsId physics_id;
-    graphics::RendererId renderer_id;
+    graphics::renderer_id renderer_id;
     std::chrono::milliseconds timeElapsed{};
 
     bool shouldExplode() const;
