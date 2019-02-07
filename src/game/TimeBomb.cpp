@@ -1,11 +1,13 @@
 #include "TimeBomb.hpp"
 
-TimeBomb::TimeBomb(physics::PhysicsEngine& pe, graphics::renderer_pool& rp,
+TimeBomb::TimeBomb(std::shared_ptr<physics::PhysicsEngine> pe,
+                   std::shared_ptr<graphics::renderer_pool> rp,
                    math::Position2f bomb_position,
                    std::shared_ptr<BombLauncher> bl)
-    : physics_engine{pe}, renderer_pool{rp}, bombLauncher{std::move(bl)},
-      physics_id{physics_engine.register_colider(bomb_size, bomb_position)},
-      renderer_id{renderer_pool.acquire(bomb_size, bomb_position)}
+    : physics_engine{std::move(pe)}, renderer_pool{std::move(rp)},
+      bombLauncher{std::move(bl)}, physics_id{physics_engine->register_colider(
+                                       bomb_size, bomb_position)},
+      renderer_id{renderer_pool->acquire(bomb_size, bomb_position)}
 {
 }
 
@@ -37,8 +39,8 @@ void TimeBomb::explode()
 
 void TimeBomb::deregister()
 {
-    physics_engine.deregister(physics_id);
-    renderer_pool.release(renderer_id);
+    physics_engine->deregister(physics_id);
+    renderer_pool->release(renderer_id);
 }
 
 void TimeBomb::markExploded()

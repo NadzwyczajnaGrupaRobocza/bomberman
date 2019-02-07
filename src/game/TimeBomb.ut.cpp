@@ -14,21 +14,23 @@ class ExpectRegistration
 public:
     ExpectRegistration()
     {
-        EXPECT_CALL(renderer_pool, acquire(bomb_size, bomb_position))
+        EXPECT_CALL(*renderer_pool, acquire(bomb_size, bomb_position))
             .WillOnce(Return(bomb_render_id));
-        EXPECT_CALL(physics_engine, register_colider(bomb_size, bomb_position))
+        EXPECT_CALL(*physics_engine, register_colider(bomb_size, bomb_position))
             .WillOnce(Return(bomb_physics_id));
     }
 
     void expect_deregistration()
     {
-        EXPECT_CALL(renderer_pool, release(bomb_render_id)).WillOnce(Return());
-        EXPECT_CALL(physics_engine, deregister(bomb_physics_id))
+        EXPECT_CALL(*renderer_pool, release(bomb_render_id)).WillOnce(Return());
+        EXPECT_CALL(*physics_engine, deregister(bomb_physics_id))
             .WillOnce(Return());
     }
 
-    StrictMock<physics::MockPhysicsEngine> physics_engine;
-    StrictMock<graphics::mock_renderer_pool> renderer_pool;
+    std::shared_ptr<physics::MockPhysicsEngine> physics_engine =
+        std::make_shared<StrictMock<physics::MockPhysicsEngine>>();
+    std::shared_ptr<graphics::mock_renderer_pool> renderer_pool =
+        std::make_shared<StrictMock<graphics::mock_renderer_pool>>();
     std::shared_ptr<MockBombLauncher> bomb_launcher =
         std::make_shared<StrictMock<MockBombLauncher>>();
     const math::Position2f bomb_position{5.0, 7.0};

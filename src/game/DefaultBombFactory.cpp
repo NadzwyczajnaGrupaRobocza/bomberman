@@ -5,9 +5,10 @@
 
 #include "TimeBomb.hpp"
 
-DefautlBombFactory::DefautlBombFactory(physics::PhysicsEngine& pe,
-                                       graphics::renderer_pool& rp)
-    : physics_engine{pe}, renderer_pool{rp}
+DefautlBombFactory::DefautlBombFactory(
+    std::shared_ptr<physics::PhysicsEngine> pe,
+    std::shared_ptr<graphics::renderer_pool> rp)
+    : physics_engine{std::move(pe)}, renderer_pool{std::move(rp)}
 {
 }
 
