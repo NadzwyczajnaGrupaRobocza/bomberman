@@ -10,7 +10,7 @@ Beside of code You also need to install:
 - compiler that supports C++ 17
 - git
 - cmake
-- boost
+- boost headers
 - sfml (we are using version 2.5)
 
 ## 2 Downloading and compiling code
@@ -74,5 +74,15 @@ simple-moving-rectangle (You should see some moving white rectangles)
 
 # 4 Running UTs
 
-...
-
+Running UTs is very simple. If You look at available targets:
+```sh
+cmake --build <build_directory> --target help"
+```
+You will find all UT binaries (thay have postfix "-ut"). Just build binary You want:
+```sh
+cmake --build <build_directory> --target <ut_target>
+```
+and run it:
+```sh
+<build_directory>\bin\<ut_target>
+```
