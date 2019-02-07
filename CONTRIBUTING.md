@@ -13,9 +13,9 @@ All updates should be done on dedicated branch, so please don't use master for c
 
 We prefer TDD (https://en.wikipedia.org/wiki/Test-driven_development), so You should cover code as much as possible by UTs.
 
-To write tests we are using gtest library (https://github.com/google/googletest)
+To write tests we are using googletest (or simplier gtest) library (https://github.com/google/googletest)
 
-For mocking classes we are using FakeIt (https://github.com/eranpeer/FakeIt)
+For mocking classes we were using FakeIt (https://github.com/eranpeer/FakeIt), but we are migrating to googlemock (or simplier gmock) library (https://github.com/google/googletest)
 
 ## 4 Recompiling
 
