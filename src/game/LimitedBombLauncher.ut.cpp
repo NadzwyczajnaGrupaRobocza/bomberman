@@ -30,8 +30,6 @@ struct LimitedBombLauncherTest : public ::testing::Test
 
     Mock<GameWorld> game_world;
     Mock<BombFactory> bomb_factory;
-    // std::shared_ptr<Mock<BombFactory>> bomb_factory =
-    // std::make_shared<Mock<BombFactory>>();
     std::unique_ptr<Mock<Bomb>> unique_bomb = std::make_unique<Mock<Bomb>>();
     Mock<Bomb>& bomb = *unique_bomb.get();
     std::shared_ptr<LimitedBombLauncher> launcher =
