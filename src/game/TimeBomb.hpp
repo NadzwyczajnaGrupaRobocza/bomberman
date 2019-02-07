@@ -22,6 +22,12 @@ public:
     bool hasExploded() const override;
 
 private:
+    bool shouldExplode() const;
+    void updateElapsedTime(DeltaTime);
+    void explode();
+    void markExploded();
+    void deregister();
+
     const math::Size2f bomb_size{1.0, 1.0};
     bool exploded{false};
     const std::chrono::seconds bombTimer{3};
@@ -31,10 +37,4 @@ private:
     physics::PhysicsId physics_id;
     graphics::renderer_id renderer_id;
     std::chrono::milliseconds timeElapsed{};
-
-    bool shouldExplode() const;
-    void updateElapsedTime(DeltaTime);
-    void explode();
-    void markExploded();
-    void deregister();
 };
