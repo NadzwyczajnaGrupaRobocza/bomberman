@@ -36,4 +36,5 @@ private:
     void updateElapsedTime(DeltaTime);
     void explode();
     void markExploded();
+    void deregister();
 };

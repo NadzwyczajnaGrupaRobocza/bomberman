@@ -31,9 +31,14 @@ bool TimeBomb::shouldExplode() const
 void TimeBomb::explode()
 {
     bombLauncher->notify_exploded();
+    deregister();
+    markExploded();
+}
+
+void TimeBomb::deregister()
+{
     physics_engine.deregister(physics_id);
     renderer_pool.release(renderer_id);
-    markExploded();
 }
 
 void TimeBomb::markExploded()
