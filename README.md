@@ -10,8 +10,8 @@ Beside of code You also need to install:
 - compiler that supports C++ 17
 - git
 - cmake
-- boost headers
-- sfml (we are using version 2.5)
+- boost dev version
+- sfml dev version (at leeast 2.5)
 
 ## 2 Downloading and compiling code
 
@@ -85,4 +85,23 @@ cmake --build <build_directory> --target <ut_target>
 and run it:
 ```sh
 <build_directory>\bin\<ut_target>
+```
+
+You can also run UTs with cmake. In such case build UT for all targets
+```sh
+cmake --build <build_directory>
+```
+and inside <build_directory> run
+```
+ctest
+```
+If You want to run only specified tests You can use -R:
+```sh
+ctest -R <regex>
+```
+Ctest will run tests that matches <regex>.
+
+For more ctest options run
+```
+ctest --help
 ```
