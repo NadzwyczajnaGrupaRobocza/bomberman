@@ -43,3 +43,5 @@ include_directories(SYSTEM ${GLM_INCLUDE_DIR})
 include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 
 add_subdirectory(src)
+
+include(${CMAKE_SOURCE_DIR}/cmake/utils/PlantUml.cmake)
