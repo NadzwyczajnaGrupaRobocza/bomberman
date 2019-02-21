@@ -29,15 +29,16 @@ public:
         Method(wall_positions_generator, generate_boundary_walls)
             .Using(edge_size) = generated_walls;
         When(Method(render_engine, acquire))
-            .AlwaysDo([&](const auto& size, const auto& position,
-                          const auto& /*color*/) {
-                static uint8_t id = 0;
-                render_wall_positions.push_back(position);
-                render_wall_sizes.push_back(size);
-                const auto rid = graphics::renderer_id{{id++}};
-                render_ids.push_back(rid);
-                return rid;
-            });
+            .AlwaysDo(
+                [&](const auto& size, const auto& position, const auto& color) {
+                    static uint8_t id = 0;
+                    render_wall_positions.push_back(position);
+                    render_wall_sizes.push_back(size);
+                    wall_colors.push_back(color);
+                    const auto rid = graphics::renderer_id{{id++}};
+                    render_ids.push_back(rid);
+                    return rid;
+                });
         When(Method(render_engine, release)).AlwaysDo([&](const auto id) {
             deregistered_render_ids.push_back(id);
         });
@@ -71,6 +72,7 @@ public:
     std::vector<graphics::renderer_id> render_ids;
     std::vector<math::Position2f> render_wall_positions;
     std::vector<math::Size2f> render_wall_sizes;
+    std::vector<graphics::color> wall_colors;
     std::vector<graphics::renderer_id> deregistered_render_ids;
     graphics::renderer_id background_id{{uint8_t(1024)}};
 };
@@ -92,6 +94,9 @@ public:
                                                generated_walls_positions));
         ASSERT_THAT(render_wall_sizes, ::testing::UnorderedElementsAreArray(
                                            generated_walls_sizes));
+
+        constexpr graphics::color wall_bronze{205, 127, 50};
+        ASSERT_THAT(wall_colors, ::testing::Each(wall_bronze));
     }
 };
 
