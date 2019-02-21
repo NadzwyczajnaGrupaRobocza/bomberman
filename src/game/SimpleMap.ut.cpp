@@ -29,7 +29,8 @@ public:
         Method(wall_positions_generator, generate_boundary_walls)
             .Using(edge_size) = generated_walls;
         When(Method(render_engine, acquire))
-            .AlwaysDo([&](const auto& size, const auto& position) {
+            .AlwaysDo([&](const auto& size, const auto& position,
+                          const auto& /*color*/) {
                 static uint8_t id = 0;
                 render_wall_positions.push_back(position);
                 render_wall_sizes.push_back(size);
@@ -40,8 +41,9 @@ public:
         When(Method(render_engine, release)).AlwaysDo([&](const auto id) {
             deregistered_render_ids.push_back(id);
         });
-        Method(render_engine, acquire).Using(boundary_size, top_left_position) =
-            background_id;
+        constexpr graphics::color map_grey{161, 161, 161};
+        Method(render_engine, acquire)
+            .Using(boundary_size, top_left_position, map_grey) = background_id;
         render_ids.push_back(background_id);
     }
 
