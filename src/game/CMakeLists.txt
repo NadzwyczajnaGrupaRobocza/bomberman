@@ -8,6 +8,7 @@ add_library(game
   LimitedBombLauncher.cpp
   SimpleMap.cpp
   TimeBomb.cpp
+  DefaultBombFactory.cpp
   Bomberman.cpp
   )
 
@@ -28,6 +29,7 @@ add_executable(game-ut
   TimeBomb.ut.cpp
   Bomberman.ut.cpp
   )
+
 
 target_include_directories(game-ut SYSTEM PRIVATE
   ${UT_INCLUDES}

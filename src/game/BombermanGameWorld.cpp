@@ -3,6 +3,7 @@
 #include "HumanPlayerSfml.hpp"
 #include "LimitedBombLauncher.hpp"
 #include "Bomberman.hpp"
+#include "DefaultBombFactory.hpp"
 #include <boost/core/null_deleter.hpp>
 
 BombermanGameWorld::BombermanGameWorld(
@@ -15,13 +16,14 @@ BombermanGameWorld::BombermanGameWorld(
     std::shared_ptr<GameWorld> world(this, boost::null_deleter());
 
     auto hp = std::make_unique<HumanPlayerSfml>();
-    auto bl = std::make_unique<LimitedBombLauncher>(world, 10);
+    auto bf = std::make_shared<DefautlBombFactory>(ppool, rpool);
+    auto bl = std::make_unique<LimitedBombLauncher>(world, std::move(bf), 10);
 
     physics::PhysicsId pid{};
-
     constexpr graphics::color bombmerman_red{124, 10, 2};
     auto rid = rpool->acquire(math::Size2f{30, 40}, math::Position2f{70, 70},
                               bombmerman_red);
+
     entity.emplace_back(std::make_unique<Bomberman>(
         pid, rid, std::move(hp), ppool, rpool, std::move(bl)));
 }
