@@ -31,7 +31,8 @@ TEST_F(render_target_base_functions_test, clearShouldInvokeClearFromBaseClass)
 
 TEST_F(render_target_base_functions_test, drawShouldInvokeDrawFromBaseClass)
 {
-    const sfml_rectangle_shape shape(size2f{200, 100}, position2f(1.f, 2.3f));
+    const sfml_rectangle_shape shape(size2f{200, 100}, position2f(1.f, 2.3f),
+                                     color{23, 34, 52});
     renderTarget.expectDraw(shape);
     renderTarget.draw(shape);
 }
@@ -57,4 +58,4 @@ TEST(RenderTargetOverridedFuncionsTest,
     EXPECT_TRUE(renderTarget.setActive(false));
     EXPECT_TRUE(renderTarget.setActive(true));
 }
-}
+} // namespace graphics
