@@ -14,7 +14,7 @@ class ExpectRegistration
 public:
     ExpectRegistration()
     {
-        EXPECT_CALL(*renderer_pool, acquire(bomb_size, bomb_position))
+        EXPECT_CALL(*renderer_pool, acquire(bomb_size, bomb_position, graphics::colors::red))
             .WillOnce(Return(bomb_render_id));
         EXPECT_CALL(*physics_engine, register_colider(bomb_size, bomb_position))
             .WillOnce(Return(bomb_physics_id));
