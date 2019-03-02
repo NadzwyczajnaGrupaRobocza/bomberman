@@ -1,5 +1,6 @@
 #include "renderer_pool_sfml.hpp"
 
+#include <cassert>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <range/v3/algorithm/for_each.hpp>
@@ -8,6 +9,18 @@
 
 namespace graphics
 {
+namespace
+{
+struct is_shape_id_equal
+{
+    bool operator()(const sfml_rectangle_shape& shape)
+    {
+        return shape.get_id() == id;
+    }
+
+    const renderer_id id;
+};
+} // namespace
 
 renderer_pool_sfml::renderer_pool_sfml(std::unique_ptr<context_renderer> r,
                                        std::unique_ptr<renderer_id_generator> g)
@@ -21,8 +34,7 @@ renderer_id renderer_pool_sfml::acquire(const math::Size2f& size,
                                         const color& shape_color)
 {
     auto id = id_generator->generate();
-    shapes.emplace(std::piecewise_construct, std::forward_as_tuple(id),
-                   std::forward_as_tuple(size, position, shape_color));
+    shapes.emplace_back(id, size, position, shape_color);
     return id;
 }
 
@@ -33,7 +45,17 @@ void renderer_pool_sfml::release(const renderer_id& id)
 
 void renderer_pool_sfml::cleanup_unused()
 {
-    ranges::for_each(trash, [this](const auto& id) { shapes.erase(id); });
+    for (auto shape_it = shapes.begin(); shape_it != shapes.end();)
+    {
+        if (trash.count(shape_it->get_id()))
+        {
+            shape_it = shapes.erase(shape_it);
+        }
+        else
+        {
+            ++shape_it;
+        }
+    }
     trash.clear();
 }
 
@@ -42,27 +64,45 @@ void renderer_pool_sfml::render_all()
     cleanup_unused();
     renderer->clear(sf::Color::Black);
 
-    ranges::for_each(shapes,
-                     [&](const auto& shape) { renderer->draw(shape.second); });
+    ranges::for_each(shapes, [&](const auto& shape) { renderer->draw(shape); });
 }
 
 void renderer_pool_sfml::set_position(const renderer_id& id,
                                       const math::Position2f& position)
 {
-    shapes.at(id).setPosition({position.x, position.y});
+    get_shape(id).setPosition({position.x, position.y});
 }
 
 math::Position2f renderer_pool_sfml::get_position(const renderer_id& id)
 {
-    return shapes.at(id).getPosition();
+    return get_shape(id).getPosition();
 }
-void renderer_pool_sfml::set_color(const renderer_id& id, const color& new_color)
+void renderer_pool_sfml::set_color(const renderer_id& id,
+                                   const color& new_color)
 {
-    shapes.at(id).set_color(new_color);
+    get_shape(id).set_color(new_color);
 }
 
 color renderer_pool_sfml::get_color(const renderer_id& id) const
 {
-    return shapes.at(id).get_color();
+    return get_shape(id).get_color();
 }
+
+sfml_rectangle_shape& renderer_pool_sfml::get_shape(const renderer_id& shape_id)
+{
+    return const_cast<sfml_rectangle_shape&>(
+        const_cast<const renderer_pool_sfml*>(this)->get_shape(shape_id));
+}
+
+const sfml_rectangle_shape&
+renderer_pool_sfml::get_shape(const renderer_id& shape_id) const
+{
+    auto shape_it =
+        std::find_if(shapes.begin(), shapes.end(), is_shape_id_equal{shape_id});
+
+    assert(shape_it != shapes.end() && "dupa test");
+
+    return *shape_it;
+}
+
 } // namespace graphics

@@ -5,9 +5,11 @@
 namespace graphics
 {
 
-sfml_rectangle_shape::sfml_rectangle_shape(const size2f& size,
+sfml_rectangle_shape::sfml_rectangle_shape(renderer_id shape_id,
+                                           const size2f& size,
                                            const position2f& position,
                                            const color& c)
+    : id{std::move(shape_id)}
 {
     setSize(size);
     setPosition(position);
@@ -34,5 +36,10 @@ color sfml_rectangle_shape::get_color() const
 {
     const auto& current_color{sf::RectangleShape::getFillColor()};
     return color{current_color.r, current_color.g, current_color.b};
+}
+
+renderer_id sfml_rectangle_shape::get_id() const
+{
+    return id;
 }
 } // namespace graphics

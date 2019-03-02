@@ -3,6 +3,7 @@
 #include <gtest/gtest.h>
 
 #include "sfml_rectangle_shape.hpp"
+#include "renderer_id_generator.hpp"
 
 namespace graphics
 {
@@ -11,6 +12,7 @@ namespace
 const position2f pos{0, 0};
 const size2f size{0, 0};
 const color default_color{0, 0, 0};
+const auto shape_id = renderer_id_generator{}.generate();
 } // namespace
 
 class render_target_stub
@@ -66,13 +68,13 @@ public:
     bool cleared{false};
     sf::Color clearedColor{sf::Color::Transparent};
     bool drawn{false};
-    sfml_rectangle_shape drawnShape{size, pos, default_color};
+    sfml_rectangle_shape drawnShape{shape_id, size, pos, default_color};
 
     bool shouldInitialize{false};
     bool shouldClear{false};
     bool shouldDraw{false};
 
     sf::Color expectedColor{sf::Color::Transparent};
-    sfml_rectangle_shape expectedShape{size, pos, default_color};
+    sfml_rectangle_shape expectedShape{shape_id, size, pos, default_color};
 };
 } // namespace graphics

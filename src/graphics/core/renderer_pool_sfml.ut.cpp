@@ -23,6 +23,7 @@ constexpr math::Size2f dummy_size{20, 30};
 constexpr math::Size2f another_dummy_size{100, 100};
 constexpr math::Position2f dummy_position{0, 10};
 constexpr color default_color{0, 0, 0};
+
 } // namespace
 class renderer_pool_sfml_test : public ::testing::Test
 {
@@ -40,10 +41,11 @@ public:
         Verify(Method(renderer, initialize));
     }
 
-    auto create_dummy_shape(const size2f& size = dummy_size,
+    auto create_dummy_shape(renderer_id shape_id,
+                            const size2f& size = dummy_size,
                             const position2f& position = dummy_position)
     {
-        return sfml_rectangle_shape{size, position, default_color};
+        return sfml_rectangle_shape{shape_id, size, position, default_color};
     }
 
     void expect_render_all(std::vector<sfml_rectangle_shape> expected_shapes)
@@ -115,13 +117,12 @@ TEST_F(renderer_pool_sfml_test, renderableObjectShouldBeMovable)
 
 TEST_F(renderer_pool_sfml_test, getPositionOfInvalidIdShouldThrow)
 {
-    EXPECT_THROW(renderer_pool->get_position(id1), std::out_of_range);
+    ASSERT_DEATH(renderer_pool->get_position(id1), "");
 }
 
 TEST_F(renderer_pool_sfml_test, setPositiontOfInvalidIdShouldThrow)
 {
-    EXPECT_THROW(renderer_pool->set_position(id1, dummy_position),
-                 std::out_of_range);
+    ASSERT_DEATH(renderer_pool->set_position(id1, dummy_position), "");
 }
 
 TEST_F(renderer_pool_sfml_test, renderAll)
@@ -130,10 +131,11 @@ TEST_F(renderer_pool_sfml_test, renderAll)
         return renderer_id_generator{}.generate();
     });
 
-    auto expected_shapes = {
-        create_dummy_shape(size2f{10, 10}), create_dummy_shape(size2f{710, 30}),
-        create_dummy_shape(size2f{80, 8}), create_dummy_shape(size2f{107, 180}),
-        create_dummy_shape(size2f{60, 30})};
+    auto expected_shapes = {create_dummy_shape(id1, size2f{10, 10}),
+                            create_dummy_shape(id1, size2f{710, 30}),
+                            create_dummy_shape(id1, size2f{80, 8}),
+                            create_dummy_shape(id1, size2f{107, 180}),
+                            create_dummy_shape(id1, size2f{60, 30})};
 
     ranges::for_each(expected_shapes, [this](auto& shape) {
         this->renderer_pool->acquire(shape.getSize(), dummy_position,
@@ -160,14 +162,15 @@ TEST_F(renderer_pool_sfml_test, acquireTwoReleaseOne_shouldRenderOnlyOne)
 {
     When(Method(id_generator, generate)).Return(id1).Return(id2);
 
-    EXPECT_EQ(id1,
-              renderer_pool->acquire(dummy_size, dummy_position, default_color));
+    EXPECT_EQ(
+        id1, renderer_pool->acquire(dummy_size, dummy_position, default_color));
     EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position,
                                           default_color));
 
     renderer_pool->release(id2);
 
-    auto expected_shapes = {create_dummy_shape()};
+    auto expected_shapes =
+        std::vector<sfml_rectangle_shape>{create_dummy_shape(id1)};
 
     expect_render_all(expected_shapes);
 
@@ -179,18 +182,21 @@ TEST_F(renderer_pool_sfml_test, reacquirenShouldBeRendered)
 {
     When(Method(id_generator, generate)).Return(id1).Return(id2).Return(id2);
 
-    EXPECT_EQ(id1,
-              renderer_pool->acquire(dummy_size, dummy_position, default_color));
+    EXPECT_EQ(
+        id1, renderer_pool->acquire(dummy_size, dummy_position, default_color));
     EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position,
                                           default_color));
 
-    std::vector<sfml_rectangle_shape> expected_shapes{create_dummy_shape()};
+    auto expected_shapes =
+        std::vector<sfml_rectangle_shape>{create_dummy_shape(id1)};
 
     renderer_pool->release(id2);
     expect_render_all(expected_shapes);
 
-    EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position, default_color));
-    expected_shapes.emplace_back(another_dummy_size, dummy_position, default_color);
+    EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position,
+                                          default_color));
+    expected_shapes.emplace_back(id2, another_dummy_size, dummy_position,
+                                 default_color);
 
     expect_render_all(expected_shapes);
 }
@@ -216,4 +222,30 @@ TEST_F(renderer_pool_sfml_test, beAbleToChangeColor)
     renderer_pool->set_color(id, blue);
     EXPECT_EQ(blue, renderer_pool->get_color(id));
 }
+
+TEST_F(renderer_pool_sfml_test, render_first_acquired)
+{
+    When(Method(id_generator, generate)).Return(id1).Return(id2).Return(id2);
+
+    const auto first_id =
+        renderer_pool->acquire(dummy_size, dummy_position, default_color);
+    const auto second_id = renderer_pool->acquire(
+        another_dummy_size, dummy_position, default_color);
+    const auto third_id = renderer_pool->acquire(another_dummy_size,
+                                                 dummy_position, default_color);
+
+    std::vector<sfml_rectangle_shape> shapes;
+    Fake(Method(renderer, clear));
+    When(Method(renderer, draw)).AlwaysDo([&](const auto& shape) {
+        shapes.push_back(shape);
+    });
+
+    renderer_pool->render_all();
+
+    ASSERT_EQ(std::size_t{3}, shapes.size());
+    EXPECT_EQ(first_id, shapes[0].get_id());
+    EXPECT_EQ(second_id, shapes[1].get_id());
+    EXPECT_EQ(third_id, shapes[2].get_id());
+}
+
 } // namespace graphics
