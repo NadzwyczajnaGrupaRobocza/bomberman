@@ -75,4 +75,4 @@ public:
     sf::Color expectedColor{sf::Color::Transparent};
     sfml_rectangle_shape expectedShape{size, pos, default_color};
 };
-} // namespace graphics
+}

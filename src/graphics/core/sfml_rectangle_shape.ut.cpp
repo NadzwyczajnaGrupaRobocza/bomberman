@@ -10,7 +10,7 @@ namespace
 const position2f pos{0.7f, 73.0f};
 const size2f size{200, 100};
 const color default_color{80, 75, 26};
-} // namespace
+}
 
 TEST(sfml_rectangle_shape_test, getPosition)
 {
@@ -64,17 +64,19 @@ TEST(sfml_rectangle_shape_test, sizeInequality)
 
 TEST(sfml_rectangle_shape_test, positionInequality)
 {
-    const sfml_rectangle_shape rect_1(size, position2f{10.f, 20.f}, default_color);
-    const sfml_rectangle_shape rect_2(size, position2f{0.f, 20.f}, default_color);
+    const sfml_rectangle_shape rect_1(size, position2f{10.f, 20.f},
+                                      default_color);
+    const sfml_rectangle_shape rect_2(size, position2f{0.f, 20.f},
+                                      default_color);
 
     EXPECT_NE(rect_1, rect_2);
 }
 
 TEST(sfml_rectangle_shape_test, colorInequality)
 {
-    const sfml_rectangle_shape rect_1(size, pos, color{0,0,0});
-    const sfml_rectangle_shape rect_2(size, pos, color{255,255,255});
+    const sfml_rectangle_shape rect_1(size, pos, color{0, 0, 0});
+    const sfml_rectangle_shape rect_2(size, pos, color{255, 255, 255});
 
     EXPECT_NE(rect_1, rect_2);
 }
-} // namespace graphics
+}

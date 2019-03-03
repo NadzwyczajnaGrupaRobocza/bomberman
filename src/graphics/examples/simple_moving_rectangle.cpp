@@ -1,16 +1,16 @@
-#include <memory>
-#include <cmath>
-#include <iostream>
-#include <gsl/gsl_util>
 #include <chrono>
-#include <vector>
+#include <cmath>
+#include <gsl/gsl_util>
+#include <iostream>
+#include <memory>
 #include <range/v3/algorithm/for_each.hpp>
 #include <range/v3/algorithm/generate.hpp>
+#include <vector>
 
-#include "math/Size2u.hpp"
-#include "math/Position2f.hpp"
 #include "graphics/factory.hpp"
 #include "graphics/window.hpp"
+#include "math/Position2f.hpp"
+#include "math/Size2u.hpp"
 
 using namespace math;
 using arrow = std::vector<std::pair<int, graphics::renderer_id>>;

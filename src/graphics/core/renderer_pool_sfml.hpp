@@ -2,11 +2,11 @@
 
 #include "graphics/renderer_pool.hpp"
 
-#include <vector>
+#include <boost/functional/hash.hpp>
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
-#include <boost/functional/hash.hpp>
+#include <vector>
 
 #include "context_renderer.hpp"
 #include "renderer_id_generator.hpp"
@@ -41,4 +41,4 @@ private:
         shapes;
     std::unordered_set<renderer_id, boost::hash<renderer_id>> trash;
 };
-} // namespace graphics
+}

@@ -1,13 +1,13 @@
 #include "renderer_pool_sfml.hpp"
 
-#include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
-#include <fakeit.hpp>
-#include <range/v3/algorithm/for_each.hpp>
-#include <boost/uuid/uuid_io.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Window.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <fakeit.hpp>
+#include <range/v3/algorithm/for_each.hpp>
 
 #include "sfml_rectangle_shape.hpp"
 
@@ -23,7 +23,7 @@ constexpr math::Size2f dummy_size{20, 30};
 constexpr math::Size2f another_dummy_size{100, 100};
 constexpr math::Position2f dummy_position{0, 10};
 constexpr color default_color{0, 0, 0};
-} // namespace
+}
 class renderer_pool_sfml_test : public ::testing::Test
 {
 public:
@@ -160,8 +160,8 @@ TEST_F(renderer_pool_sfml_test, acquireTwoReleaseOne_shouldRenderOnlyOne)
 {
     When(Method(id_generator, generate)).Return(id1).Return(id2);
 
-    EXPECT_EQ(id1,
-              renderer_pool->acquire(dummy_size, dummy_position, default_color));
+    EXPECT_EQ(
+        id1, renderer_pool->acquire(dummy_size, dummy_position, default_color));
     EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position,
                                           default_color));
 
@@ -179,8 +179,8 @@ TEST_F(renderer_pool_sfml_test, reacquirenShouldBeRendered)
 {
     When(Method(id_generator, generate)).Return(id1).Return(id2).Return(id2);
 
-    EXPECT_EQ(id1,
-              renderer_pool->acquire(dummy_size, dummy_position, default_color));
+    EXPECT_EQ(
+        id1, renderer_pool->acquire(dummy_size, dummy_position, default_color));
     EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position,
                                           default_color));
 
@@ -189,8 +189,10 @@ TEST_F(renderer_pool_sfml_test, reacquirenShouldBeRendered)
     renderer_pool->release(id2);
     expect_render_all(expected_shapes);
 
-    EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position, default_color));
-    expected_shapes.emplace_back(another_dummy_size, dummy_position, default_color);
+    EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position,
+                                          default_color));
+    expected_shapes.emplace_back(another_dummy_size, dummy_position,
+                                 default_color);
 
     expect_render_all(expected_shapes);
 }
@@ -216,4 +218,4 @@ TEST_F(renderer_pool_sfml_test, beAbleToChangeColor)
     renderer_pool->set_color(id, blue);
     EXPECT_EQ(blue, renderer_pool->get_color(id));
 }
-} // namespace graphics
+}

@@ -1,6 +1,7 @@
 #include "sfml_render_target.hpp"
 
 #include <gtest/gtest.h>
+
 #include <fakeit.hpp>
 
 #include "render_target.stub.hpp"
@@ -58,4 +59,4 @@ TEST(RenderTargetOverridedFuncionsTest,
     EXPECT_TRUE(renderTarget.setActive(false));
     EXPECT_TRUE(renderTarget.setActive(true));
 }
-} // namespace graphics
+}

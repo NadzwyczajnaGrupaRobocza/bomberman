@@ -19,4 +19,4 @@ public:
     MOCK_METHOD2(set_color, void(const renderer_id&, const color&));
     MOCK_CONST_METHOD1(get_color, color(const renderer_id&));
 };
-} // namespace graphics
+}

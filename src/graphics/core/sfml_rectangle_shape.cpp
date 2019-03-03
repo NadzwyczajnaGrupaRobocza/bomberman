@@ -35,4 +35,4 @@ color sfml_rectangle_shape::get_color() const
     const auto& current_color{sf::RectangleShape::getFillColor()};
     return color{current_color.r, current_color.g, current_color.b};
 }
-} // namespace graphics
+}

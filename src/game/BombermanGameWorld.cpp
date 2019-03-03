@@ -1,9 +1,9 @@
 #include "BombermanGameWorld.hpp"
+#include "Bomberman.hpp"
 #include "BoundaryWallsPositionsGenerator.hpp"
+#include "DefaultBombFactory.hpp"
 #include "HumanPlayerSfml.hpp"
 #include "LimitedBombLauncher.hpp"
-#include "Bomberman.hpp"
-#include "DefaultBombFactory.hpp"
 #include <boost/core/null_deleter.hpp>
 
 BombermanGameWorld::BombermanGameWorld(

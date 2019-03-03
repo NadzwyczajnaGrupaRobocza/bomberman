@@ -1,7 +1,7 @@
 #include "renderer_pool_sfml.hpp"
 
-#include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/Color.hpp>
 #include <range/v3/algorithm/for_each.hpp>
 
 #include <boost/uuid/uuid_io.hpp>
@@ -56,7 +56,8 @@ math::Position2f renderer_pool_sfml::get_position(const renderer_id& id)
 {
     return shapes.at(id).getPosition();
 }
-void renderer_pool_sfml::set_color(const renderer_id& id, const color& new_color)
+void renderer_pool_sfml::set_color(const renderer_id& id,
+                                   const color& new_color)
 {
     shapes.at(id).set_color(new_color);
 }
@@ -65,4 +66,4 @@ color renderer_pool_sfml::get_color(const renderer_id& id) const
 {
     return shapes.at(id).get_color();
 }
-} // namespace graphics
+}

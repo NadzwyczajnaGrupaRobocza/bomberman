@@ -3,9 +3,9 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <boost/operators.hpp>
 
+#include "graphics/color.hpp"
 #include "position2f.hpp"
 #include "size2f.hpp"
-#include "graphics/color.hpp"
 
 namespace graphics
 {
@@ -29,4 +29,4 @@ inline bool operator==(const sfml_rectangle_shape& lhs,
     return lhs.getPosition() == rhs.getPosition() &&
            lhs.getSize() == rhs.getSize() && lhs.get_color() == rhs.get_color();
 }
-} // namespace graphics
+}
