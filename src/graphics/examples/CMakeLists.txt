@@ -6,6 +6,7 @@ link_libraries(graphics ${SFML_LIBRARIES})
 add_executable(draw draw.cpp)
 add_executable(clock clock.cpp)
 add_executable(lerp lerp.cpp)
+add_executable(nlerp nlerp.cpp)
 
 add_custom_target(graphics-examples DEPENDS
-  draw clock lerp)
+  draw clock lerp nlerp)

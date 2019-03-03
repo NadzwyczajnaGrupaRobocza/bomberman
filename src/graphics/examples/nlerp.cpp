@@ -6,6 +6,7 @@
 #include <vector>
 #include <range/v3/algorithm/for_each.hpp>
 #include <range/v3/algorithm/generate.hpp>
+#include <glm/ext.hpp>
 
 #include "math/Size2u.hpp"
 #include "math/Position2f.hpp"
@@ -16,6 +17,7 @@ using namespace math;
 
 inline namespace variables
 {
+
 struct arrow
 {
     int length;
@@ -32,7 +34,6 @@ auto constexpr available_region = math::Size2u{800, 600};
 auto constexpr box_size = math::Size2f{15, 15};
 auto constexpr pi = std::acos(-1);
 auto constexpr double_pi = pi * 2;
-auto constexpr speed = 1.5;
 
 auto const window = graphics::create_window(available_region, "win");
 auto const renderer_pool = graphics::create_renderer_pool(available_region);
@@ -44,8 +45,6 @@ auto const center_point_id =
     renderer_pool
     -> acquire(box_size, center_position, graphics::color{255, 255, 0});
 
-auto alfa = 3 * pi / 2;
-auto const alfa_of_one_turn = alfa + double_pi;
 auto delta_time = 0.0;
 auto clock_arrows = arrows(point_count);
 auto last_frame = std::chrono::system_clock::now();
@@ -62,7 +61,7 @@ inline auto mark_green_arrow_peak()
     }
 }
 
-inline auto create_arrow_from_point()
+inline auto create_arrow_from_center_point()
 {
     auto arrow_length = 0;
 
@@ -75,34 +74,72 @@ inline auto create_arrow_from_point()
     mark_green_arrow_peak();
 }
 
-inline auto update_arrow_angle()
+enum moving_state
 {
-    alfa += speed * delta_time;
-}
+    moving_up,
+    moving_down,
+    moving_left,
+    moving_right
+} current_moving_state{moving_right};
 
-inline auto update_arrows_after_one_turn()
-{
-    if (alfa > alfa_of_one_turn)
-    {
-        alfa -= double_pi;
-        renderer_pool->release(clock_arrows.back().id);
-        clock_arrows.pop_back();
+float travel_path = 0.0f;
+auto constexpr up_direction = glm::vec3{0, -1, 0};
+auto constexpr down_direction = glm::vec3{0, 1, 0};
+auto constexpr right_direction = glm::vec3{1, 0, 0};
+auto constexpr left_direction = glm::vec3{-1, 0, 0};
 
-        mark_green_arrow_peak();
-    }
-}
+auto start_direction{up_direction};
+auto destination_direction{right_direction};
 
 inline auto update_arrow_position()
 {
-    auto sinus = std::sin(alfa);
-    auto cosinus = std::cos(alfa);
+    auto change = static_cast<float>((1.0 / 1.145) * delta_time);
+    travel_path += change;
+
+    if (travel_path >= 1.0f)
+    {
+        travel_path -= 1.0f;
+        switch (current_moving_state)
+        {
+        case moving_right:
+            current_moving_state = moving_down;
+            start_direction = right_direction;
+            destination_direction = down_direction;
+            break;
+
+        case moving_down:
+            current_moving_state = moving_left;
+            start_direction = down_direction;
+            destination_direction = left_direction;
+            break;
+
+        case moving_left:
+            current_moving_state = moving_up;
+            start_direction = left_direction;
+            destination_direction = up_direction;
+            break;
+
+        case moving_up:
+            current_moving_state = moving_right;
+            start_direction = up_direction;
+            destination_direction = right_direction;
+
+            renderer_pool->release(clock_arrows.back().id);
+            clock_arrows.pop_back();
+            mark_green_arrow_peak();
+            break;
+        }
+    }
+
+    auto const new_direction{glm::normalize(
+        glm::mix(start_direction, destination_direction, travel_path))};
 
     ranges::for_each(clock_arrows, [&](auto& arrow) {
-        auto new_x = gsl::narrow_cast<float>(arrow.length * cosinus);
-        auto new_y = gsl::narrow_cast<float>(arrow.length * sinus);
+        auto new_position = math::Position2f(
+            new_direction.x * static_cast<float>(arrow.length),
+            new_direction.y * static_cast<float>(arrow.length));
 
-        renderer_pool->set_position(arrow.id,
-                                    center_position + Position2f{new_x, new_y});
+        renderer_pool->set_position(arrow.id, center_position + new_position);
     });
 }
 
@@ -123,14 +160,12 @@ inline auto display_frame()
 
 int main()
 {
-    create_arrow_from_point();
+    create_arrow_from_center_point();
 
     while (window->is_open() && clock_arrows.size() > 0)
     {
         calculate_delta_time();
         update_arrow_position();
-        update_arrow_angle();
-        update_arrows_after_one_turn();
         display_frame();
     }
 }

@@ -100,7 +100,7 @@ renderer_pool_sfml::get_shape(const renderer_id& shape_id) const
     auto shape_it =
         std::find_if(shapes.begin(), shapes.end(), is_shape_id_equal{shape_id});
 
-    assert(shape_it != shapes.end() && "dupa test");
+    assert(shape_it != shapes.end() && "invalid rendered_id");
 
     return *shape_it;
 }
