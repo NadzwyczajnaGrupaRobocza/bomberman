@@ -7,6 +7,7 @@ add_executable(draw draw.cpp)
 add_executable(clock clock.cpp)
 add_executable(lerp lerp.cpp)
 add_executable(nlerp nlerp.cpp)
+add_executable(slerp slerp.cpp)
 
 add_custom_target(graphics-examples DEPENDS
-  draw clock lerp nlerp)
+  draw clock lerp nlerp slerp)

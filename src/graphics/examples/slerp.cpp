@@ -91,16 +91,13 @@ auto constexpr left_direction = glm::vec3{-1, 0, 0};
 auto start_direction{up_direction};
 auto destination_direction{right_direction};
 
-inline auto lerp(glm::vec3 const& start, glm::vec3 const& end,
-                 float const percent)
+inline auto slerp(glm::vec3 const& start, glm::vec3 const& end,
+                  const float percent)
 {
-    return glm::mix(start, end, percent);
-}
-
-inline auto nlerp(glm::vec3 const& start, glm::vec3 const& end,
-                  float const percent)
-{
-    return glm::normalize(lerp(start, end, percent));
+    auto const dot = glm::clamp(glm::dot(start, end), -1.0f, 1.0f);
+    auto const theta = glm::acos(dot) * percent;
+    auto const relative_direction = glm::normalize(end - start * dot);
+    return ((start * glm::cos(theta)) + (relative_direction * glm::sin(theta)));
 }
 
 inline auto update_arrow_position()
@@ -143,8 +140,8 @@ inline auto update_arrow_position()
         }
     }
 
-    auto const new_direction{
-        nlerp(start_direction, destination_direction, travel_path)};
+    auto const new_direction =
+        slerp(start_direction, destination_direction, travel_path);
 
     ranges::for_each(clock_arrows, [&](auto& arrow) {
         auto new_position = math::Position2f(
@@ -168,7 +165,7 @@ inline auto display_frame()
     window->display();
     window->update();
 }
-}
+} // namespace functions
 
 int main()
 {

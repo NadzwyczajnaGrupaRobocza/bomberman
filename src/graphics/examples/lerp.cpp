@@ -57,7 +57,7 @@ auto const box_id =
 auto start_position = glm::vec3{renderer_pool->get_position(box_id).x,
                                 renderer_pool->get_position(box_id).y, 0};
 auto destination_position = start_position;
-auto percentage_of_traveled_path = 0.0;
+auto percent_of_traveled_path = 0.0;
 auto speed = 0.0;
 auto delta_time = 0.0;
 auto last_frame = std::chrono::system_clock::now();
@@ -79,7 +79,7 @@ inline auto recalculate_travel_properties(moving_state const& state,
     current_moving_state = state;
     destination_position = destination;
 
-    percentage_of_traveled_path = 0.0;
+    percent_of_traveled_path = 0.0;
     start_position.x = renderer_pool->get_position(box_id).x;
     start_position.y = renderer_pool->get_position(box_id).y;
     auto const one_step =
@@ -108,23 +108,29 @@ inline auto update_direction_if_key_pressed()
 
 inline auto if_destination_achieved_stay_idle()
 {
-    if (percentage_of_traveled_path >= 1.0)
+    if (percent_of_traveled_path >= 1.0)
     {
-        percentage_of_traveled_path = 1.0;
+        percent_of_traveled_path = 1.0;
         current_moving_state = idle;
     }
 }
 
 inline auto calculate_traveled_path()
 {
-    percentage_of_traveled_path += delta_time * speed;
+    percent_of_traveled_path += delta_time * speed;
     if_destination_achieved_stay_idle();
 }
 
-inline auto set_new_position_using_lerp()
+inline auto lerp(glm::vec3 const& start, glm::vec3 const& end,
+                 double const percent)
 {
-    auto const new_position{glm::mix(start_position, destination_position,
-                                     percentage_of_traveled_path)};
+    return glm::mix(start, end, percent);
+}
+
+inline auto set_new_position()
+{
+    auto const new_position{
+        lerp(start_position, destination_position, percent_of_traveled_path)};
     renderer_pool->set_position(
         box_id, math::Position2f{new_position.x, new_position.y});
 }
@@ -135,7 +141,7 @@ inline auto display_frame()
     window->display();
     window->update();
 }
-} // namespace functions
+}
 
 int main()
 {
@@ -144,7 +150,7 @@ int main()
         calculate_delta_time();
         update_direction_if_key_pressed();
         calculate_traveled_path();
-        set_new_position_using_lerp();
+        set_new_position();
         display_frame();
     }
 }
