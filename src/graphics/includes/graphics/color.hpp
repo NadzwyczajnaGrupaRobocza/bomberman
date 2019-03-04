@@ -1,10 +1,11 @@
 #pragma once
 
-#include <boost/operators.hpp>
+#include <tuple>
+#include <cstdint>
 
 namespace graphics
 {
-struct color // : boost::equality_comparable<color>
+struct color
 {
     std::uint8_t r;
     std::uint8_t g;
@@ -34,4 +35,4 @@ constexpr color yellow = color{255, 255, 0};
 constexpr color black = color{0, 0, 0};
 }
 
-} // namespace graphics
+}

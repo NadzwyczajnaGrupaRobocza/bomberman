@@ -1,9 +1,9 @@
 #pragma once
 
-#include "renderer_id.hpp"
+#include "graphics/color.hpp"
 #include "math/Position2f.hpp"
 #include "math/Size2f.hpp"
-#include "graphics/color.hpp"
+#include "renderer_id.hpp"
 
 namespace graphics
 {
@@ -25,4 +25,4 @@ public:
     virtual void set_color(const renderer_id&, const color&) = 0;
     virtual color get_color(const renderer_id&) const = 0;
 };
-} // namespace graphics
+}

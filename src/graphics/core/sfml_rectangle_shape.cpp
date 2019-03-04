@@ -42,4 +42,4 @@ renderer_id sfml_rectangle_shape::get_id() const
 {
     return id;
 }
-} // namespace graphics
+}

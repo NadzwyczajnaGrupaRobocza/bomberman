@@ -2,12 +2,12 @@
 
 #include <memory>
 
-#include "math/Size2f.hpp"
 #include "math/Position2f.hpp"
+#include "math/Size2f.hpp"
 
-#include "physics/PhysicsEngine.hpp"
-#include "graphics/renderer_pool.hpp"
 #include "BombLauncher.hpp"
+#include "graphics/renderer_pool.hpp"
+#include "physics/PhysicsEngine.hpp"
 
 class GameWorld;
 

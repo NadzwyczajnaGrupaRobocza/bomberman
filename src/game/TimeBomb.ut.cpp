@@ -1,9 +1,9 @@
-#include "gtest/gtest.h"
 #include "gmock/gmock.h"
+#include "gtest/gtest.h"
 
-#include "physics/PhysicsEngine.mock.hpp"
-#include "graphics/renderer_pool.mock.hpp"
 #include "BombLauncher.mock.hpp"
+#include "graphics/renderer_pool.mock.hpp"
+#include "physics/PhysicsEngine.mock.hpp"
 
 #include "TimeBomb.hpp"
 
@@ -14,7 +14,8 @@ class ExpectRegistration
 public:
     ExpectRegistration()
     {
-        EXPECT_CALL(*renderer_pool, acquire(bomb_size, bomb_position, graphics::colors::red))
+        EXPECT_CALL(*renderer_pool,
+                    acquire(bomb_size, bomb_position, graphics::colors::red))
             .WillOnce(Return(bomb_render_id));
         EXPECT_CALL(*physics_engine, register_colider(bomb_size, bomb_position))
             .WillOnce(Return(bomb_physics_id));

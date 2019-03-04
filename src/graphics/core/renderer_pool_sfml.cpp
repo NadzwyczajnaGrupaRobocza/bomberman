@@ -1,8 +1,8 @@
 #include "renderer_pool_sfml.hpp"
 
-#include <cassert>
-#include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/Color.hpp>
+#include <cassert>
 #include <range/v3/algorithm/for_each.hpp>
 
 #include <boost/uuid/uuid_io.hpp>

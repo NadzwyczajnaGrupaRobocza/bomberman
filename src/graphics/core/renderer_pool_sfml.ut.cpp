@@ -1,13 +1,13 @@
 #include "renderer_pool_sfml.hpp"
 
-#include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
-#include <fakeit.hpp>
-#include <range/v3/algorithm/for_each.hpp>
-#include <boost/uuid/uuid_io.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Window.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <fakeit.hpp>
+#include <range/v3/algorithm/for_each.hpp>
 
 #include "sfml_rectangle_shape.hpp"
 
@@ -23,8 +23,7 @@ constexpr math::Size2f dummy_size{20, 30};
 constexpr math::Size2f another_dummy_size{100, 100};
 constexpr math::Position2f dummy_position{0, 10};
 constexpr color default_color{0, 0, 0};
-
-} // namespace
+}
 class renderer_pool_sfml_test : public ::testing::Test
 {
 public:

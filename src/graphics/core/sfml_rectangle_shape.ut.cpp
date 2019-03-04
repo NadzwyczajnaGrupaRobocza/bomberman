@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "sfml_rectangle_shape.hpp"
 #include "renderer_id_generator.hpp"
+#include "sfml_rectangle_shape.hpp"
 
 namespace graphics
 {
@@ -11,8 +11,7 @@ const position2f pos{0.7f, 73.0f};
 const size2f size{200, 100};
 const color default_color{80, 75, 26};
 const auto shape_id = renderer_id_generator{}.generate();
-
-} // namespace
+}
 
 TEST(sfml_rectangle_shape_test, getRendererId)
 {
@@ -93,4 +92,4 @@ TEST(sfml_rectangle_shape_test, colorInequality)
 
     EXPECT_NE(rect_1, rect_2);
 }
-} // namespace graphics
+}
