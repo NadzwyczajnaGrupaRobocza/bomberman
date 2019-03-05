@@ -15,3 +15,6 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
   -Xclang -std=c++17")
 endif()
+
+# It is a workaround for boost uuid issue #78
+link_libraries(bcrypt)
