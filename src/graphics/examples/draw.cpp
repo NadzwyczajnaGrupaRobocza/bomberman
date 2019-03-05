@@ -4,33 +4,41 @@
 
 #include "graphics/factory.hpp"
 
-inline namespace variables
+class draw_app
 {
-auto const window_size = math::Size2u{800, 600};
-auto window = graphics::create_window(window_size, "My Window");
-auto renderer_pool = graphics::create_renderer_pool(window_size);
-auto first_box_id = renderer_pool -> acquire(math::Size2f{20, 30},
-                                             math::Position2f{100.0f, 200.0f},
-                                             graphics::color{255, 6, 112});
-auto second_box_id = renderer_pool -> acquire(math::Size2f{30, 30},
-                                              math::Position2f{200.0f, 350.0f},
-                                              graphics::color{8, 45, 89});
-} // namespace variables
+public:
+    draw_app()
+    {
+        shapes->acquire(math::Size2f{20, 30}, math::Position2f{100.0f, 200.0f},
+                        graphics::color{255, 6, 112});
+        shapes->acquire(math::Size2f{30, 30}, math::Position2f{200.0f, 350.0f},
+                        graphics::color{8, 45, 89});
+    }
 
-inline namespace functions
-{
-inline auto display_frame()
-{
-    renderer_pool->render_all();
-    window->display();
-    window->update();
-}
-} // namespace functions
+    void run()
+    {
+        while (main_window->is_open())
+        {
+            display_frame();
+        }
+    }
+
+private:
+    void display_frame()
+    {
+        shapes->render_all();
+        main_window->display();
+        main_window->update();
+    }
+
+    math::Size2u const window_size{800, 600};
+    std::unique_ptr<graphics::window> main_window{
+        graphics::create_window(window_size, "My Window")};
+    std::unique_ptr<graphics::renderer_pool> shapes{
+        graphics::create_renderer_pool(window_size)};
+};
 
 int main()
 {
-    while (window->is_open())
-    {
-        display_frame();
-    }
+    draw_app{}.run();
 }

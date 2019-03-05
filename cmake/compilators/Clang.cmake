@@ -10,7 +10,9 @@ if(${CMAKE_CXX_COMPILER_VERSION} GREATER 4)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-zero-as-null-pointer-constant")
 endif()
 
-target_compile_options(gtest PRIVATE "-Wno-deprecated-declarations")
-target_compile_options(gmock PRIVATE "-Wno-deprecated-declarations")
-target_compile_options(gtest_main PRIVATE "-Wno-deprecated-declarations")
-target_compile_options(gmock_main PRIVATE "-Wno-deprecated-declarations")
+set(GTEST_UNUSED_WARNINGS -Wno-deprecated-declarations)
+
+target_compile_options(gtest PRIVATE ${GTEST_UNUSED_WARNINGS})
+target_compile_options(gmock PRIVATE ${GTEST_UNUSED_WARNINGS})
+target_compile_options(gtest_main PRIVATE ${GTEST_UNUSED_WARNINGS})
+target_compile_options(gmock_main PRIVATE ${GTEST_UNUSED_WARNINGS})
