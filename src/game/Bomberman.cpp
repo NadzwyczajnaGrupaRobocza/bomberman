@@ -15,7 +15,7 @@ Bomberman::Bomberman(physics::PhysicsId phys_id, graphics::renderer_id rend_id,
 
 void Bomberman::update(DeltaTime dt)
 {
-    constexpr double speedup_factor{100};
+    constexpr float speedup_factor{100};
     auto position = physics_engine->get_position(physics_id);
     renderer_pool->set_position(renderer_id, position);
 
@@ -25,10 +25,8 @@ void Bomberman::update(DeltaTime dt)
     }
 
     const auto new_direction = input->get_direction();
-    position.x +=
-        gsl::narrow_cast<float>(speedup_factor * new_direction.x * dt.count());
-    position.y +=
-        gsl::narrow_cast<float>(speedup_factor * new_direction.y * dt.count());
+    position.x += speedup_factor * new_direction.x * dt.count();
+    position.y += speedup_factor * new_direction.y * dt.count();
 
     physics_engine->set_position(physics_id, position);
 }
