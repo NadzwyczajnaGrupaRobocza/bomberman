@@ -84,4 +84,4 @@ TEST_F(DISABLED_sfml_window_test, updateAndCloseWindow)
     // fakeit::Verify(Method(m_window_proxy, poll_event)).Exactly(no_events);
     // fakeit::Verify(Method(m_window_proxy, close)).Once();
 }
-} // namespace graphics
+}

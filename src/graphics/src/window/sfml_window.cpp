@@ -32,4 +32,4 @@ void sfml_window::update()
         }
     }
 }
-} // namespace graphics
+}

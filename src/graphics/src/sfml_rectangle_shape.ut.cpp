@@ -79,4 +79,4 @@ TEST(sfml_rectangle_shape_test, colorInequality)
 
     EXPECT_NE(rect_1, rect_2);
 }
-} // namespace graphics
+}

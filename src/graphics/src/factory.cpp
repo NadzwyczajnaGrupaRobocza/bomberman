@@ -22,4 +22,4 @@ std::unique_ptr<window> create_window(const math::Size2u& size,
     return std::make_unique<sfml_window>(
         size, title, std::make_unique<sfml_window_proxy>(size, title));
 }
-} // namespace graphics
+}

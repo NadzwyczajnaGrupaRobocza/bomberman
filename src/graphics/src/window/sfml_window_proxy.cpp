@@ -30,4 +30,4 @@ void sfml_window_proxy::create(sf::VideoMode mode, const sf::String& title)
 {
     return m_window.create(mode, title);
 }
-} // namespace graphics
+}
