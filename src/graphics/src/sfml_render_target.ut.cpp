@@ -1,6 +1,7 @@
 #include "sfml_render_target.hpp"
 
 #include <gtest/gtest.h>
+
 #include <fakeit.hpp>
 
 #include "render_target.stub.hpp"
@@ -31,7 +32,8 @@ TEST_F(render_target_base_functions_test, clearShouldInvokeClearFromBaseClass)
 
 TEST_F(render_target_base_functions_test, drawShouldInvokeDrawFromBaseClass)
 {
-    const sfml_rectangle_shape shape(size2f{200, 100}, position2f(1.f, 2.3f));
+    const sfml_rectangle_shape shape(size2f{200, 100}, position2f(1.f, 2.3f),
+                                     color{23, 34, 52});
     renderTarget.expectDraw(shape);
     renderTarget.draw(shape);
 }

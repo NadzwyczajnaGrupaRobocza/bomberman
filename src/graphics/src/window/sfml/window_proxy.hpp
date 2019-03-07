@@ -1,8 +1,8 @@
 #pragma once
 
+#include <SFML/System/String.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/VideoMode.hpp>
-#include <SFML/System/String.hpp>
 
 namespace graphics
 {

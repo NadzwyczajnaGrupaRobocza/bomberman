@@ -4,8 +4,8 @@
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
-#include "window_size.hpp"
 #include "context_renderer.hpp"
+#include "window_size.hpp"
 
 namespace graphics
 {

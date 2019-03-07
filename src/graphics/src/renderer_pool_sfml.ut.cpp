@@ -1,13 +1,13 @@
 #include "renderer_pool_sfml.hpp"
 
-#include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
-#include <fakeit.hpp>
-#include <range/v3/algorithm/for_each.hpp>
-#include <boost/uuid/uuid_io.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Window.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <fakeit.hpp>
+#include <range/v3/algorithm/for_each.hpp>
 
 #include "sfml_rectangle_shape.hpp"
 
@@ -42,7 +42,7 @@ public:
     auto create_dummy_shape(const size2f& size = dummy_size,
                             const position2f& position = dummy_position)
     {
-        return sfml_rectangle_shape{size, position};
+        return sfml_rectangle_shape{size, position, graphics::colors::white};
     }
 
     void expect_render_all(std::vector<sfml_rectangle_shape> expected_shapes)
@@ -62,7 +62,8 @@ public:
                                    const math::Position2f& position,
                                    const renderer_id& id)
     {
-        EXPECT_EQ(id, renderer_pool->acquire(size, position));
+        EXPECT_EQ(id, renderer_pool->acquire(size, position,
+                                             graphics::colors::white));
     }
 
     void expect_eq_position(const math::Position2f& position,
@@ -135,7 +136,8 @@ TEST_F(renderer_pool_sfml_test, renderAll)
         create_dummy_shape(size2f{60, 30})};
 
     ranges::for_each(expected_shapes, [this](auto& shape) {
-        this->renderer_pool->acquire(shape.getSize(), dummy_position);
+        this->renderer_pool->acquire(shape.getSize(), dummy_position,
+                                     graphics::colors::white);
     });
 
     expect_render_all({expected_shapes});
@@ -158,8 +160,10 @@ TEST_F(renderer_pool_sfml_test, acquireTwoReleaseOne_shouldRenderOnlyOne)
 {
     When(Method(id_generator, generate)).Return(id1).Return(id2);
 
-    EXPECT_EQ(id1, renderer_pool->acquire(dummy_size, dummy_position));
-    EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position));
+    EXPECT_EQ(id1, renderer_pool->acquire(dummy_size, dummy_position,
+                                          graphics::colors::white));
+    EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position,
+                                          graphics::colors::white));
 
     renderer_pool->release(id2);
 
@@ -175,17 +179,43 @@ TEST_F(renderer_pool_sfml_test, reacquirenShouldBeRendered)
 {
     When(Method(id_generator, generate)).Return(id1).Return(id2).Return(id2);
 
-    EXPECT_EQ(id1, renderer_pool->acquire(dummy_size, dummy_position));
-    EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position));
+    EXPECT_EQ(id1, renderer_pool->acquire(dummy_size, dummy_position,
+                                          graphics::colors::white));
+    EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position,
+                                          graphics::colors::white));
 
     std::vector<sfml_rectangle_shape> expected_shapes{create_dummy_shape()};
 
     renderer_pool->release(id2);
     expect_render_all(expected_shapes);
 
-    EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position));
-    expected_shapes.emplace_back(another_dummy_size, dummy_position);
+    EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position,
+                                          graphics::colors::white));
+    expected_shapes.emplace_back(another_dummy_size, dummy_position,
+                                 graphics::colors::white);
 
     expect_render_all(expected_shapes);
 }
-} // namespace graphics
+
+TEST_F(renderer_pool_sfml_test, acquiredObjectWithSelectedColor)
+{
+    When(Method(id_generator, generate)).Return(id1);
+
+    const color red{255, 0, 0};
+    const auto id = renderer_pool->acquire(dummy_size, dummy_position, red);
+
+    EXPECT_EQ(red, renderer_pool->get_color(id));
+}
+
+TEST_F(renderer_pool_sfml_test, beAbleToChangeColor)
+{
+    When(Method(id_generator, generate)).Return(id1);
+
+    const color red{255, 0, 0};
+    const auto id = renderer_pool->acquire(dummy_size, dummy_position, red);
+
+    const color blue{0, 0, 255};
+    renderer_pool->set_color(id, blue);
+    EXPECT_EQ(blue, renderer_pool->get_color(id));
+}
+}

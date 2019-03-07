@@ -65,13 +65,13 @@ public:
     bool cleared{false};
     sf::Color clearedColor{sf::Color::Transparent};
     bool drawn{false};
-    sfml_rectangle_shape drawnShape{size, pos};
+    sfml_rectangle_shape drawnShape{size, pos, graphics::colors::white};
 
     bool shouldInitialize{false};
     bool shouldClear{false};
     bool shouldDraw{false};
 
     sf::Color expectedColor{sf::Color::Transparent};
-    sfml_rectangle_shape expectedShape{size, pos};
+    sfml_rectangle_shape expectedShape{size, pos, graphics::colors::white};
 };
 } // namespace graphics
