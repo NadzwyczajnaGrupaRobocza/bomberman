@@ -69,13 +69,14 @@ private:
         mark_green_arrow_peak();
     }
 
-    glm::vec3 lerp(glm::vec3 const& start, glm::vec3 const& end, float const percent)
+    glm::vec3 lerp(glm::vec3 const& start, glm::vec3 const& end,
+                   float const percent)
     {
         return glm::mix(start, end, percent);
     }
 
     glm::vec3 nlerp(glm::vec3 const& start, glm::vec3 const& end,
-               float const percent)
+                    float const percent)
     {
         return glm::normalize(lerp(start, end, percent));
     }
@@ -123,12 +124,13 @@ private:
         auto const new_direction =
             nlerp(start_direction, destination_direction, travel_path);
 
-        ranges::for_each(clock_arrows, [&](auto& arrow) {
+        ranges::for_each(clock_arrows, [&](auto& clock_arrow) {
             auto new_position = math::Position2f(
-                new_direction.x * static_cast<float>(arrow.length),
-                new_direction.y * static_cast<float>(arrow.length));
+                new_direction.x * static_cast<float>(clock_arrow.length),
+                new_direction.y * static_cast<float>(clock_arrow.length));
 
-            shapes->set_position(arrow.id, center_position + new_position);
+            shapes->set_position(clock_arrow.id,
+                                 center_position + new_position);
         });
     }
 
@@ -146,8 +148,8 @@ private:
         main_window->update();
     }
 
-    std::size_t const circle_r = 250;
-    std::size_t const step = 40;
+    std::int32_t const circle_r = 250;
+    std::int32_t const step = 40;
     std::size_t const point_count = circle_r / step;
     math::Size2f const arrow_size{20, 30};
     math::Size2u const available_region{800, 600};

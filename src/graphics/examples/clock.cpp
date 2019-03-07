@@ -85,12 +85,13 @@ private:
         auto sinus = std::sin(theta);
         auto cosinus = std::cos(theta);
 
-        ranges::for_each(clock_arrows, [&](auto& arrow) {
-            auto new_x = gsl::narrow_cast<float>(arrow.length * cosinus);
-            auto new_y = gsl::narrow_cast<float>(arrow.length * sinus);
+        ranges::for_each(clock_arrows, [&](auto& clock_arrow) {
+            auto new_x = gsl::narrow_cast<float>(clock_arrow.length * cosinus);
+            auto new_y = gsl::narrow_cast<float>(clock_arrow.length * sinus);
 
-            shapes->set_position(arrow.id,
-                                 center_position + math::Position2f{new_x, new_y});
+            shapes->set_position(clock_arrow.id,
+                                 center_position +
+                                     math::Position2f{new_x, new_y});
         });
     }
 
@@ -111,14 +112,15 @@ private:
     double const pi = std::acos(-1);
     double const double_pi = pi * 2;
     double const speed = 1.5;
-    std::size_t const circle_r = 250;
-    std::size_t const step = 40;
+    std::int32_t const circle_r = 250;
+    std::int32_t const step = 40;
     std::size_t const point_count = circle_r / step;
     math::Size2f const arrow_size{20, 30};
     math::Size2u const available_region{800, 600};
     math::Size2f const box_size{15, 15};
-    math::Position2f const center_position{available_region.width / 2.0f,
-                                           available_region.height / 2.0f};
+    math::Position2f const center_position{
+        static_cast<float>(available_region.width) / 2.0f,
+        static_cast<float>(available_region.height) / 2.0f};
 
     std::unique_ptr<graphics::window> const main_window =
         graphics::create_window(available_region, "win");

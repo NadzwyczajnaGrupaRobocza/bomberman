@@ -122,11 +122,13 @@ private:
         auto const new_direction =
             slerp(start_direction, destination_direction, travel_path);
 
-        ranges::for_each(clock_arrows, [&](auto& arrow) {
+        ranges::for_each(clock_arrows, [&](auto& clock_arrow) {
             auto new_position = math::Position2f(
-                new_direction.x * arrow.length, new_direction.y * arrow.length);
+                new_direction.x * static_cast<float>(clock_arrow.length),
+                new_direction.y * static_cast<float>(clock_arrow.length));
 
-            shapes->set_position(arrow.id, center_position + new_position);
+            shapes->set_position(clock_arrow.id,
+                                 center_position + new_position);
         });
     }
 
@@ -144,8 +146,8 @@ private:
         main_window->update();
     }
 
-    std::size_t const circle_r = 250;
-    std::size_t const step = 40;
+    std::int32_t const step = 40;
+    std::int32_t const circle_r = 250;
     std::size_t const point_count = circle_r / step;
     math::Size2f const arrow_size{20, 30};
     math::Size2u const available_region{800, 600};
@@ -154,8 +156,9 @@ private:
     glm::vec3 const down_direction{0, 1, 0};
     glm::vec3 const right_direction{1, 0, 0};
     glm::vec3 const left_direction{-1, 0, 0};
-    math::Position2f const center_position{available_region.width / 2.0f,
-                                           available_region.height / 2.0f};
+    math::Position2f const center_position{
+        static_cast<float>(available_region.width) / 2.0f,
+        static_cast<float>(available_region.height) / 2.0f};
 
     std::unique_ptr<graphics::window> const main_window =
         graphics::create_window(available_region, "win");

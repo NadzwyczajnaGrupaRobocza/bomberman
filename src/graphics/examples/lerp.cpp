@@ -118,8 +118,9 @@ private:
 
     math::Size2f const box_size{15, 15};
     math::Size2u const screen_size{800, 600};
-    math::Position2f const screen_center{screen_size.width / 2.0f,
-                                         screen_size.height / 2.0f};
+    math::Position2f const screen_center{
+        static_cast<float>(screen_size.width) / 2.0f,
+        static_cast<float>(screen_size.height) / 2.0f};
 
     glm::vec3 const left_upper_corner{100, 300, 0};
     glm::vec3 const right_lower_corner{700, 500, 0};
