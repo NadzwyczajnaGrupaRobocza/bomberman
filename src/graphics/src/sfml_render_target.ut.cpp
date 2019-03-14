@@ -2,8 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include <fakeit.hpp>
-
 #include "render_target.stub.hpp"
 
 using ::testing::Test;

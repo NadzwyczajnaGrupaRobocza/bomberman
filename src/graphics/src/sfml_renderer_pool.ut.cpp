@@ -1,4 +1,4 @@
-#include "renderer_pool_sfml.hpp"
+#include "sfml_renderer_pool.hpp"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -23,7 +23,7 @@ constexpr math::Size2f dummy_size{20, 30};
 constexpr math::Size2f another_dummy_size{100, 100};
 constexpr math::Position2f dummy_position{0, 10};
 } // namespace
-class renderer_pool_sfml_test : public ::testing::Test
+class sfml_renderer_pool_test : public ::testing::Test
 {
 public:
     void SetUp() override
@@ -32,7 +32,7 @@ public:
         Fake(Dtor(renderer));
         Fake(Method(renderer, initialize));
 
-        renderer_pool = std::make_unique<renderer_pool_sfml>(
+        renderer_pool = std::make_unique<sfml_renderer_pool>(
             std::unique_ptr<context_renderer>(&renderer.get()),
             std::unique_ptr<renderer_id_generator>(&id_generator.get()));
 
@@ -85,13 +85,13 @@ public:
 
     Mock<renderer_id_generator> id_generator;
     Mock<context_renderer> renderer;
-    std::unique_ptr<renderer_pool_sfml> renderer_pool;
+    std::unique_ptr<sfml_renderer_pool> renderer_pool;
 
     const renderer_id id1{renderer_id_generator{}.generate()};
     const renderer_id id2{renderer_id_generator{}.generate()};
 };
 
-TEST_F(renderer_pool_sfml_test, acquireTwoRenderableObject_positionShouldMatch)
+TEST_F(sfml_renderer_pool_test, acquireTwoRenderableObject_positionShouldMatch)
 {
     When(Method(id_generator, generate)).Return(id1).Return(id2);
 
@@ -101,7 +101,7 @@ TEST_F(renderer_pool_sfml_test, acquireTwoRenderableObject_positionShouldMatch)
     expect_eq_position(dummy_position, id2);
 }
 
-TEST_F(renderer_pool_sfml_test, renderableObjectShouldBeMovable)
+TEST_F(sfml_renderer_pool_test, renderableObjectShouldBeMovable)
 {
     When(Method(id_generator, generate)).Return(id1);
     expect_acquire_renderable(dummy_size, dummy_position, id1);
@@ -113,18 +113,18 @@ TEST_F(renderer_pool_sfml_test, renderableObjectShouldBeMovable)
     expect_move_object(10, -231, id1);
 }
 
-TEST_F(renderer_pool_sfml_test, getPositionOfInvalidIdShouldThrow)
+TEST_F(sfml_renderer_pool_test, getPositionOfInvalidIdShouldThrow)
 {
     EXPECT_THROW(renderer_pool->get_position(id1), std::out_of_range);
 }
 
-TEST_F(renderer_pool_sfml_test, setPositiontOfInvalidIdShouldThrow)
+TEST_F(sfml_renderer_pool_test, setPositiontOfInvalidIdShouldThrow)
 {
     EXPECT_THROW(renderer_pool->set_position(id1, dummy_position),
                  std::out_of_range);
 }
 
-TEST_F(renderer_pool_sfml_test, renderAll)
+TEST_F(sfml_renderer_pool_test, renderAll)
 {
     When(Method(id_generator, generate)).AlwaysDo([]() {
         return renderer_id_generator{}.generate();
@@ -147,7 +147,7 @@ TEST_F(renderer_pool_sfml_test, renderAll)
         .Exactly(static_cast<int>(expected_shapes.size()));
 }
 
-TEST_F(renderer_pool_sfml_test, releaseWithoutAcquire_doNothing)
+TEST_F(sfml_renderer_pool_test, releaseWithoutAcquire_doNothing)
 {
     renderer_pool->release(id1);
     Fake(Method(renderer, clear));
@@ -156,7 +156,7 @@ TEST_F(renderer_pool_sfml_test, releaseWithoutAcquire_doNothing)
     Verify(Method(renderer, draw)).Exactly(0);
 }
 
-TEST_F(renderer_pool_sfml_test, acquireTwoReleaseOne_shouldRenderOnlyOne)
+TEST_F(sfml_renderer_pool_test, acquireTwoReleaseOne_shouldRenderOnlyOne)
 {
     When(Method(id_generator, generate)).Return(id1).Return(id2);
 
@@ -175,7 +175,7 @@ TEST_F(renderer_pool_sfml_test, acquireTwoReleaseOne_shouldRenderOnlyOne)
     Verify(Method(renderer, draw)).Once();
 }
 
-TEST_F(renderer_pool_sfml_test, reacquirenShouldBeRendered)
+TEST_F(sfml_renderer_pool_test, reacquirenShouldBeRendered)
 {
     When(Method(id_generator, generate)).Return(id1).Return(id2).Return(id2);
 
@@ -197,7 +197,7 @@ TEST_F(renderer_pool_sfml_test, reacquirenShouldBeRendered)
     expect_render_all(expected_shapes);
 }
 
-TEST_F(renderer_pool_sfml_test, acquiredObjectWithSelectedColor)
+TEST_F(sfml_renderer_pool_test, acquiredObjectWithSelectedColor)
 {
     When(Method(id_generator, generate)).Return(id1);
 
@@ -207,7 +207,7 @@ TEST_F(renderer_pool_sfml_test, acquiredObjectWithSelectedColor)
     EXPECT_EQ(red, renderer_pool->get_color(id));
 }
 
-TEST_F(renderer_pool_sfml_test, beAbleToChangeColor)
+TEST_F(sfml_renderer_pool_test, beAbleToChangeColor)
 {
     When(Method(id_generator, generate)).Return(id1);
 
