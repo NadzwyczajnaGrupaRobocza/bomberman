@@ -9,9 +9,8 @@
 namespace graphics
 {
 
-sfml_renderer_pool::sfml_renderer_pool(std::unique_ptr<context_renderer> r,
-                                       std::unique_ptr<renderer_id_generator> g)
-    : renderer{std::move(r)}, id_generator{std::move(g)}
+sfml_renderer_pool::sfml_renderer_pool(std::unique_ptr<context_renderer> r)
+    : renderer{std::move(r)}
 {
     renderer->initialize();
 }
@@ -20,7 +19,7 @@ renderer_id sfml_renderer_pool::acquire(const math::Size2f& size,
                                         const math::Position2f& position,
                                         const color& shape_color)
 {
-    auto id = id_generator->generate();
+    auto id = renderer_id_generator::generate();
     shapes.emplace(std::piecewise_construct, std::forward_as_tuple(id),
                    std::forward_as_tuple(size, position, shape_color));
     return id;

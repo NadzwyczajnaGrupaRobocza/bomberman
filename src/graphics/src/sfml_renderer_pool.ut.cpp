@@ -33,8 +33,7 @@ public:
         Fake(Method(renderer, initialize));
 
         renderer_pool = std::make_unique<sfml_renderer_pool>(
-            std::unique_ptr<context_renderer>(&renderer.get()),
-            std::unique_ptr<renderer_id_generator>(&id_generator.get()));
+            std::unique_ptr<context_renderer>(&renderer.get()));
 
         Verify(Method(renderer, initialize));
     }
@@ -56,14 +55,6 @@ public:
 
         renderer_pool->render_all();
         ASSERT_THAT(shapes, UnorderedElementsAreArray(expected_shapes));
-    }
-
-    void expect_acquire_renderable(const math::Size2f& size,
-                                   const math::Position2f& position,
-                                   const renderer_id& id)
-    {
-        EXPECT_EQ(id, renderer_pool->acquire(size, position,
-                                             graphics::colors::white));
     }
 
     void expect_eq_position(const math::Position2f& position,
@@ -95,8 +86,12 @@ TEST_F(sfml_renderer_pool_test, acquireTwoRenderableObject_positionShouldMatch)
 {
     When(Method(id_generator, generate)).Return(id1).Return(id2);
 
-    expect_acquire_renderable(dummy_size, dummy_position, id1);
-    expect_acquire_renderable(another_dummy_size, dummy_position, id2);
+    EXPECT_EQ(id1, renderer_pool->acquire(dummy_size, dummy_position,
+                                          graphics::colors::white));
+
+    EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position,
+                                          graphics::colors::white));
+
     expect_eq_position(dummy_position, id1);
     expect_eq_position(dummy_position, id2);
 }
@@ -104,7 +99,8 @@ TEST_F(sfml_renderer_pool_test, acquireTwoRenderableObject_positionShouldMatch)
 TEST_F(sfml_renderer_pool_test, renderableObjectShouldBeMovable)
 {
     When(Method(id_generator, generate)).Return(id1);
-    expect_acquire_renderable(dummy_size, dummy_position, id1);
+    EXPECT_EQ(id1, renderer_pool->acquire(dummy_size, dummy_position,
+                                          graphics::colors::white));
     expect_eq_position(dummy_position, id1);
 
     expect_move_object(10, 30, id1);

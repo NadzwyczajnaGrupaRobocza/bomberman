@@ -16,8 +16,7 @@ namespace graphics
 class sfml_renderer_pool : public renderer_pool
 {
 public:
-    sfml_renderer_pool(std::unique_ptr<context_renderer>,
-                       std::unique_ptr<renderer_id_generator>);
+    sfml_renderer_pool(std::unique_ptr<context_renderer>);
 
     renderer_id acquire(const math::Size2f&, const math::Position2f&,
                         const color&) override;
@@ -35,7 +34,6 @@ private:
     void cleanup_unused();
 
     std::unique_ptr<context_renderer> renderer;
-    std::unique_ptr<renderer_id_generator> id_generator;
     std::unordered_map<renderer_id, sfml_rectangle_shape,
                        boost::hash<renderer_id>>
         shapes;
