@@ -2,12 +2,12 @@
 
 #include <memory>
 
-#include "math/Size2f.hpp"
 #include "math/Position2f.hpp"
+#include "math/Size2f.hpp"
 
-#include "physics/PhysicsEngine.hpp"
-#include "graphics/renderer_pool.hpp"
 #include "BombLauncher.hpp"
+#include "graphics/renderer_pool.hpp"
+#include "physics/PhysicsEngine.hpp"
 
 class GameWorld;
 
@@ -37,5 +37,5 @@ private:
     const std::shared_ptr<BombLauncher> bombLauncher;
     physics::PhysicsId physics_id;
     graphics::renderer_id renderer_id;
-    std::chrono::milliseconds timeElapsed{};
+    DeltaTime timeElapsed{};
 };

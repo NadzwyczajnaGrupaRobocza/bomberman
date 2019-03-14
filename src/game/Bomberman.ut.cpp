@@ -11,7 +11,7 @@ using namespace std::literals::chrono_literals;
 class BombermanTest : public Test
 {
 public:
-    void SetUp() override
+    BombermanTest()
     {
         Fake(Dtor(human_player));
         Fake(Dtor(physics_engine));
@@ -104,17 +104,20 @@ TEST_F(BombermanTest, update_without_bombs)
     Verify(Method(physics_engine, set_position).Using(physics_id, _));
 
     EXPECT_EQ(current_position, expected_current_renderer_position);
-    EXPECT_EQ(math::Position2f(20.3f, 120.3f),
-              expected_next_physics_position);
+    EXPECT_EQ(math::Position2f(20.3f, 120.3f), expected_next_physics_position);
 }
 
-TEST_F(BombermanTest, update_with_bombs_not_spawned)
+class BombermanSpawnTest : public BombermanTest, public WithParamInterface<bool>
+{
+};
+
+TEST_P(BombermanSpawnTest, update_with_bombs)
 {
     expectGetPosFromPhysics();
     expectSetCurrentPositionInRenderer();
 
     expectCheckIfWantsBomb(true);
-    expectTrySpawnBomb(false);
+    expectTrySpawnBomb(GetParam());
 
     expectGetDirectionFromInput(VectorInt2D{1, 1});
     expectPassNewPositionToPhysics();
@@ -131,33 +134,7 @@ TEST_F(BombermanTest, update_with_bombs_not_spawned)
     Verify(Method(physics_engine, set_position).Using(physics_id, _));
 
     EXPECT_EQ(current_position, expected_current_renderer_position);
-    EXPECT_EQ(math::Position2f(20.3f, 120.3f),
-              expected_next_physics_position);
+    EXPECT_EQ(math::Position2f(20.3f, 120.3f), expected_next_physics_position);
 }
 
-TEST_F(BombermanTest, update_with_bombs_spawned)
-{
-    expectGetPosFromPhysics();
-    expectSetCurrentPositionInRenderer();
-
-    expectCheckIfWantsBomb(true);
-    expectTrySpawnBomb(true);
-
-    expectGetDirectionFromInput(VectorInt2D{1, 1});
-    expectPassNewPositionToPhysics();
-
-    bomberman.update(DeltaTime{3ms});
-
-    Verify(Method(physics_engine, get_position).Using(physics_id));
-    Verify(Method(renderer_pool, set_position).Using(renderer_id, _));
-
-    Verify(Method(human_player, wants_bomb));
-    Verify(Method(bomb_launcher, try_spawn_bomb).Using(current_position));
-
-    Verify(Method(human_player, get_direction));
-    Verify(Method(physics_engine, set_position).Using(physics_id, _));
-
-    EXPECT_EQ(current_position, expected_current_renderer_position);
-    EXPECT_EQ(math::Position2f(20.3f, 120.3f),
-              expected_next_physics_position);
-}
+INSTANTIATE_TEST_CASE_P(, BombermanSpawnTest, Values(true, false),);

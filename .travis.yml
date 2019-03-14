@@ -1,5 +1,5 @@
 sudo: required
-dist: trusty
+dist: xenial
 language: cpp
 
 matrix:
@@ -7,13 +7,16 @@ matrix:
     - compiler: gcc
       addons:
         apt:
+          update: true
           sources:
             - ubuntu-toolchain-r-test
+            - sourceline: 'ppa:mhier/libboost-latest'
           packages:
-            - g++-7
+            - g++-8
+            - boost1.68
       env:
-      - C_COMPILER=gcc-7
-      - CXX_COMPILER=g++-7
+      - C_COMPILER=gcc-8
+      - CXX_COMPILER=g++-8
     # - compiler: clang
     #   addons:
     #     apt:
@@ -27,17 +30,20 @@ matrix:
     #   - CXX_COMPILER=clang++-3.8
 
 # Build steps
-script:
-  - mkdir boost-dl; cd boost-dl
-  - wget https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2
-  - tar --bzip2 -xf ./boost_1_65_1.tar.bz2
-  - sudo mv ./boost_1_65_1/boost /usr/include
-  - cd ..
+
+install:
+        #- mkdir boost-dl; cd boost-dl
+        #- wget https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2
+        #- tar --bzip2 -xf ./boost_1_65_1.tar.bz2
+        #- sudo mv ./boost_1_65_1/boost /usr/include
+        #- cd ..
   - mkdir sfml-dl; cd sfml-dl
-  - wget https://www.sfml-dev.org/files/SFML-2.5.0-linux-gcc-64-bit.tar.gz
-  - tar xzf SFML-2.5.0-linux-gcc-64-bit.tar.gz
+  - wget https://www.sfml-dev.org/files/SFML-2.5.1-linux-gcc-64-bit.tar.gz
+  - tar xzf SFML-2.5.1-linux-gcc-64-bit.tar.gz
+
+script:
   - cd ../
-  - export SFML=`pwd`/sfml-dl/SFML-2.5.0
+  - export SFML=`pwd`/sfml-dl/SFML-2.5.1
   - echo "sflm $SFML"
   - mkdir build
   - cd build

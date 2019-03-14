@@ -10,29 +10,24 @@
 
 int main()
 {
-  const math::Size2u window_size{800, 600};
-  sf::Window window(sf::VideoMode(window_size.width, window_size.height), "Bomberman Remake");
+    const math::Size2u window_size{800, 600};
 
-  //auto window = graphics::create_window(window_size, "Bomberman remake");
-  auto r = graphics::create_renderer_pool(window_size);
-  auto p = std::make_unique<physics::ConcretePhysicsEngine>();
+    auto window = graphics::create_window(window_size, "Bomberman Remake");
+    auto r = graphics::create_renderer_pool(window_size);
+    auto p = std::make_unique<physics::ConcretePhysicsEngine>();
 
-  auto world = std::make_shared<BombermanGameWorld>(std::move(p), std::move(r));
-  sf::Clock clock;
+    BombermanGameWorld world(std::move(p), std::move(r));
+    auto last_frame{std::chrono::high_resolution_clock::now()};
 
-  while (window.isOpen())
-  {
-    sf::Event event;
-    while (window.pollEvent(event))
+    while (window->is_open())
     {
-      if (event.type == sf::Event::Closed)
-          window.close();
+        auto const now = std::chrono::high_resolution_clock::now();
+
+        world.update(DeltaTime{now - last_frame});
+        window->update();
+        window->display();
+
+        last_frame = now;
     }
-
-    const std::chrono::milliseconds ms{clock.restart().asMilliseconds()};
-    world->update(DeltaTime{ms});
-
-    window.display();
-  }
 }
 

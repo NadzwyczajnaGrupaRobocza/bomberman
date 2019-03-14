@@ -1,0 +1,5 @@
+FROM gcc:8.1
+RUN apt-get update -y && \
+    apt-get install -y cmake libsfml-dev libboost-all-dev
+
+WORKDIR /app
