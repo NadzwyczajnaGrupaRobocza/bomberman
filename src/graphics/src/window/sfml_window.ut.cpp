@@ -1,87 +1,85 @@
+#include <SFML/Window/Event.hpp>
 #include <gtest/gtest.h>
 #include <range/v3/algorithm/for_each.hpp>
-#include <SFML/Window/Event.hpp>
 
-#include "sfml_window.hpp"
 #include "sfml/window_proxy.mock.hpp"
+#include "sfml_window.hpp"
 
 using namespace ::testing;
 
 namespace graphics
 {
-class DISABLED_sfml_window_test : public Test
+ACTION_P(SetEventType, event_type)
+{
+    arg0.type = event_type;
+}
+
+class sfml_window_test : public Test
 {
 public:
     auto create_window()
     {
-        auto w = std::make_unique<StrictMock<mock_window_proxy>>();
-        m_mock_window_proxy = w.get();
-        return sfml_window{size, window_title,
-                           std::unique_ptr<window_proxy>(w.release())};
+        return sfml_window{
+            size, window_title,
+            std::unique_ptr<window_proxy>(unique_window_proxy.release())};
     }
 
     const std::string window_title = "My Window";
     const window_size size{300, 400};
     const sf::VideoMode mode{size.width, size.height};
 
-    mock_window_proxy* m_mock_window_proxy;
-    std::vector<sf::Event::EventType> events;
+    std::unique_ptr<mock_window_proxy> unique_window_proxy{
+        std::make_unique<NiceMock<mock_window_proxy>>()};
+    mock_window_proxy* proxy{unique_window_proxy.get()};
 };
 
-TEST_F(DISABLED_sfml_window_test, windowShouldCreated)
+TEST_F(sfml_window_test, windowShouldCreated)
 {
-    //TODO
-    // EXPECT_CALL(*m_mock_window_proxy, create());
+    EXPECT_CALL(*proxy, create(sf::VideoMode{size.width, size.height},
+                               sf::String{window_title}));
     auto window = create_window();
 }
 
-TEST_F(DISABLED_sfml_window_test, windowShouldBeOpenendImmediatelyAfterCreation)
+TEST_F(sfml_window_test, windowShouldBeOpenendImmediatelyAfterCreation)
 {
     auto window = create_window();
 
-    EXPECT_CALL(*m_mock_window_proxy, is_open()).WillOnce(Return(true));
+    EXPECT_CALL(*proxy, is_open()).WillOnce(Return(true));
     EXPECT_TRUE(window.is_open());
 
-    EXPECT_CALL(*m_mock_window_proxy, is_open()).WillOnce(Return(false));
+    EXPECT_CALL(*proxy, is_open()).WillOnce(Return(false));
     EXPECT_FALSE(window.is_open());
 }
 
-TEST_F(DISABLED_sfml_window_test, displayWindow)
+TEST_F(sfml_window_test, displayWindow)
 {
     auto window = create_window();
 
-    EXPECT_CALL(*m_mock_window_proxy, display());
+    EXPECT_CALL(*proxy, display());
     window.display();
 }
 
-TEST_F(DISABLED_sfml_window_test, updateWindow)
+TEST_F(sfml_window_test, updateDoNothingIfNoPollEvents)
 {
-    //TODO:
+    unique_window_proxy = std::make_unique<StrictMock<mock_window_proxy>>();
+    proxy = unique_window_proxy.get();
+    EXPECT_CALL(*proxy, create(_, _)).Times(AnyNumber());
     auto window = create_window();
-    // prepare_events({sf::Event::MouseLeft, sf::Event::LostFocus,
-    //                 sf::Event::MouseMoved, sf::Event::MouseEntered});
-    // const auto no_events = number_of_expected_events();
 
-    // expectPollEvent();
-    EXPECT_CALL(*m_mock_window_proxy, poll_event(_)).Times(0);
+    EXPECT_CALL(*proxy, poll_event(_)).Times(1).WillOnce(Return(false));
     window.update();
-    // fakeit::Verify(Method(m_window_proxy, poll_event)).Exactly(no_events);
 }
 
-TEST_F(DISABLED_sfml_window_test, updateAndCloseWindow)
+TEST_F(sfml_window_test, updateAndCloseWindow)
 {
-    //TODO:
-    // fakeit::Fake(Method(m_window_proxy, close));
     auto window = create_window();
-    // prepare_events({sf::Event::MouseLeft, sf::Event::LostFocus,
-    //                 sf::Event::MouseMoved, sf::Event::MouseEntered,
-    //                 sf::Event::Closed});
-    // const auto no_events = number_of_expected_events();
 
-    // expectPollEvent();
+    EXPECT_CALL(*proxy, poll_event(_))
+        .Times(2)
+        .WillOnce(DoAll(SetEventType(sf::Event::Closed), Return(true)))
+        .WillOnce(Return(false));
+    EXPECT_CALL(*proxy, close());
+
     window.update();
-    EXPECT_CALL(*m_mock_window_proxy, poll_event(_)).Times(0);
-    // fakeit::Verify(Method(m_window_proxy, poll_event)).Exactly(no_events);
-    // fakeit::Verify(Method(m_window_proxy, close)).Once();
 }
 }
