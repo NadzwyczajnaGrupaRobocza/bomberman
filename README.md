@@ -11,7 +11,7 @@ Beside of code You also need to install:
 - git
 - cmake
 - boost dev version
-- sfml dev version (at leeast 2.5)
+- sfml dev version (at least 2.5)
 
 ## 2 Downloading and compiling code
 
