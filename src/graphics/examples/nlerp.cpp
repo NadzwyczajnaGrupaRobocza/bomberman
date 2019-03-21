@@ -1,7 +1,6 @@
 #include <chrono>
 #include <cmath>
 #include <glm/ext.hpp>
-#include <gsl/gsl_util>
 #include <iostream>
 #include <memory>
 #include <range/v3/algorithm/for_each.hpp>

@@ -1,7 +1,5 @@
 #include "Bomberman.hpp"
 
-#include <gsl/gsl_util>
-
 Bomberman::Bomberman(physics::PhysicsId phys_id, graphics::renderer_id rend_id,
                      std::unique_ptr<HumanPlayer> player,
                      std::shared_ptr<physics::PhysicsEngine> physics,
