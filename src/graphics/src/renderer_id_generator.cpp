@@ -4,7 +4,7 @@
 
 namespace graphics
 {
-renderer_id renderer_id_generator::generate() const
+renderer_id renderer_id_generator::generate()
 {
     return boost::uuids::random_generator()();
 }
