@@ -1,10 +1,12 @@
-#include "BombermanGameWorld.hpp"
+#include <boost/core/null_deleter.hpp>
+#include <experimental/map>
+
 #include "Bomberman.hpp"
+#include "BombermanGameWorld.hpp"
 #include "BoundaryWallsPositionsGenerator.hpp"
 #include "DefaultBombFactory.hpp"
 #include "HumanPlayerSfml.hpp"
 #include "LimitedBombLauncher.hpp"
-#include <boost/core/null_deleter.hpp>
 
 BombermanGameWorld::BombermanGameWorld(
     std::unique_ptr<physics::PhysicsEngine> a,
@@ -64,4 +66,12 @@ void BombermanGameWorld::update(DeltaTime dt)
      }
      */
     rpool->render_all();
+    cleanBombs();
+}
+
+void BombermanGameWorld::cleanBombs()
+{
+    std::experimental::erase_if(bombs, [](const auto& element) {
+        return element.second->hasExploded();
+    });
 }
