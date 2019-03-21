@@ -20,11 +20,13 @@ public:
     virtual bool is_bomb_at_pos(const BombPosition&) const override;
 
     virtual void register_bomb(BombPosition, std::unique_ptr<Bomb>) override;
-    virtual void register_explosion(ExplosionPosition, std::unique_ptr<Explosion>) override;
+    virtual void register_explosion(ExplosionPosition,
+                                    std::unique_ptr<Explosion>) override;
 
     virtual void update(DeltaTime) override;
 
 private:
+    void cleanBombs();
 
     std::vector<std::unique_ptr<Entity>> entity;
     std::map<BombPosition, std::unique_ptr<Bomb>> bombs;
@@ -35,4 +37,3 @@ private:
     std::shared_ptr<physics::PhysicsEngine> ppool;
     std::shared_ptr<graphics::renderer_pool> rpool;
 };
-

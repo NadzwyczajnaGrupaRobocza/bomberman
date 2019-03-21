@@ -1,4 +1,5 @@
 #include "BombermanGameWorld.hpp"
+#include <experimental/map>
 #include "BoundaryWallsPositionsGenerator.hpp"
 #include "HumanPlayerSfml.hpp"
 #include "LimitedBombLauncher.hpp"
@@ -63,4 +64,12 @@ void BombermanGameWorld::update(DeltaTime dt)
      }
      */
     rpool->render_all();
+    cleanBombs();
+}
+
+void BombermanGameWorld::cleanBombs()
+{
+    std::experimental::erase_if(bombs, [](const auto& element) {
+        return element.second->hasExploded();
+    });
 }
