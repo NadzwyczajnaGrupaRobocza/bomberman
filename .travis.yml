@@ -38,12 +38,12 @@ install:
         #- sudo mv ./boost_1_65_1/boost /usr/include
         #- cd ..
   - mkdir sfml-dl; cd sfml-dl
-  - wget https://www.sfml-dev.org/files/SFML-2.5.0-linux-gcc-64-bit.tar.gz
-  - tar xzf SFML-2.5.0-linux-gcc-64-bit.tar.gz
+  - wget https://www.sfml-dev.org/files/SFML-2.5.1-linux-gcc-64-bit.tar.gz
+  - tar xzf SFML-2.5.1-linux-gcc-64-bit.tar.gz
 
 script:
   - cd ../
-  - export SFML=`pwd`/sfml-dl/SFML-2.5.0
+  - export SFML=`pwd`/sfml-dl/SFML-2.5.1
   - echo "sflm $SFML"
   - mkdir build
   - cd build
