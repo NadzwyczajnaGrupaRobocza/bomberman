@@ -2,13 +2,13 @@
 #include <vector>
 
 #include "ExplosionRange.hpp"
-#include "WallPositionsGenerator.hpp"
 #include "Map.hpp"
+#include "WallPositionsGenerator.hpp"
 
 #include "glm/glm.hpp"
-#include "physics/PhysicsEngine.hpp"
-#include "graphics/renderer_pool.hpp"
 #include "graphics/renderer_id.hpp"
+#include "graphics/renderer_pool.hpp"
+#include "physics/PhysicsEngine.hpp"
 
 class SimpleMap : public Map
 {
