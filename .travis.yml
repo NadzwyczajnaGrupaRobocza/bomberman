@@ -12,11 +12,11 @@ matrix:
             - ubuntu-toolchain-r-test
             - sourceline: 'ppa:mhier/libboost-latest'
           packages:
-            - g++-7
+            - g++-8
             - boost1.68
       env:
-      - C_COMPILER=gcc-7
-      - CXX_COMPILER=g++-7
+      - C_COMPILER=gcc-8
+      - CXX_COMPILER=g++-8
     # - compiler: clang
     #   addons:
     #     apt:
