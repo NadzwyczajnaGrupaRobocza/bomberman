@@ -1,14 +1,14 @@
 #pragma once
 
-#include <memory>
 #include <boost/serialization/strong_typedef.hpp>
-#include "Bomb.hpp"
 #include <map>
+#include <memory>
 #include <vector>
-#include "GameWorld.hpp"
-#include "physics/PhysicsEngine.hpp"
-#include "graphics/renderer_pool.hpp"
 
+#include "Bomb.hpp"
+#include "GameWorld.hpp"
+#include "graphics/renderer_pool.hpp"
+#include "physics/PhysicsEngine.hpp"
 #include "SimpleMap.hpp"
 
 class BombermanGameWorld : public GameWorld

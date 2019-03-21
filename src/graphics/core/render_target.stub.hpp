@@ -10,7 +10,8 @@ namespace
 {
 const position2f pos{0, 0};
 const size2f size{0, 0};
-}
+const color default_color{0, 0, 0};
+} // namespace
 
 class render_target_stub
 {
@@ -65,13 +66,13 @@ public:
     bool cleared{false};
     sf::Color clearedColor{sf::Color::Transparent};
     bool drawn{false};
-    sfml_rectangle_shape drawnShape{size, pos};
+    sfml_rectangle_shape drawnShape{size, pos, default_color};
 
     bool shouldInitialize{false};
     bool shouldClear{false};
     bool shouldDraw{false};
 
     sf::Color expectedColor{sf::Color::Transparent};
-    sfml_rectangle_shape expectedShape{size, pos};
+    sfml_rectangle_shape expectedShape{size, pos, default_color};
 };
 }

@@ -1,11 +1,12 @@
-#include "BombermanGameWorld.hpp"
+#include <boost/core/null_deleter.hpp>
 #include <experimental/map>
+
+#include "Bomberman.hpp"
+#include "BombermanGameWorld.hpp"
 #include "BoundaryWallsPositionsGenerator.hpp"
+#include "DefaultBombFactory.hpp"
 #include "HumanPlayerSfml.hpp"
 #include "LimitedBombLauncher.hpp"
-#include "Bomberman.hpp"
-#include "DefaultBombFactory.hpp"
-#include <boost/core/null_deleter.hpp>
 
 BombermanGameWorld::BombermanGameWorld(
     std::unique_ptr<physics::PhysicsEngine> a,
@@ -21,6 +22,8 @@ BombermanGameWorld::BombermanGameWorld(
     auto bl = std::make_unique<LimitedBombLauncher>(world, std::move(bf), 10);
 
     physics::PhysicsId pid{};
+    auto rid = rpool->acquire(math::Size2f{30, 40}, math::Position2f{70, 70},
+                              graphics::colors::cyan);
 
     auto rid = rpool->acquire(math::Size2f{30, 40}, math::Position2f{70, 70});
     entity.emplace_back(std::make_unique<Bomberman>(
