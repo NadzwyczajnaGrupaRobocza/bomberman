@@ -109,12 +109,12 @@ private:
         main_window->update();
     }
 
-    double const pi = std::acos(-1);
-    double const double_pi = pi * 2;
-    double const speed = 1.5;
-    std::int32_t const circle_r = 250;
-    std::int32_t const step = 40;
-    std::size_t const point_count = circle_r / step;
+    double const pi{std::acos(-1)};
+    double const double_pi{pi * 2};
+    double const speed{1.5};
+    std::int32_t const circle_r{250};
+    std::int32_t const step{40};
+    std::size_t const point_count{static_cast<std::size_t>(circle_r / step)};
     math::Size2f const arrow_size{20, 30};
     math::Size2u const available_region{800, 600};
     math::Size2f const box_size{15, 15};
