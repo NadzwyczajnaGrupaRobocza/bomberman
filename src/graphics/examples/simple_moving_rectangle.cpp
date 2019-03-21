@@ -1,19 +1,28 @@
-#include <memory>
-#include <cmath>
-#include <iostream>
-#include <gsl/gsl_util>
 #include <chrono>
-#include <vector>
+#include <cmath>
+#include <gsl/gsl_util>
+#include <iostream>
+#include <memory>
 #include <range/v3/algorithm/for_each.hpp>
 #include <range/v3/algorithm/generate.hpp>
+#include <vector>
 
-#include "math/Size2u.hpp"
-#include "math/Position2f.hpp"
 #include "graphics/factory.hpp"
 #include "graphics/window.hpp"
+#include "math/Position2f.hpp"
+#include "math/Size2u.hpp"
 
 using namespace math;
 using arrow = std::vector<std::pair<int, graphics::renderer_id>>;
+
+inline void mark_arrow_peak(graphics::renderer_pool& renderer_pool, arrow& arr)
+{
+    constexpr graphics::color green{10, 200, 10};
+    if (!arr.empty())
+    {
+        renderer_pool.set_color(arr.back().second, green);
+    }
+}
 
 inline auto create_object_at_center(const Size2u& available_region,
                                     graphics::renderer_pool& renderer_pool)
@@ -22,7 +31,8 @@ inline auto create_object_at_center(const Size2u& available_region,
     return renderer_pool.acquire(
         Size2f{15, 15},
         Position2f{static_cast<float>(available_region.width) / 2.0f,
-                   static_cast<float>(available_region.height) / 2.0f});
+                   static_cast<float>(available_region.height) / 2.0f},
+        graphics::color{255, 255, 0});
 }
 
 inline auto create_arrow_from_point(const Position2f& point,
@@ -34,13 +44,17 @@ inline auto create_arrow_from_point(const Position2f& point,
     const auto point_count = arrow_length / arrow_body_density;
     float current_pos = static_cast<float>(arrow_body_density);
 
+    constexpr graphics::color white{255, 255, 255};
+
     arrow arr(point_count);
     ranges::generate(arr, [&] {
         const auto distance_from_center = current_pos;
         current_pos += static_cast<float>(arrow_body_density);
-        return std::make_pair(distance_from_center,
-                              renderer_pool.acquire(Size2f{20, 30}, point));
+        return std::make_pair(
+            distance_from_center,
+            renderer_pool.acquire(Size2f{20, 30}, point, white));
     });
+    mark_arrow_peak(renderer_pool, arr);
     return arr;
 }
 
@@ -66,6 +80,8 @@ inline auto update_arrows_after_one_turn(double& alfa,
         alfa -= double_pi;
         renderer_pool.release(clock_arrow.back().second);
         clock_arrow.pop_back();
+
+        mark_arrow_peak(renderer_pool, clock_arrow);
     }
 }
 
@@ -106,8 +122,8 @@ int main()
 
     constexpr auto circle_r = 250;
     constexpr auto step = 40;
-    auto clock_arrow  = create_arrow_from_point(center_position, circle_r, step,
-                                         *renderer_pool);
+    auto clock_arrow = create_arrow_from_point(center_position, circle_r, step,
+                                               *renderer_pool);
 
     const auto pi = calculate_pi();
     const auto double_pi = pi * 2;
