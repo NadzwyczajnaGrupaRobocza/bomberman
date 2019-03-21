@@ -9,7 +9,6 @@
 #include "GameWorld.hpp"
 #include "graphics/renderer_pool.hpp"
 #include "physics/PhysicsEngine.hpp"
-
 #include "SimpleMap.hpp"
 
 class BombermanGameWorld : public GameWorld
@@ -27,6 +26,8 @@ public:
     virtual void update(DeltaTime) override;
 
 private:
+    void cleanBombs();
+
     std::vector<std::unique_ptr<Entity>> entity;
     std::map<BombPosition, std::unique_ptr<Bomb>> bombs;
     std::map<ExplosionPosition, std::unique_ptr<Explosion>> explosions;
