@@ -25,7 +25,6 @@ BombermanGameWorld::BombermanGameWorld(
     auto rid = rpool->acquire(math::Size2f{30, 40}, math::Position2f{70, 70},
                               graphics::colors::cyan);
 
-    auto rid = rpool->acquire(math::Size2f{30, 40}, math::Position2f{70, 70});
     entity.emplace_back(std::make_unique<Bomberman>(
         pid, rid, std::move(hp), ppool, rpool, std::move(bl)));
 }
