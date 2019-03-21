@@ -6,3 +6,4 @@ if(${ENABLE_COVERAGE})
   add_compile_options(--coverage -O0)
   link_libraries(--coverage)
 endif()
+
