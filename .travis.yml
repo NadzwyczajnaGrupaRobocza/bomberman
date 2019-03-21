@@ -13,7 +13,7 @@ matrix:
             - sourceline: 'ppa:mhier/libboost-latest'
           packages:
             - g++-7
-            - boost1.67
+            - boost1.68
       env:
       - C_COMPILER=gcc-7
       - CXX_COMPILER=g++-7
