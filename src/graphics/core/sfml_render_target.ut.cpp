@@ -4,8 +4,8 @@
 
 #include <fakeit.hpp>
 
-#include "renderer_id_generator.hpp"
 #include "render_target.stub.hpp"
+#include "renderer_id_generator.hpp"
 
 using ::testing::Test;
 

@@ -20,7 +20,7 @@ struct is_shape_id_equal
 
     const renderer_id id;
 };
-} // namespace
+}
 
 renderer_pool_sfml::renderer_pool_sfml(std::unique_ptr<context_renderer> r,
                                        std::unique_ptr<renderer_id_generator> g)
@@ -105,4 +105,4 @@ renderer_pool_sfml::get_shape(const renderer_id& shape_id) const
     return *shape_it;
 }
 
-} // namespace graphics
+}

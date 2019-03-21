@@ -247,4 +247,4 @@ TEST_F(renderer_pool_sfml_test, render_first_acquired)
     EXPECT_EQ(third_id, shapes[2].get_id());
 }
 
-} // namespace graphics
+}

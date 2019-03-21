@@ -13,7 +13,7 @@ const position2f pos{0, 0};
 const size2f size{0, 0};
 const color default_color{0, 0, 0};
 const auto shape_id = renderer_id_generator{}.generate();
-} // namespace
+}
 
 class render_target_stub
 {
@@ -75,6 +75,7 @@ public:
     bool shouldDraw{false};
 
     sf::Color expectedColor{sf::Color::Transparent};
+
     sfml_rectangle_shape expectedShape{shape_id, size, pos, default_color};
 };
 }
