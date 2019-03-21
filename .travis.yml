@@ -7,10 +7,13 @@ matrix:
     - compiler: gcc
       addons:
         apt:
+          update: true
           sources:
             - ubuntu-toolchain-r-test
+            - sourceline: 'ppa:mhier/libboost-latest'
           packages:
             - g++-7
+            - boost1.67
       env:
       - C_COMPILER=gcc-7
       - CXX_COMPILER=g++-7
@@ -27,6 +30,7 @@ matrix:
     #   - CXX_COMPILER=clang++-3.8
 
 # Build steps
+
 install:
   - mkdir boost-dl; cd boost-dl
   - wget https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2
