@@ -44,7 +44,6 @@ class TimeBombTest : public ExpectRegistration, public Test
 public:
     TimeBombTest()
     {
-        ON_CALL(*bomb_launcher, notify_exploded()).WillByDefault(Return());
     }
 
     void expect_notify_bomb_launcher()
@@ -102,6 +101,19 @@ TEST_F(TimeBombTest, AfterSumOfDeltaTimesEqualToTimeBombTimer_shouldExplode)
 
     expect_notify_bomb_launcher();
     expect_deregistration();
+    bomb.update(1s);
+
+    ASSERT_TRUE(bomb.hasExploded());
+}
+
+TEST_F(TimeBombTest, AfterOneNotification_shouldNotNotifyMore)
+{
+    using namespace std::chrono_literals;
+
+    expect_notify_bomb_launcher();
+    expect_deregistration();
+    bomb.update(8s);
+
     bomb.update(1s);
 
     ASSERT_TRUE(bomb.hasExploded());
