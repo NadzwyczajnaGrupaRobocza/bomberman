@@ -7,11 +7,11 @@
 ## 1 Requirements
 
 Beside of code You also need to install:
-- compiler that supports C++ 17
+- compiler that supports C++ 20
 - git
 - cmake
 - boost
-- sfml (we are using version 2.5)
+- sfml (minimum version 2.5.1)
 
 ## 2 Downloading and compiling code
 
