@@ -11,7 +11,7 @@ Beside of code You also need to install:
 - git
 - cmake
 - boost
-- sfml (we are using version 2.5.1)
+- sfml (minimum version 2.5.1)
 
 ## 2 Downloading and compiling code
 
