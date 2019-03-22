@@ -25,7 +25,7 @@ platform:
 
 install:
   - set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-win.zip"
-  - set SFML_URL="https://www.sfml-dev.org/files/SFML-2.5.0-windows-vc15-64-bit.zip"
+  - set SFML_URL="https://www.sfml-dev.org/files/SFML-2.5.1-windows-vc15-64-bit.zip"
   - set DEPS_DIR=C:\projects\deps
 
   - if not exist %DEPS_DIR% (
