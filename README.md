@@ -1,5 +1,5 @@
 # bomberman
-[![Build Status](https://travis-ci.org/NadzwyczajnaGrupaRobocza/bomberman.svg?branch=master)](https://travis-ci.org/NadzwyczajnaGrupaRobocza/bomberman)[![Build status](https://ci.appveyor.com/api/projects/status/60vqqan3qtj4eu35/branch/master?svg=true)](https://ci.appveyor.com/project/Abergard/bomberman/branch/master)[![codecov](https://codecov.io/gh/NadzwyczajnaGrupaRobocza/bomberman/branch/master/graph/badge.svg)](https://codecov.io/gh/NadzwyczajnaGrupaRobocza/bomberman)
+[![Build Status](https://travis-ci.org/NadzwyczajnaGrupaRobocza/bomberman.svg?branch=master)](https://travis-ci.org/NadzwyczajnaGrupaRobocza/bomberman)[![Build status](https://ci.appveyor.com/api/projects/status/60vqqan3qtj4eu35/branch/master?svg=true)](https://ci.appveyor.com/project/Abergard/bomberman/branch/master)[![codecov](https://codecov.io/gh/NadzwyczajnaGrupaRobocza/bomberman/branch/master/graph/badge.svg)](https://codecov.io/gh/NadzwyczajnaGrupaRobocza/bomberman)[![CodeFactor](https://www.codefactor.io/repository/github/nadzwyczajnagruparobocza/bomberman/badge)](https://www.codefactor.io/repository/github/nadzwyczajnagruparobocza/bomberman)
 
 
 # How To Start
@@ -7,11 +7,11 @@
 ## 1 Requirements
 
 Beside of code You also need to install:
-- compiler that supports C++ 17
+- compiler that supports C++ 20
 - git
 - cmake
 - boost
-- sfml (we are using version 2.5)
+- sfml (minimum version 2.5.1)
 
 ## 2 Downloading and compiling code
 
