@@ -1,5 +1,5 @@
 #pragma once
 
-#include <chrono>
+#include "Time.hpp"
 
-using DeltaTime = std::chrono::duration<float>;
+using DeltaTime = Time;
