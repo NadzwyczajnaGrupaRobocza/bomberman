@@ -5,6 +5,7 @@
 #include <cassert>
 #include <range/v3/algorithm/for_each.hpp>
 
+#include "boost/range/algorithm_ext/erase.hpp"
 #include <boost/uuid/uuid_io.hpp>
 
 namespace graphics
@@ -45,17 +46,9 @@ void renderer_pool_sfml::release(const renderer_id& id)
 
 void renderer_pool_sfml::cleanup_unused()
 {
-    for (auto shape_it = shapes.begin(); shape_it != shapes.end();)
-    {
-        if (trash.count(shape_it->get_id()))
-        {
-            shape_it = shapes.erase(shape_it);
-        }
-        else
-        {
-            ++shape_it;
-        }
-    }
+    boost::remove_erase_if(
+        shapes, [this](auto& shape) { return trash.count(shape.get_id()); });
+
     trash.clear();
 }
 
