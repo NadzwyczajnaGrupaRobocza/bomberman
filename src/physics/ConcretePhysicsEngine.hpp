@@ -4,13 +4,12 @@
 
 namespace physics
 {
-
 class ConcretePhysicsEngine : public physics::PhysicsEngine
 {
 public:
     void set_position(physics::PhysicsId, const math::Position2f& p) override
     {
-      pos = p;
+        pos = p;
     }
 
     math::Position2f get_position(physics::PhysicsId) const override
@@ -32,10 +31,7 @@ public:
     {
     }
 
- private:
-
-  math::Position2f pos{0, 0};
-
+private:
+    math::Position2f pos{0, 0};
 };
-
 }
