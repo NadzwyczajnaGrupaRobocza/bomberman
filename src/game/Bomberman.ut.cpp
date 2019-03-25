@@ -11,7 +11,7 @@ using namespace std::literals::chrono_literals;
 class BombermanTest : public Test
 {
 public:
-    void SetUp() override
+    BombermanTest()
     {
         Fake(Dtor(human_player));
         Fake(Dtor(physics_engine));
@@ -137,4 +137,4 @@ TEST_P(BombermanSpawnTest, update_with_bombs)
     EXPECT_EQ(math::Position2f(20.3f, 120.3f), expected_next_physics_position);
 }
 
-INSTANTIATE_TEST_SUITE_P(, BombermanSpawnTest, Values(true, false));
+INSTANTIATE_TEST_CASE_P(, BombermanSpawnTest, Values(true, false),);
