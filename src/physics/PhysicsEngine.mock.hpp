@@ -17,4 +17,4 @@ public:
                  PhysicsId(const math::Size2f&, const math::Position2f&));
     MOCK_METHOD1(deregister, void(PhysicsId));
 };
-} // namespace physics
+}
