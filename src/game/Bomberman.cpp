@@ -23,8 +23,8 @@ void Bomberman::update(DeltaTime dt)
     }
 
     const auto new_direction = input->get_direction();
-    position.x += (speedup_factor * new_direction.x) * dt.count();
-    position.y += (speedup_factor * new_direction.y) * dt.count();
+    position.x += speedup_factor * new_direction.x * dt.count();
+    position.y += speedup_factor * new_direction.y * dt.count();
 
     physics_engine->set_position(physics_id, position);
 }

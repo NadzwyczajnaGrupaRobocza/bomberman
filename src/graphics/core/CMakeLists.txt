@@ -29,6 +29,10 @@ add_executable(graphics-ut
   sfml_rectangle_shape.ut.cpp
   window_sfml.ut.cpp)
 
+target_compile_options(graphics-ut PRIVATE
+  -Wno-used-but-marked-unused
+  -Wno-covered-switch-default)
+
 target_include_directories(graphics-ut SYSTEM BEFORE
   PRIVATE ${CMAKE_CURRENT_LIST_DIR}
           ${CMAKE_CURRENT_LIST_DIR}/../types
