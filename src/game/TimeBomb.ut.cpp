@@ -119,3 +119,18 @@ TEST_F(TimeBombTest, AfterOneNotification_shouldNotNotifyMore)
 
     ASSERT_TRUE(bomb.hasExploded());
 }
+
+TEST_F(TimeBombTest, VeryLittleDelta_shouldAccumulate)
+{
+    using namespace std::chrono_literals;
+
+    expect_notify_bomb_launcher();
+    expect_deregistration();
+    bomb.update(2.99999s);
+
+    bomb.update(0.00001s);
+    bomb.update(0.00001s);
+    bomb.update(0.00001s);
+
+    ASSERT_TRUE(bomb.hasExploded());
+}
