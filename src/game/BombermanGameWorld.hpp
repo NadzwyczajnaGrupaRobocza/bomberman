@@ -7,9 +7,9 @@
 
 #include "Bomb.hpp"
 #include "GameWorld.hpp"
+#include "SimpleMap.hpp"
 #include "graphics/renderer_pool.hpp"
 #include "physics/PhysicsEngine.hpp"
-#include "SimpleMap.hpp"
 
 class BombermanGameWorld : public GameWorld
 {
@@ -17,13 +17,13 @@ public:
     BombermanGameWorld(std::unique_ptr<physics::PhysicsEngine>,
                        std::unique_ptr<graphics::renderer_pool>);
 
-    virtual bool is_bomb_at_pos(const BombPosition&) const override;
+    bool is_bomb_at_pos(const BombPosition&) const override;
 
-    virtual void register_bomb(BombPosition, std::unique_ptr<Bomb>) override;
-    virtual void register_explosion(ExplosionPosition,
-                                    std::unique_ptr<Explosion>) override;
+    void register_bomb(BombPosition, std::unique_ptr<Bomb>) override;
+    void register_explosion(ExplosionPosition,
+                            std::unique_ptr<Explosion>) override;
 
-    virtual void update(DeltaTime) override;
+    void update(DeltaTime) override;
 
 private:
     void cleanBombs();
