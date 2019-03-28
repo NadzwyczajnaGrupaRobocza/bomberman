@@ -6,16 +6,12 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Window.hpp>
 #include <boost/uuid/uuid_io.hpp>
-#include <fakeit.hpp>
 #include <range/v3/algorithm/for_each.hpp>
 
 #include "context_renderer.mock.hpp"
 #include "sfml_rectangle_shape.hpp"
 
-using namespace ::fakeit;
-
-using ::testing::NiceMock;
-using ::testing::UnorderedElementsAreArray;
+using namespace ::testing;
 
 namespace graphics
 {
@@ -41,19 +37,6 @@ public:
     {
         return sfml_rectangle_shape{size, position, graphics::colors::white};
     }
-
-    // void expect_render_all(std::vector<sfml_rectangle_shape> expected_shapes)
-    // {
-    //     std::vector<sfml_rectangle_shape> shapes;
-    //     shapes.reserve(expected_shapes.size());
-    //     Fake(Method(renderer, clear));
-    //     When(Method(renderer, draw)).AlwaysDo([&](const auto& shape) {
-    //         shapes.push_back(shape);
-    //     });
-
-    //     renderer_pool->render_all();
-    //     ASSERT_THAT(shapes, UnorderedElementsAreArray(expected_shapes));
-    // }
 
     void expect_eq_position(const math::Position2f& expected,
                             const math::Position2f& position)
@@ -132,96 +115,134 @@ TEST_F(sfml_renderer_pool_test, setPositiontOfInvalidIdShouldThrow)
                  std::out_of_range);
 }
 
-TEST_F(sfml_renderer_pool_test, renderAll)
+TEST_F(sfml_renderer_pool_test, renderObject)
 {
     auto renderer_pool = create_renderer_pool();
-    // auto expected_shapes = {
-    //     create_dummy_shape(size2f{10, 10}), create_dummy_shape(size2f{710,
-    //     30}), create_dummy_shape(size2f{80, 8}),
-    //     create_dummy_shape(size2f{107, 180}), create_dummy_shape(size2f{60,
-    //     30})};
+    auto const shape_size{math::Size2f{10.f, 12.f}};
+    auto const shape_position{math::Position2f{100.f, 77.f}};
+    auto const shape_id = renderer_pool->acquire(shape_size, shape_position,
+                                                 graphics::colors::red);
 
-    // ranges::for_each(expected_shapes, [this](auto& shape) {
-    //     this->renderer_pool->acquire(shape.getSize(), dummy_position,
-    //                                  graphics::colors::white);
-    // });
+    EXPECT_CALL(*context, draw(_));
 
-    // expect_render_all({expected_shapes});
-
-    // Verify(Method(renderer, clear).Using(sf::Color::Black));
-    // Verify(Method(renderer, draw))
-    //     .Exactly(static_cast<int>(expected_shapes.size()));
+    renderer_pool->render_all();
 }
 
-// TEST_F(sfml_renderer_pool_test, releaseWithoutAcquire_doNothing)
-// {
-//     renderer_pool->release(id1);
-//     Fake(Method(renderer, clear));
-//     Fake(Method(renderer, draw));
-//     renderer_pool->render_all();
-//     Verify(Method(renderer, draw)).Exactly(0);
-// }
+TEST_F(sfml_renderer_pool_test, releasedObjectShouldNotBeDrawn)
+{
+    auto renderer_pool = create_renderer_pool();
+    auto const first_shape_id = renderer_pool->acquire(
+        dummy_size, dummy_position, graphics::colors::red);
 
-// TEST_F(sfml_renderer_pool_test, acquireTwoReleaseOne_shouldRenderOnlyOne)
-// {
-//     When(Method(id_generator, generate)).Return(id1).Return(id2);
+    auto const second_shape_size{math::Size2f{13.f, 11.f}};
+    auto const second_shape_position{math::Position2f{140.f, 177.f}};
+    auto const second_shape_id = renderer_pool->acquire(
+        second_shape_size, second_shape_position, graphics::colors::green);
 
-//     EXPECT_EQ(id1, renderer_pool->acquire(dummy_size, dummy_position,
-//                                           graphics::colors::white));
-//     EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position,
-//                                           graphics::colors::white));
+    renderer_pool->release(first_shape_id);
 
-//     renderer_pool->release(id2);
+    EXPECT_CALL(*context, draw(_)); // The second one
 
-//     auto expected_shapes = {create_dummy_shape()};
+    renderer_pool->render_all();
+}
 
-//     expect_render_all(expected_shapes);
+TEST_F(sfml_renderer_pool_test, renderAllObjectInOrderOfCreation)
+{
+    auto renderer_pool = create_renderer_pool();
+    auto const first_shape_size{math::Size2f{10.f, 12.f}};
+    auto const first_shape_position{math::Position2f{100.f, 77.f}};
+    auto const first_shape_id = renderer_pool->acquire(
+        first_shape_size, first_shape_position, graphics::colors::red);
 
-//     Verify(Method(renderer, clear).Using(sf::Color::Black));
-//     Verify(Method(renderer, draw)).Once();
-// }
+    auto const second_shape_size{math::Size2f{13.f, 11.f}};
+    auto const second_shape_position{math::Position2f{140.f, 177.f}};
+    auto const second_shape_id = renderer_pool->acquire(
+        second_shape_size, second_shape_position, graphics::colors::green);
 
-// TEST_F(sfml_renderer_pool_test, reacquirenShouldBeRendered)
-// {
-//     When(Method(id_generator, generate)).Return(id1).Return(id2).Return(id2);
+    InSequence keep_order;
 
-//     EXPECT_EQ(id1, renderer_pool->acquire(dummy_size, dummy_position,
-//                                           graphics::colors::white));
-//     EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position,
-//                                           graphics::colors::white));
+    EXPECT_CALL(*context, draw(_));
+    EXPECT_CALL(*context, draw(_));
 
-//     std::vector<sfml_rectangle_shape> expected_shapes{create_dummy_shape()};
+    renderer_pool->render_all();
+}
 
-//     renderer_pool->release(id2);
-//     expect_render_all(expected_shapes);
+TEST_F(sfml_renderer_pool_test, onlyClearTheScreenIfNoObjectToDraw)
+{
+    auto renderer_pool = create_renderer_pool();
 
-//     EXPECT_EQ(id2, renderer_pool->acquire(another_dummy_size, dummy_position,
-//                                           graphics::colors::white));
-//     expected_shapes.emplace_back(another_dummy_size, dummy_position,
-//                                  graphics::colors::white);
+    EXPECT_CALL(*context, clear(sf::Color::Black));
+    EXPECT_CALL(*context, draw(_)).Times(0);
 
-//     expect_render_all(expected_shapes);
-// }
+    renderer_pool->render_all();
+}
 
-// TEST_F(sfml_renderer_pool_test, acquiredObjectWithSelectedColor)
-// {
-//     When(Method(id_generator, generate)).Return(id1);
+TEST_F(sfml_renderer_pool_test, releaseNotExistingObjectShouldBeIngored)
+{
+    auto const not_existing_shape_id = renderer_id_generator::generate();
+    auto renderer_pool = create_renderer_pool();
 
-//     const color red{255, 0, 0};
-//     const auto id = renderer_pool->acquire(dummy_size, dummy_position, red);
+    EXPECT_CALL(*context, clear(sf::Color::Black));
+    EXPECT_CALL(*context, draw(_)).Times(0);
 
-//     EXPECT_EQ(red, renderer_pool->get_color(id));
-// }
+    renderer_pool->release(not_existing_shape_id);
+    renderer_pool->render_all();
+}
 
-// TEST_F(sfml_renderer_pool_test, beAbleToChangeColor)
-// {
-//     When(Method(id_generator, generate)).Return(id1);
+TEST_F(sfml_renderer_pool_test, clearScreenBeforeDraw)
+{
+    auto renderer_pool = create_renderer_pool();
+    auto const shape_id = renderer_pool->acquire(dummy_size, dummy_position,
+                                                 graphics::colors::yellow);
 
-//     const color red{255, 0, 0};
-//     const auto id = renderer_pool->acquire(dummy_size, dummy_position, red);
+    InSequence keep_order;
 
-//     const color blue{0, 0, 255};
-//     renderer_pool->set_color(id, blue);
-//     EXPECT_EQ(blue, renderer_pool->get_color(id));
-// }
+    EXPECT_CALL(*context, clear(sf::Color::Black));
+    EXPECT_CALL(*context, draw(_));
+
+    renderer_pool->render_all();
+}
+
+TEST_F(sfml_renderer_pool_test, createdObjectAfterReleaseOneShouldBeDrawn)
+{
+    auto renderer_pool = create_renderer_pool();
+    auto const first_shape_id = renderer_pool->acquire(
+        dummy_size, dummy_position, graphics::colors::red);
+
+    auto const second_shape_size{math::Size2f{13.f, 11.f}};
+    auto const second_shape_position{math::Position2f{140.f, 177.f}};
+    auto const second_shape_id = renderer_pool->acquire(
+        second_shape_size, second_shape_position, graphics::colors::green);
+
+    renderer_pool->release(first_shape_id);
+
+    auto const third_shape_size{math::Size2f{10.f, 12.f}};
+    auto const third_shape_position{math::Position2f{100.f, 77.f}};
+    auto const third_shape_id = renderer_pool->acquire(
+        third_shape_size, third_shape_position, graphics::colors::red);
+
+    EXPECT_CALL(*context, draw(_)); // The second one
+    EXPECT_CALL(*context, draw(_)); // The third one
+
+    renderer_pool->render_all();
+}
+
+TEST_F(sfml_renderer_pool_test, acquiredObjectWithSelectedColor)
+{
+    auto renderer_pool = create_renderer_pool();
+    auto const id = renderer_pool->acquire(dummy_size, dummy_position,
+                                           graphics::colors::red);
+
+    EXPECT_EQ(graphics::colors::red, renderer_pool->get_color(id));
+}
+
+TEST_F(sfml_renderer_pool_test, beAbleToChangeColor)
+{
+    auto renderer_pool = create_renderer_pool();
+    auto const id = renderer_pool->acquire(dummy_size, dummy_position,
+                                           graphics::colors::red);
+
+    renderer_pool->set_color(id, graphics::colors::blue);
+    EXPECT_EQ(graphics::colors::blue, renderer_pool->get_color(id));
+}
 }

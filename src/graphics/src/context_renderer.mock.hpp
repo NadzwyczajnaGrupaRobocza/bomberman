@@ -9,8 +9,8 @@ namespace graphics
 class mock_context_renderer : public context_renderer
 {
 public:
-    MOCK_METHOD(initialize, void());
-    MOCK_METHOD(clear, void(const sf::Color&));
-    MOCK_METHOD(draw, void(const sfml_rectangle_shape&));
+    MOCK_METHOD0(initialize, void());
+    MOCK_METHOD1(clear, void(const sf::Color&));
+    MOCK_METHOD1(draw, void(const sfml_rectangle_shape&));
 };
-} // namespace graphics
+}
