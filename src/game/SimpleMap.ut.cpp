@@ -32,8 +32,9 @@ public:
             .WillRepeatedly(testing::Invoke([&](const auto id) {
                 deregistered_physics_ids.push_back(id);
             }));
-        Method(wall_positions_generator, generate_boundary_walls)
-            .Using(edge_size) = generated_walls;
+        EXPECT_CALL(wall_positions_generator_mock,
+                    generate_boundary_walls(edge_size))
+            .WillOnce(testing::Return(generated_walls));
         EXPECT_CALL(render_engine_mock,
                     acquire(testing::_, testing::_, testing::_))
             .WillRepeatedly(testing::Invoke(
@@ -72,7 +73,6 @@ public:
                                                         {{88, 123}, {4, 67}}};
     testing::StrictMock<physics::MockPhysicsEngine> physics_engine_mock;
     testing::StrictMock<graphics::mock_renderer_pool> render_engine_mock;
-    Mock<WallPositionsGenerator> wall_positions_generator;
     testing::StrictMock<MockWallPositionsGenerator>
         wall_positions_generator_mock;
     std::vector<physics::PhysicsId> physicsIds;
@@ -90,7 +90,7 @@ public:
 class SimpleMapTest : public SimpleMapConstructorExpectations
 {
 public:
-    SimpleMap map{physics_engine_mock, wall_positions_generator.get(),
+    SimpleMap map{physics_engine_mock, wall_positions_generator_mock,
                   render_engine_mock};
 
     void verifyAllWallsArePlacedCorrectly()
@@ -112,7 +112,6 @@ public:
 
 TEST_F(SimpleMapTest, DuringConstruction_ShouldCreateWalls)
 {
-    Verify(Method(wall_positions_generator, generate_boundary_walls));
     verifyAllWallsArePlacedCorrectly();
 }
 
@@ -174,7 +173,7 @@ TEST_F(SimpleMapWithoutImplicitConstructionTest,
 {
     {
         SimpleMap map_destructor_test{physics_engine_mock,
-                                      wall_positions_generator.get(),
+                                      wall_positions_generator_mock,
                                       render_engine_mock};
     }
     ASSERT_THAT(deregistered_render_ids,
