@@ -33,10 +33,12 @@ public:
 private:
     void cleanup_unused();
 
+    const sfml_rectangle_shape& get_shape(const renderer_id&) const;
+    sfml_rectangle_shape& get_shape(const renderer_id&);
+
     std::unique_ptr<context_renderer> renderer;
-    std::unordered_map<renderer_id, sfml_rectangle_shape,
-                       boost::hash<renderer_id>>
-        shapes;
+    std::unique_ptr<renderer_id_generator> id_generator;
+    std::vector<sfml_rectangle_shape> shapes;
     std::unordered_set<renderer_id, boost::hash<renderer_id>> trash;
 };
 } // namespace graphics

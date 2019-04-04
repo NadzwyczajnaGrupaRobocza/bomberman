@@ -7,4 +7,3 @@ if(${ENABLE_COVERAGE})
   link_libraries(--coverage)
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")

@@ -23,12 +23,12 @@ void TimeBomb::update(DeltaTime dt)
 
 void TimeBomb::updateElapsedTime(DeltaTime dt)
 {
-    timeElapsed += std::chrono::duration_cast<std::chrono::milliseconds>(dt);
+    timeElapsed += dt;
 }
 
 bool TimeBomb::shouldExplode() const
 {
-    return timeElapsed >= bombTimer;
+    return !hasExploded() && timeElapsed >= bombTimer;
 }
 
 void TimeBomb::explode()

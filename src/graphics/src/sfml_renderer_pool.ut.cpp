@@ -32,10 +32,14 @@ public:
                 unique_context_renderer.release()));
     }
 
-    auto create_dummy_shape(const size2f& size = dummy_size,
-                            const position2f& position = dummy_position)
+    auto create_object(sfml_renderer_pool& shape_pool, const size2f& shape_size,
+                       const position2f& shape_position,
+                       const color& shape_color)
     {
-        return sfml_rectangle_shape{size, position, graphics::colors::white};
+        auto const shape_id =
+            shape_pool.acquire(shape_size, shape_position, shape_color);
+        return sfml_rectangle_shape{shape_id, shape_size, shape_position,
+                                    shape_color};
     }
 
     void expect_eq_position(const math::Position2f& expected,
@@ -102,28 +106,27 @@ TEST_F(sfml_renderer_pool_test, renderableObjectShouldBeMovable)
 
 TEST_F(sfml_renderer_pool_test, getPositionOfInvalidIdShouldThrow)
 {
+    auto const not_existing_shape_id = renderer_id_generator::generate();
     auto renderer_pool = create_renderer_pool();
-    auto const id = renderer_id_generator::generate();
-    EXPECT_THROW(renderer_pool->get_position(id), std::out_of_range);
+    ASSERT_DEATH(renderer_pool->get_position(not_existing_shape_id), "");
 }
 
 TEST_F(sfml_renderer_pool_test, setPositiontOfInvalidIdShouldThrow)
 {
+    auto const not_existing_shape_id = renderer_id_generator::generate();
     auto renderer_pool = create_renderer_pool();
-    auto const id = renderer_id_generator::generate();
-    EXPECT_THROW(renderer_pool->set_position(id, dummy_position),
-                 std::out_of_range);
+    ASSERT_DEATH(
+        renderer_pool->set_position(not_existing_shape_id, dummy_position), "");
 }
 
 TEST_F(sfml_renderer_pool_test, renderObject)
 {
     auto renderer_pool = create_renderer_pool();
-    auto const shape_size{math::Size2f{10.f, 12.f}};
-    auto const shape_position{math::Position2f{100.f, 77.f}};
-    auto const shape_id = renderer_pool->acquire(shape_size, shape_position,
-                                                 graphics::colors::red);
+    auto const shape{create_object(*renderer_pool, math::Size2f{10.f, 12.f},
+                                   math::Position2f{100.f, 77.f},
+                                   graphics::colors::red)};
 
-    EXPECT_CALL(*context, draw(_));
+    EXPECT_CALL(*context, draw(shape));
 
     renderer_pool->render_all();
 }
@@ -206,23 +209,22 @@ TEST_F(sfml_renderer_pool_test, clearScreenBeforeDraw)
 TEST_F(sfml_renderer_pool_test, createdObjectAfterReleaseOneShouldBeDrawn)
 {
     auto renderer_pool = create_renderer_pool();
-    auto const first_shape_id = renderer_pool->acquire(
-        dummy_size, dummy_position, graphics::colors::red);
 
-    auto const second_shape_size{math::Size2f{13.f, 11.f}};
-    auto const second_shape_position{math::Position2f{140.f, 177.f}};
-    auto const second_shape_id = renderer_pool->acquire(
-        second_shape_size, second_shape_position, graphics::colors::green);
+    auto const first_shape{create_object(
+        *renderer_pool, dummy_size, dummy_position, graphics::colors::red)};
 
-    renderer_pool->release(first_shape_id);
+    auto const second_shape{
+        create_object(*renderer_pool, math::Size2f{13.f, 11.f},
+                      math::Position2f{140.f, 177.f}, graphics::colors::red)};
 
-    auto const third_shape_size{math::Size2f{10.f, 12.f}};
-    auto const third_shape_position{math::Position2f{100.f, 77.f}};
-    auto const third_shape_id = renderer_pool->acquire(
-        third_shape_size, third_shape_position, graphics::colors::red);
+    renderer_pool->release(first_shape.get_id());
 
-    EXPECT_CALL(*context, draw(_)); // The second one
-    EXPECT_CALL(*context, draw(_)); // The third one
+    auto const third_shape{
+        create_object(*renderer_pool, math::Size2f{10.f, 12.f},
+                      math::Position2f{100.f, 77.f}, graphics::colors::red)};
+
+    EXPECT_CALL(*context, draw(second_shape));
+    EXPECT_CALL(*context, draw(third_shape));
 
     renderer_pool->render_all();
 }
