@@ -34,8 +34,9 @@ public:
             }));
         Method(wall_positions_generator, generate_boundary_walls)
             .Using(edge_size) = generated_walls;
-        When(Method(render_engine, acquire))
-            .AlwaysDo(
+        EXPECT_CALL(render_engine_mock,
+                    acquire(testing::_, testing::_, testing::_))
+            .WillRepeatedly(testing::Invoke(
                 [&](const auto& size, const auto& position, const auto& color) {
                     static uint8_t id = 0;
                     render_wall_positions.push_back(position);
@@ -44,13 +45,14 @@ public:
                     const auto rid = graphics::renderer_id{{id++}};
                     render_ids.push_back(rid);
                     return rid;
-                });
-        When(Method(render_engine, release)).AlwaysDo([&](const auto id) {
-            deregistered_render_ids.push_back(id);
-        });
+                }));
+        EXPECT_CALL(render_engine_mock, release(testing::_))
+            .WillRepeatedly(testing::Invoke(
+                [&](const auto id) { deregistered_render_ids.push_back(id); }));
         constexpr graphics::color map_grey{161, 161, 161};
-        Method(render_engine, acquire)
-            .Using(boundary_size, top_left_position, map_grey) = background_id;
+        EXPECT_CALL(render_engine_mock,
+                    acquire(boundary_size, top_left_position, map_grey))
+            .WillRepeatedly(testing::Return(background_id));
         render_ids.push_back(background_id);
     }
 
@@ -69,7 +71,6 @@ public:
                                                         {{2, 8}, {4, 4}},
                                                         {{88, 123}, {4, 67}}};
     testing::StrictMock<physics::MockPhysicsEngine> physics_engine_mock;
-    Mock<graphics::renderer_pool> render_engine;
     testing::StrictMock<graphics::mock_renderer_pool> render_engine_mock;
     Mock<WallPositionsGenerator> wall_positions_generator;
     testing::StrictMock<MockWallPositionsGenerator>
@@ -90,7 +91,7 @@ class SimpleMapTest : public SimpleMapConstructorExpectations
 {
 public:
     SimpleMap map{physics_engine_mock, wall_positions_generator.get(),
-                  render_engine.get()};
+                  render_engine_mock};
 
     void verifyAllWallsArePlacedCorrectly()
     {
@@ -113,7 +114,6 @@ TEST_F(SimpleMapTest, DuringConstruction_ShouldCreateWalls)
 {
     Verify(Method(wall_positions_generator, generate_boundary_walls));
     verifyAllWallsArePlacedCorrectly();
-    Verify(Method(render_engine, acquire));
 }
 
 TEST_F(SimpleMapTest,
@@ -175,7 +175,7 @@ TEST_F(SimpleMapWithoutImplicitConstructionTest,
     {
         SimpleMap map_destructor_test{physics_engine_mock,
                                       wall_positions_generator.get(),
-                                      render_engine.get()};
+                                      render_engine_mock};
     }
     ASSERT_THAT(deregistered_render_ids,
                 ::testing::UnorderedElementsAreArray(render_ids));
