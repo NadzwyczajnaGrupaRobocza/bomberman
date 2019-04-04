@@ -15,4 +15,4 @@ public:
     MOCK_METHOD0(close, void());
     MOCK_METHOD2(create, void(sf::VideoMode, const sf::String&));
 };
-} // namespace graphics
+}

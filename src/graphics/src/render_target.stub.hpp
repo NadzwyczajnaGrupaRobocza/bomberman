@@ -78,4 +78,4 @@ public:
 
     sfml_rectangle_shape expectedShape{shape_id, size, pos, default_color};
 };
-} // namespace graphics
+}

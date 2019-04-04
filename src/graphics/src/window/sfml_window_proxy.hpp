@@ -19,4 +19,4 @@ public:
 private:
     sf::Window m_window;
 };
-} // namespace graphics
+}

@@ -22,4 +22,4 @@ public:
 private:
     std::unique_ptr<window_proxy> m_window;
 };
-} // namespace graphics
+}

@@ -41,4 +41,4 @@ private:
     std::vector<sfml_rectangle_shape> shapes;
     std::unordered_set<renderer_id, boost::hash<renderer_id>> trash;
 };
-} // namespace graphics
+}

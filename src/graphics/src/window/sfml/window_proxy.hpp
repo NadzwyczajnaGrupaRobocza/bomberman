@@ -17,4 +17,4 @@ public:
     virtual void close() = 0;
     virtual void create(sf::VideoMode, const sf::String& title) = 0;
 };
-} // namespace graphics
+}

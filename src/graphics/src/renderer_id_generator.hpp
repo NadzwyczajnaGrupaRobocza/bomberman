@@ -9,4 +9,4 @@ class renderer_id_generator
 public:
     static renderer_id generate();
 };
-} // namespace graphics
+}
