@@ -32,25 +32,29 @@ public:
         EXPECT_CALL(wall_positions_generator,
                     generate_boundary_walls(edge_size))
             .WillOnce(Return(generated_walls));
-        EXPECT_CALL(render_engine, acquire(_, _, _))
-            .WillRepeatedly(Invoke(
-                [&](const auto& size, const auto& position, const auto& color) {
-                    static uint8_t id = 80;
-                    render_wall_positions.push_back(position);
-                    render_wall_sizes.push_back(size);
-                    wall_colors.push_back(color);
-                    const auto rid = graphics::renderer_id{{id++}};
-                    render_ids.push_back(rid);
-                    return rid;
-                }));
+        {
+            InSequence seq;
+            constexpr graphics::color map_grey{161, 161, 161};
+            EXPECT_CALL(render_engine,
+                        acquire(boundary_size, top_left_position, map_grey))
+                .WillOnce(Return(background_id));
+            render_ids.push_back(background_id);
+            EXPECT_CALL(render_engine, acquire(_, _, _))
+                .WillRepeatedly(
+                    Invoke([&](const auto& size, const auto& position,
+                               const auto& color) {
+                        static uint8_t id = 80;
+                        render_wall_positions.push_back(position);
+                        render_wall_sizes.push_back(size);
+                        wall_colors.push_back(color);
+                        const auto rid = graphics::renderer_id{{id++}};
+                        render_ids.push_back(rid);
+                        return rid;
+                    }));
+        }
         EXPECT_CALL(render_engine, release(_))
             .WillRepeatedly(Invoke(
                 [&](const auto id) { deregistered_render_ids.push_back(id); }));
-        constexpr graphics::color map_grey{161, 161, 161};
-        EXPECT_CALL(render_engine,
-                    acquire(boundary_size, top_left_position, map_grey))
-            .WillRepeatedly(Return(background_id));
-        render_ids.push_back(background_id);
     }
 
     const int edge_size{10};
