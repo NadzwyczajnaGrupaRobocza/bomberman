@@ -17,18 +17,21 @@ class SimpleMapConstructorExpectations : public ::testing::Test
 public:
     SimpleMapConstructorExpectations()
     {
-        When(Method(physics_engine, register_colider))
-            .AlwaysDo([&](const auto& size, const auto& position) {
-                static uint8_t id = 0;
-                physics_wall_positions.push_back(position);
-                physics_wall_sizes.push_back(size);
-                const auto pid = physics::PhysicsId{id++};
-                physicsIds.push_back(pid);
-                return pid;
-            });
-        When(Method(physics_engine, deregister)).AlwaysDo([&](const auto id) {
-            deregistered_physics_ids.push_back(id);
-        });
+        EXPECT_CALL(physics_engine_mock,
+                    register_colider(testing::_, testing::_))
+            .WillRepeatedly(
+                testing::Invoke([&](const auto& size, const auto& position) {
+                    static uint8_t id = 0;
+                    physics_wall_positions.push_back(position);
+                    physics_wall_sizes.push_back(size);
+                    const auto pid = physics::PhysicsId{id++};
+                    physicsIds.push_back(pid);
+                    return pid;
+                }));
+        EXPECT_CALL(physics_engine_mock, deregister(testing::_))
+            .WillRepeatedly(testing::Invoke([&](const auto id) {
+                deregistered_physics_ids.push_back(id);
+            }));
         Method(wall_positions_generator, generate_boundary_walls)
             .Using(edge_size) = generated_walls;
         When(Method(render_engine, acquire))
@@ -65,7 +68,6 @@ public:
                                                         {{2, 1}, {1, 2}},
                                                         {{2, 8}, {4, 4}},
                                                         {{88, 123}, {4, 67}}};
-    Mock<physics::PhysicsEngine> physics_engine;
     testing::StrictMock<physics::MockPhysicsEngine> physics_engine_mock;
     Mock<graphics::renderer_pool> render_engine;
     testing::StrictMock<graphics::mock_renderer_pool> render_engine_mock;
@@ -87,7 +89,7 @@ public:
 class SimpleMapTest : public SimpleMapConstructorExpectations
 {
 public:
-    SimpleMap map{physics_engine.get(), wall_positions_generator.get(),
+    SimpleMap map{physics_engine_mock, wall_positions_generator.get(),
                   render_engine.get()};
 
     void verifyAllWallsArePlacedCorrectly()
@@ -109,8 +111,6 @@ public:
 
 TEST_F(SimpleMapTest, DuringConstruction_ShouldCreateWalls)
 {
-    Verify(Method(physics_engine, register_colider))
-        .Exactly(static_cast<int>(generated_walls.size()));
     Verify(Method(wall_positions_generator, generate_boundary_walls));
     verifyAllWallsArePlacedCorrectly();
     Verify(Method(render_engine, acquire));
@@ -173,7 +173,7 @@ TEST_F(SimpleMapWithoutImplicitConstructionTest,
        DuringDestruction_ShouldUnredisterWalls)
 {
     {
-        SimpleMap map_destructor_test{physics_engine.get(),
+        SimpleMap map_destructor_test{physics_engine_mock,
                                       wall_positions_generator.get(),
                                       render_engine.get()};
     }
