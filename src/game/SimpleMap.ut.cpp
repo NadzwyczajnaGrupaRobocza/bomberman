@@ -3,7 +3,10 @@
 #include "glm/glm.hpp"
 #include <vector>
 
+#include "WallPositionsGenerator.mock.hpp"
 #include "fakeit.hpp"
+#include "graphics/renderer_pool.mock.hpp"
+#include "physics/PhysicsEngine.mock.hpp"
 
 #include "SimpleMap.hpp"
 
@@ -63,8 +66,12 @@ public:
                                                         {{2, 8}, {4, 4}},
                                                         {{88, 123}, {4, 67}}};
     Mock<physics::PhysicsEngine> physics_engine;
+    testing::StrictMock<physics::MockPhysicsEngine> physics_engine_mock;
     Mock<graphics::renderer_pool> render_engine;
+    testing::StrictMock<graphics::mock_renderer_pool> render_engine_mock;
     Mock<WallPositionsGenerator> wall_positions_generator;
+    testing::StrictMock<MockWallPositionsGenerator>
+        wall_positions_generator_mock;
     std::vector<physics::PhysicsId> physicsIds;
     std::vector<physics::PhysicsId> deregistered_physics_ids;
     std::vector<math::Position2f> physics_wall_positions;
