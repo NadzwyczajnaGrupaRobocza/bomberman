@@ -25,7 +25,7 @@ private:
     physics::PhysicsEngine& physics_engine;
     std::vector<physics::PhysicsEngine> walls;
     graphics::renderer_pool& graphics_engine;
-    const int map_size{10};
+    const int map_size{100};
     std::vector<physics::PhysicsId> physics_ids;
     std::vector<graphics::renderer_id> render_ids;
 
