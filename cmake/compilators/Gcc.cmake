@@ -12,4 +12,4 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
 -Wnon-virtual-dtor \
 -pedantic \
 -g \
--Wno-error")
+-Werror")
