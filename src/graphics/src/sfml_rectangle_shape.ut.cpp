@@ -96,7 +96,6 @@ TEST(sfml_rectangle_shape_test, colorInequality)
 
 TEST(sfml_rectangle_shape_test, idInequality)
 {
-
     const sfml_rectangle_shape rect_1(shape_id, size, pos, default_color);
     const sfml_rectangle_shape rect_2(renderer_id_generator{}.generate(), size,
                                       pos, default_color);
