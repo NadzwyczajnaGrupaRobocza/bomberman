@@ -1,2 +1,2 @@
-add_subdirectory(core)
+add_subdirectory(src)
 add_subdirectory(examples)

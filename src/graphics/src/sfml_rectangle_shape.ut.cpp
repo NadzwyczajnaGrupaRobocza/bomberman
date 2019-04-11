@@ -5,6 +5,7 @@
 
 namespace graphics
 {
+
 namespace
 {
 const position2f pos{0.7f, 73.0f};
@@ -89,6 +90,15 @@ TEST(sfml_rectangle_shape_test, colorInequality)
     const sfml_rectangle_shape rect_1(shape_id, size, pos, color{0, 0, 0});
     const sfml_rectangle_shape rect_2(shape_id, size, pos,
                                       color{255, 255, 255});
+
+    EXPECT_NE(rect_1, rect_2);
+}
+
+TEST(sfml_rectangle_shape_test, idInequality)
+{
+    const sfml_rectangle_shape rect_1(shape_id, size, pos, default_color);
+    const sfml_rectangle_shape rect_2(renderer_id_generator{}.generate(), size,
+                                      pos, default_color);
 
     EXPECT_NE(rect_1, rect_2);
 }

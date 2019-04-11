@@ -5,21 +5,21 @@
 #include <memory>
 
 #include "window_size.hpp"
-#include "sfml_window.hpp"
+#include "sfml/window_proxy.hpp"
 
 namespace graphics
 {
-class window_sfml : public window
+class sfml_window : public window
 {
 public:
-    window_sfml(const window_size&, const std::string&,
-                std::unique_ptr<sfml_window>);
+    sfml_window(const window_size&, const std::string&,
+                std::unique_ptr<window_proxy>);
 
     bool is_open() const override;
     void display() override;
     void update() override;
 
 private:
-    std::unique_ptr<sfml_window> window;
+    std::unique_ptr<window_proxy> m_window;
 };
 }

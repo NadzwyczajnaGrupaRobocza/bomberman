@@ -7,7 +7,6 @@ namespace graphics
 class renderer_id_generator
 {
 public:
-    virtual ~renderer_id_generator() noexcept = default;
-    virtual renderer_id generate() const;
+    static renderer_id generate();
 };
 }

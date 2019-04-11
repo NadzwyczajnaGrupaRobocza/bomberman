@@ -3,11 +3,11 @@ find_package(SFML ${SFML_MINIMAL_VERSION} COMPONENTS system graphics window REQU
 ########################### SRC ###########################
 add_library(graphics
   factory.cpp
-  renderer_pool_sfml.cpp
+  sfml_renderer_pool.cpp
   renderer_id_generator.cpp
   sfml_rectangle_shape.cpp
-  window_sfml.cpp
-  sfml_window_facade.cpp)
+  window/sfml_window.cpp
+  window/sfml_window_proxy.cpp)
 
 target_include_directories(graphics
   PUBLIC ${CMAKE_CURRENT_LIST_DIR}/../includes
@@ -24,10 +24,10 @@ target_link_libraries(graphics
 
 ########################### UT ###########################
 add_executable(graphics-ut
-  renderer_pool_sfml.ut.cpp
+  sfml_renderer_pool.ut.cpp
   sfml_render_target.ut.cpp
   sfml_rectangle_shape.ut.cpp
-  window_sfml.ut.cpp)
+  window/sfml_window.ut.cpp)
 
 target_compile_options(graphics-ut PRIVATE
   -Wno-used-but-marked-unused
