@@ -13,7 +13,7 @@ Bomberman::Bomberman(physics::PhysicsId phys_id, graphics::renderer_id rend_id,
 
 void Bomberman::update(DeltaTime dt)
 {
-    constexpr float speedup_factor{100};
+    constexpr float speedup_factor{10};
     auto position = physics_engine->get_position(physics_id);
     renderer_pool->set_position(renderer_id, position);
 
