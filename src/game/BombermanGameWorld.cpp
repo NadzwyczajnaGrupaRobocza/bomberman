@@ -3,6 +3,7 @@
 
 #include "Bomberman.hpp"
 #include "BombermanGameWorld.hpp"
+#include "Bomberman.hpp"
 #include "BoundaryWallsPositionsGenerator.hpp"
 #include "DefaultBombFactory.hpp"
 #include "HumanPlayerSfml.hpp"
