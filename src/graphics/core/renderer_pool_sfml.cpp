@@ -28,6 +28,7 @@ renderer_pool_sfml::renderer_pool_sfml(std::unique_ptr<context_renderer> r,
     : renderer{std::move(r)}, id_generator{std::move(g)}
 {
     renderer->initialize();
+    renderer->set_view();
 }
 
 renderer_id renderer_pool_sfml::acquire(const math::Size2f& size,
@@ -56,6 +57,8 @@ void renderer_pool_sfml::render_all()
 {
     cleanup_unused();
     renderer->clear(sf::Color::Black);
+
+    renderer->set_view();
 
     ranges::for_each(shapes, [&](const auto& shape) { renderer->draw(shape); });
 }
