@@ -89,7 +89,8 @@ public:
 class SimpleMapTest : public SimpleMapConstructorExpectations
 {
 public:
-    SimpleMap map{physics_engine, wall_positions_generator, render_engine};
+    SimpleMap map{physics_engine, wall_positions_generator, render_engine,
+                  edge_size};
 
     void verifyAllWallsArePlacedCorrectly()
     {
@@ -170,7 +171,7 @@ TEST_F(SimpleMapWithoutImplicitConstructionTest,
 {
     {
         SimpleMap map_destructor_test{physics_engine, wall_positions_generator,
-                                      render_engine};
+                                      render_engine, edge_size};
     }
     ASSERT_THAT(deregistered_render_ids, UnorderedElementsAreArray(render_ids));
     ASSERT_THAT(deregistered_physics_ids,

@@ -3,9 +3,9 @@
 #include "boost/range/algorithm.hpp"
 
 SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
-                     const WallPositionsGenerator& generated_wallss_generator,
-                     graphics::renderer_pool& rEngine)
-    : physics_engine(pEngine), graphics_engine{rEngine}
+                     const WallPositionsGenerator& generated_walls_generator,
+                     graphics::renderer_pool& rEngine, int map_s)
+    : physics_engine(pEngine), graphics_engine{rEngine}, map_size{map_s}
 {
     constexpr graphics::color map_grey{161, 161, 161};
     render_ids.push_back(graphics_engine.acquire(
@@ -15,7 +15,7 @@ SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
     constexpr graphics::color wall_bronze{205, 127, 50};
 
     for (const auto& generated_walls :
-         generated_wallss_generator.generate_boundary_walls(map_size))
+         generated_walls_generator.generate_boundary_walls(map_size))
     {
         physics_ids.push_back(physics_engine.register_colider(
             {static_cast<float>(generated_walls.second.first),

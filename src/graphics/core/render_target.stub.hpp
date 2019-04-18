@@ -2,8 +2,8 @@
 
 #include <gtest/gtest.h>
 
-#include "sfml_rectangle_shape.hpp"
 #include "renderer_id_generator.hpp"
+#include "sfml_rectangle_shape.hpp"
 
 namespace graphics
 {
@@ -30,6 +30,10 @@ public:
         if (shouldDraw)
         {
             EXPECT_EQ(expectedShape, drawnShape);
+            std::cout << expectedShape.getPosition() << "\n";
+            std::cout << drawnShape.getPosition() << "\n";
+            std::cout << expectedShape.getSize() << "\n";
+            std::cout << drawnShape.getSize() << "\n";
         }
     }
     void initialize()

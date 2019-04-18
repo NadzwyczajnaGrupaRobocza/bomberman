@@ -19,7 +19,7 @@ namespace graphics
 class render_target_base_functions_test : public Test
 {
 public:
-    render_target<render_target_stub> renderTarget{window_size{200, 300}};
+    render_target<render_target_stub> renderTarget{window_size{100, 100}};
 };
 
 TEST_F(render_target_base_functions_test,
