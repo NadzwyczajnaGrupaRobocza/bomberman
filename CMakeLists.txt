@@ -5,6 +5,14 @@ find_package(Boost 1.6 REQUIRED)
 
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+option(TREAT_WARNING_AS_ERROR "" ON)
+
+if(TREAT_WARNING_AS_ERROR)
+  message(STATUS "Treat warning as error ON")
+else()
+  message(STATUS "Treat warning as error OFF")
+endif()
+
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
