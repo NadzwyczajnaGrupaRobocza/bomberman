@@ -58,7 +58,8 @@ build_script:
           -DCMAKE_C_COMPILER=%COMPILER%
           -DBUILD_SHARED_LIBS:BOOL=OFF
 
-  - cmake --build build
+  - cd build
+  - cmake --build .
 
 test_script:
   - ps: |
