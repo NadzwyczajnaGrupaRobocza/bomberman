@@ -36,7 +36,7 @@ install:
       7z x ninja.zip -o%DEPS_DIR%\ninja > nul &&
       7z x sfml.zip -o%DEPS_DIR%\sfml > nul)
 
-  - set BOOST_ROOT=C:\Libraries\boost_1_65_1
+  - set BOOST_ROOT=C:\Libraries\boost_1_69_0
 
   - set SFML_DIR=%DEPS_DIR%\sfml\SFML-2.5.1
   - set SFML_LIB=%SFML_DIR%\lib
