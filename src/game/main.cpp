@@ -1,8 +1,10 @@
 #include "BombermanGameWorld.hpp"
-#include "SFML/Window/Event.hpp"
-#include "SFML/Window/Window.hpp"
+
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/Window.hpp>
 #include <memory>
 #include <chrono>
+
 #include "math/Size2u.hpp"
 #include "graphics/factory.hpp"
 #include "physics/PhysicsEngine.hpp"

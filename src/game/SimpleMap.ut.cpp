@@ -1,9 +1,8 @@
-#include "gmock/gmock.h"
+#include <gmock/gmock.h>
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 #include <vector>
-
-#include "fakeit.hpp"
+#include <fakeit.hpp>
 
 #include "SimpleMap.hpp"
 
