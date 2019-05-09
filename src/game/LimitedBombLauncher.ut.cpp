@@ -1,8 +1,7 @@
-#include "gmock/gmock.h"
+#include <gmock/gmock.h>
 
 #include <iostream>
-
-#include "fakeit.hpp"
+#include <fakeit.hpp>
 
 #include "Bomb.hpp"
 #include "BombFactory.hpp"

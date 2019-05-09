@@ -1,11 +1,11 @@
 #include <tuple>
 #include <vector>
+#include <glm/glm.hpp>
 
 #include "ExplosionRange.hpp"
 #include "Map.hpp"
 #include "WallPositionsGenerator.hpp"
 
-#include "glm/glm.hpp"
 #include "graphics/renderer_id.hpp"
 #include "graphics/renderer_pool.hpp"
 #include "physics/PhysicsEngine.hpp"

@@ -1,6 +1,6 @@
 #include "SimpleMap.hpp"
 
-#include "boost/range/algorithm.hpp"
+#include <boost/range/algorithm.hpp>
 
 SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
                      const WallPositionsGenerator& generated_wallss_generator,

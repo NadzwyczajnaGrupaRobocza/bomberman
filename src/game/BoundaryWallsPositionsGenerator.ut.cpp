@@ -1,7 +1,7 @@
-#include "gtest/gtest.h"
-#include "gmock/gmock.h"
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
-#include "fakeit.hpp"
+#include <fakeit.hpp>
 
 #include "BoundaryWallsPositionsGenerator.hpp"
 
