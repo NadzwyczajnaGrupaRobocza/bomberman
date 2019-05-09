@@ -1,27 +1,25 @@
-os: Visual Studio 2017
-
 build:
   verbosity: detailed
 
 skip_commits:
   message: /\[ci skip\]/
-  # files:
-  #   - README.md
-  #   - .gitignore
-  #   - .clang-tidy
-  #   - .clang-format
-  #   - docs/
-
-environment:
-  matrix:
-  - Build: bomberman
-    Configuration: Debug
-
-cache:
-  - c:\projects\deps -> .appveyor.yml
 
 platform:
 - x64
+
+image:
+ - Visual Studio 2017
+
+configuration:
+ - Debug
+
+environment:
+  matrix:
+  - COMPILER: clang-cl
+  - COMPILER: cl
+
+cache:
+  - c:\projects\deps -> .appveyor.yml
 
 install:
   - set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-win.zip"
@@ -37,15 +35,12 @@ install:
       7z x sfml.zip -o%DEPS_DIR%\sfml > nul)
 
   - set BOOST_ROOT=C:\Libraries\boost_1_65_1
-
-  - set SFML_DIR=%DEPS_DIR%\sfml\SFML-2.5.1
-  - set SFML_LIB=%SFML_DIR%\lib
+  - set SFML_ROOT=%DEPS_DIR%\sfml\SFML-2.5.1
   - set SFML_BIN=%SFML_DIR%\bin
   - set NINJA_BIN=%DEPS_DIR%\ninja
 
   - set PATH=%NINJA_BIN%;%PATH%
   - set PATH=%SFML_BIN%;%PATH%
-  - set LIB=%LIB%;%SFML_LIB%
 
   - ninja --version
   - clang-cl -v
@@ -57,13 +52,13 @@ before_build:
   - git submodule update
 
 build_script:
-  - mkdir build
-  - cd build
-  - cmake .. -GNinja -DCMAKE_BUILD_TYPE=%Configuration%
-                     -DCMAKE_CXX_COMPILER=clang-cl
-                     -DCMAKE_C_COMPILER=clang-cl
-                     -DBUILD_SHARED_LIBS:BOOL=OFF
-  - cmake --build .
+  - cmake -Bbuild -GNinja
+          -DCMAKE_BUILD_TYPE=%configuration%
+          -DCMAKE_CXX_COMPILER=%COMPILER%
+          -DCMAKE_C_COMPILER=%COMPILER%
+          -DBUILD_SHARED_LIBS:BOOL=OFF
+
+  - cmake --build build
 
 test_script:
   - ps: |
