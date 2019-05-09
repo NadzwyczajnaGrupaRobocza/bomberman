@@ -29,9 +29,14 @@ add_executable(graphics-ut
   sfml_rectangle_shape.ut.cpp
   window/sfml_window.ut.cpp)
 
-target_compile_options(graphics-ut PRIVATE
-  -Wno-used-but-marked-unused
-  -Wno-covered-switch-default)
+if(NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+  target_compile_options(graphics-ut PRIVATE
+    -Wno-used-but-marked-unused
+    -Wno-covered-switch-default)
+else()
+  target_compile_options(graphics-ut PRIVATE
+    /wd4100)
+endif()
 
 target_include_directories(graphics-ut SYSTEM BEFORE
   PRIVATE ${CMAKE_CURRENT_LIST_DIR}
