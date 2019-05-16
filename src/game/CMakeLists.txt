@@ -35,6 +35,10 @@ target_include_directories(game-ut SYSTEM PRIVATE
   ${UT_INCLUDES}
   )
 
+target_compile_options(game-ut PRIVATE
+  -Wno-used-but-marked-unused)
+
+
 target_include_directories(game PRIVATE
   ${INTERNAL_LIBS_INCLUDE_PATH}
   ${SFML_INCLUDE_DIR}
