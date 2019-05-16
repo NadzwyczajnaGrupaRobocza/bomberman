@@ -1,4 +1,5 @@
 #include "BoundaryWallsPositionsGenerator.hpp"
+#include "FieldSize.hpp"
 
 BoundaryWallsPositionsGenerator::Walls
 BoundaryWallsPositionsGenerator::generate_boundary_walls(
@@ -37,9 +38,8 @@ BoundaryWallsPositionsGenerator::Walls
 BoundaryWallsPositionsGenerator::generate_walls_for_size_one()
 {
     constexpr auto start_position = 0;
-    constexpr auto wall_size = 1;
-    return {
-        {position(start_position, start_position), size(wall_size, wall_size)}};
+    return {{position(start_position, start_position),
+             size(field_size.width, field_size.height)}};
 }
 
 BoundaryWallsPositionsGenerator::BoundaryWallsPositionsGenerator::Walls
