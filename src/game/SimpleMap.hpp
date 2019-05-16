@@ -15,7 +15,7 @@ class SimpleMap : public Map
 public:
     SimpleMap(physics::PhysicsEngine& pEngine,
               const WallPositionsGenerator& wall_positions_generator,
-              graphics::renderer_pool& rEngine);
+              graphics::renderer_pool& rEngine, int map_s);
     ~SimpleMap() override;
 
     ExplosionRange get_explosion_range(std::pair<int, int> start_point,
@@ -25,7 +25,7 @@ private:
     physics::PhysicsEngine& physics_engine;
     std::vector<physics::PhysicsEngine> walls;
     graphics::renderer_pool& graphics_engine;
-    const int map_size{10};
+    const int map_size;
     std::vector<physics::PhysicsId> physics_ids;
     std::vector<graphics::renderer_id> render_ids;
 
