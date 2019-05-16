@@ -32,6 +32,7 @@ private:
     std::map<BombPosition, std::unique_ptr<Bomb>> bombs;
     std::map<ExplosionPosition, std::unique_ptr<Explosion>> explosions;
 
+    int map_size = 100;
     std::unique_ptr<WallPositionsGenerator> gen;
     SimpleMap simpleMap;
     std::shared_ptr<physics::PhysicsEngine> ppool;
