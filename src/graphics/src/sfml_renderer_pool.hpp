@@ -13,11 +13,10 @@
 
 namespace graphics
 {
-class renderer_pool_sfml : public renderer_pool
+class sfml_renderer_pool : public renderer_pool
 {
 public:
-    renderer_pool_sfml(std::unique_ptr<context_renderer>,
-                       std::unique_ptr<renderer_id_generator>);
+    sfml_renderer_pool(std::unique_ptr<context_renderer>);
 
     renderer_id acquire(const math::Size2f&, const math::Position2f&,
                         const color&) override;
