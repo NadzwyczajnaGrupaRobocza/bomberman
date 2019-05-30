@@ -49,14 +49,16 @@ BoundaryWallsPositionsGenerator::generate_empty_for_size_bigger_than_one(
     constexpr auto start_position = 0;
     constexpr auto minimum_size = 1;
     const auto just_before_end_position = boundary_size - 1;
-    return {{position(start_position, start_position),
-             size(minimum_size, boundary_size)},
-            {position(start_position, start_position),
-             size(boundary_size, minimum_size)},
-            {position(just_before_end_position, start_position),
-             size(minimum_size, boundary_size)},
-            {position(start_position, just_before_end_position),
-             size(boundary_size, minimum_size)}};
+    return {{scale_to_field_size(position(start_position, start_position)),
+             scale_to_field_size(size(minimum_size, boundary_size))},
+            {scale_to_field_size(position(start_position, start_position)),
+             scale_to_field_size(size(boundary_size, minimum_size))},
+            {scale_to_field_size(
+                 position(just_before_end_position, start_position)),
+             scale_to_field_size(size(minimum_size, boundary_size))},
+            {scale_to_field_size(
+                 position(start_position, just_before_end_position)),
+             scale_to_field_size(size(boundary_size, minimum_size))}};
 }
 
 BoundaryWallsPositionsGenerator::PositionInSpace
