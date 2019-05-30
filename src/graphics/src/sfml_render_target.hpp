@@ -5,6 +5,8 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/View.hpp>
 
+#include "boost/numeric/conversion/cast.hpp"
+
 #include "context_renderer.hpp"
 #include "window_size.hpp"
 
@@ -12,7 +14,7 @@ namespace graphics
 {
 namespace
 {
-//https://github.com/SFML/SFML/wiki/Source:-Letterbox-effect-using-a-view
+// https://github.com/SFML/SFML/wiki/Source:-Letterbox-effect-using-a-view
 sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight)
 {
 
@@ -20,8 +22,9 @@ sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight)
     // and sets the view's viewport accordingly in order to archieve a letterbox
     // effect. A new view (with a new viewport set) is returned.
 
-    float windowRatio = windowWidth / (float)windowHeight;
-    float viewRatio = view.getSize().x / (float)view.getSize().y;
+    float windowRatio = boost::numeric_cast<float>(windowWidth) /
+                        boost::numeric_cast<float>(windowHeight);
+    float viewRatio = view.getSize().x / view.getSize().y;
     float sizeX = 1;
     float sizeY = 1;
     float posX = 0;
@@ -79,9 +82,13 @@ public:
         float map_width{100};
         float map_height{100};
 
-        view.setSize(map_width, map_height); // <- it should be set once, at the startup
-        view.setCenter(view.getSize().x / 2, view.getSize().y / 2); // <- only at startup
-        view = getLetterboxView( view, size.width, size.height); // <- at startup and every time the window size is change
+        view.setSize(map_width,
+                     map_height); // <- it should be set once, at the startup
+        view.setCenter(view.getSize().x / 2,
+                       view.getSize().y / 2); // <- only at startup
+        view = getLetterboxView(view, size.width,
+                                size.height); // <- at startup and every time
+                                              // the window size is change
         BaseRenderTarget::setView(view);
     }
 
