@@ -13,7 +13,8 @@ BombermanGameWorld::BombermanGameWorld(
     std::unique_ptr<physics::PhysicsEngine> a,
     std::unique_ptr<graphics::renderer_pool> b)
     : gen(std::make_unique<BoundaryWallsPositionsGenerator>()),
-      simpleMap{*a, *gen, *b, 100}, ppool{std::move(a)}, rpool{std::move(b)}
+      simpleMap{*a, *gen, *b, map_size}, ppool{std::move(a)}, rpool{
+                                                                  std::move(b)}
 
 {
     std::shared_ptr<GameWorld> world(this, boost::null_deleter());
