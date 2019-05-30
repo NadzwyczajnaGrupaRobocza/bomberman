@@ -23,8 +23,10 @@ BombermanGameWorld::BombermanGameWorld(
     auto bl = std::make_unique<LimitedBombLauncher>(world, std::move(bf), 10);
 
     physics::PhysicsId pid{};
-    auto rid = rpool->acquire(math::Size2f{30, 40}, math::Position2f{70, 70},
-                              graphics::colors::cyan);
+    auto rid = rpool->acquire(math::Size2f{60, 60}, math::Position2f{70, 70},
+                              graphics::colors::white);
+
+    rpool->set_texture(rid, "data/bomberman.png");
 
     entity.emplace_back(std::make_unique<Bomberman>(
         pid, rid, std::move(hp), ppool, rpool, std::move(bl)));

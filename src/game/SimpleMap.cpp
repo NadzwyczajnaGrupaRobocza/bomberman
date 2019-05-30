@@ -12,7 +12,7 @@ SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
         {static_cast<float>(map_size), static_cast<float>(map_size)},
         {0.0f, 0.0f}, map_grey));
 
-    constexpr graphics::color wall_bronze{205, 127, 50};
+    // constexpr graphics::color wall_bronze{205, 127, 50};
 
     for (const auto& generated_walls :
          generated_walls_generator.generate_boundary_walls(map_size))
@@ -27,7 +27,9 @@ SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
              static_cast<float>(generated_walls.second.second)},
             {static_cast<float>(generated_walls.first.first),
              static_cast<float>(generated_walls.first.second)},
-            wall_bronze));
+            graphics::colors::white));
+
+        graphics_engine.set_texture(render_ids.back(), "data/wall.png");
     }
 }
 

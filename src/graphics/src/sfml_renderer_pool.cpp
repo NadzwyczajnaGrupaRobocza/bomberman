@@ -4,6 +4,8 @@
 #include <SFML/Graphics/Color.hpp>
 #include <range/v3/algorithm/for_each.hpp>
 
+#include <iostream>
+
 #include "boost/range/algorithm_ext/erase.hpp"
 #include <boost/uuid/uuid_io.hpp>
 
@@ -38,6 +40,19 @@ renderer_id sfml_renderer_pool::acquire(const math::Size2f& size,
     return id;
 }
 
+void sfml_renderer_pool::set_texture(const renderer_id& id,
+                                     const std::string& texture_path)
+{
+    if (!textures[texture_path].loadFromFile(texture_path))
+    {
+        std::cerr << "cannot load textures\n";
+    }
+    else
+    {
+        get_shape(id).setTexture(&textures[texture_path]);
+    }
+}
+
 void sfml_renderer_pool::release(const renderer_id& id)
 {
     trash.emplace(id);
@@ -53,7 +68,7 @@ void sfml_renderer_pool::cleanup_unused()
 void sfml_renderer_pool::render_all()
 {
     cleanup_unused();
-    renderer->clear(sf::Color::Black);
+    renderer->clear(sf::Color::White);
 
     ranges::for_each(shapes, [&](const auto& shape) { renderer->draw(shape); });
 }

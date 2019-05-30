@@ -2,6 +2,7 @@
 
 #include "graphics/renderer_pool.hpp"
 
+#include <SFML/Graphics/Texture.hpp>
 #include <boost/functional/hash.hpp>
 #include <memory>
 #include <unordered_map>
@@ -30,6 +31,9 @@ public:
     void set_color(const renderer_id&, const color&) override;
     color get_color(const renderer_id&) const override;
 
+    void set_texture(const renderer_id&,
+                     const std::string& texture_path) override;
+
 private:
     void cleanup_unused();
 
@@ -40,5 +44,9 @@ private:
     std::unique_ptr<renderer_id_generator> id_generator;
     std::vector<sfml_rectangle_shape> shapes;
     std::unordered_set<renderer_id, boost::hash<renderer_id>> trash;
+
+    std::map<std::string, sf::Texture> textures;
+
+    sf::Texture texture;
 };
 }

@@ -37,7 +37,7 @@ BoundaryWallsPositionsGenerator::Walls
 BoundaryWallsPositionsGenerator::generate_walls_for_size_one()
 {
     constexpr auto start_position = 0;
-    constexpr auto wall_size = 1;
+    constexpr auto wall_size = 20;
     return {
         {position(start_position, start_position), size(wall_size, wall_size)}};
 }
@@ -47,7 +47,7 @@ BoundaryWallsPositionsGenerator::generate_empty_for_size_bigger_than_one(
     BoundarySize boundary_size)
 {
     constexpr auto start_position = 0;
-    constexpr auto minimum_size = 1;
+    constexpr auto minimum_size = 20;
     const auto just_before_end_position = boundary_size - 1;
     return {{position(start_position, start_position),
              size(minimum_size, boundary_size)},

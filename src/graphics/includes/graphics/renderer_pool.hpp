@@ -24,5 +24,8 @@ public:
 
     virtual void set_color(const renderer_id&, const color&) = 0;
     virtual color get_color(const renderer_id&) const = 0;
+
+    virtual void set_texture(const renderer_id&,
+                             const std::string& texture_path) = 0;
 };
 }

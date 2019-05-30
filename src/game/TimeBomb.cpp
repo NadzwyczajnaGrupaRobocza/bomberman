@@ -8,8 +8,9 @@ TimeBomb::TimeBomb(std::shared_ptr<physics::PhysicsEngine> pe,
       bombLauncher{std::move(bl)}, physics_id{physics_engine->register_colider(
                                        bomb_size, bomb_position)},
       renderer_id{renderer_pool->acquire(bomb_size, bomb_position,
-                                         graphics::colors::red)}
+                                         graphics::colors::white)}
 {
+    renderer_pool->set_texture(renderer_id, "data/bomb.png");
 }
 
 void TimeBomb::update(DeltaTime dt)
