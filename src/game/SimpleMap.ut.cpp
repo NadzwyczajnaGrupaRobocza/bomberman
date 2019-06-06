@@ -3,6 +3,7 @@
 #include "glm/glm.hpp"
 #include <vector>
 
+#include "FieldSize.hpp"
 #include "WallPositionsGenerator.mock.hpp"
 #include "graphics/renderer_pool.mock.hpp"
 #include "physics/PhysicsEngine.mock.hpp"
@@ -58,9 +59,10 @@ public:
     }
 
     const int edge_size{10};
+    const math::Size2f map_size{static_cast<float>(edge_size),
+                                static_cast<float>(edge_size)};
     const math::Position2f top_left_position{0, 0};
-    const math::Size2f boundary_size{static_cast<float>(edge_size),
-                                     static_cast<float>(edge_size)};
+    const math::Size2f boundary_size{scale_to_field_size(map_size)};
     const std::vector<math::Size2f> generated_walls_sizes{
         {1, 1}, {1, 2}, {4, 4}, {4, 67}};
 
