@@ -73,10 +73,11 @@ TEST_F(sfml_window_test, updateDoNothingIfNoPollEvents)
 TEST_F(sfml_window_test, updateAndCloseWindow)
 {
     auto window = create_window();
+    const auto closed_event_type = sf::Event::Closed;
 
     EXPECT_CALL(*proxy, poll_event(_))
         .Times(2)
-        .WillOnce(DoAll(SetEventType(sf::Event::Closed), Return(true)))
+        .WillOnce(DoAll(SetEventType(ByRef(closed_event_type)), Return(true)))
         .WillOnce(Return(false));
     EXPECT_CALL(*proxy, close());
 

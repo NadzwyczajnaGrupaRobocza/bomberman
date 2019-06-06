@@ -15,7 +15,7 @@ namespace graphics
 namespace
 {
 // https://github.com/SFML/SFML/wiki/Source:-Letterbox-effect-using-a-view
-sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight)
+sf::View getLetterboxView(sf::View view, unsigned windowWidth, unsigned windowHeight)
 {
 
     // Compares the aspect ratio of the window to the aspect ratio of the view,
