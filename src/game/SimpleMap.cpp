@@ -1,6 +1,9 @@
 #include "SimpleMap.hpp"
 
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/range/algorithm.hpp"
+
+#include "FieldSize.hpp"
 
 SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
                      const WallPositionsGenerator& generated_walls_generator,
@@ -8,9 +11,10 @@ SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
     : physics_engine(pEngine), graphics_engine{rEngine}, map_size{map_s}
 {
     constexpr graphics::color map_grey{161, 161, 161};
+    const math::Size2f map_dimensions{boost::numeric_cast<float>(map_size),
+                                      boost::numeric_cast<float>(map_size)};
     render_ids.push_back(graphics_engine.acquire(
-        {static_cast<float>(map_size), static_cast<float>(map_size)},
-        {0.0f, 0.0f}, map_grey));
+        {scale_to_field_size(map_dimensions)}, {0.0f, 0.0f}, map_grey));
 
     constexpr graphics::color wall_bronze{205, 127, 50};
 
