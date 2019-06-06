@@ -11,7 +11,8 @@
 
 BombermanGameWorld::BombermanGameWorld(
     std::unique_ptr<physics::PhysicsEngine> a,
-    std::unique_ptr<graphics::renderer_pool> b)
+    std::unique_ptr<graphics::renderer_pool> b,
+    int map_size)
     : gen(std::make_unique<BoundaryWallsPositionsGenerator>()),
       simpleMap{*a, *gen, *b, map_size}, ppool{std::move(a)}, rpool{
                                                                   std::move(b)}

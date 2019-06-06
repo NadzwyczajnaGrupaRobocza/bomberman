@@ -58,7 +58,7 @@ template <typename BaseRenderTarget>
 class render_target : public context_renderer, public BaseRenderTarget
 {
 public:
-    render_target(const window_size& s) : size{s}
+    render_target(const window_size& s, const int area_s) : size{s}, area_size{area_s}
     {
     }
 
@@ -104,6 +104,7 @@ public:
 
 protected:
     window_size size;
+    const int area_size;
     sf::View view;
 };
 

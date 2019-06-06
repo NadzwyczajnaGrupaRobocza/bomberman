@@ -163,7 +163,7 @@ private:
     std::unique_ptr<graphics::window> const main_window =
         graphics::create_window(available_region, "win");
     std::unique_ptr<graphics::renderer_pool> const shapes =
-        graphics::create_renderer_pool(available_region);
+        graphics::create_renderer_pool(available_region, 600);
 
     arrows clock_arrows;
     float travel_path = 0.0f;

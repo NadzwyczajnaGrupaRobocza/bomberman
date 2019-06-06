@@ -8,10 +8,10 @@
 namespace graphics
 {
 std::unique_ptr<renderer_pool>
-create_renderer_pool(const math::Size2u& rendering_region_size)
+create_renderer_pool(const math::Size2u& rendering_region_size, int logical_region_size)
 {
     return std::make_unique<sfml_renderer_pool>(
-        std::make_unique<sfml_render_target>(rendering_region_size));
+        std::make_unique<sfml_render_target>(rendering_region_size, logical_region_size));
 }
 
 std::unique_ptr<window> create_window(const math::Size2u& size,
