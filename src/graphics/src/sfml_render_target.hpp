@@ -15,9 +15,9 @@ namespace graphics
 namespace
 {
 // https://github.com/SFML/SFML/wiki/Source:-Letterbox-effect-using-a-view
-sf::View getLetterboxView(sf::View view, unsigned windowWidth, unsigned windowHeight)
+sf::View getLetterboxView(sf::View view, unsigned windowWidth,
+                          unsigned windowHeight)
 {
-
     // Compares the aspect ratio of the window to the aspect ratio of the view,
     // and sets the view's viewport accordingly in order to archieve a letterbox
     // effect. A new view (with a new viewport set) is returned.
@@ -58,7 +58,8 @@ template <typename BaseRenderTarget>
 class render_target : public context_renderer, public BaseRenderTarget
 {
 public:
-    render_target(const window_size& s, const int area_s) : size{s}, area_size{area_s}
+    render_target(const window_size& s, const int area_s)
+        : size{s}, area_size{area_s}
     {
     }
 
@@ -79,8 +80,10 @@ public:
 
     void set_view() override
     {
-        view.setSize(boost::numeric_cast<float>(area_size),
-                     boost::numeric_cast<float>(area_size)); // <- it should be set once, at the startup
+        view.setSize(
+            boost::numeric_cast<float>(area_size),
+            boost::numeric_cast<float>(
+                area_size)); // <- it should be set once, at the startup
         view.setCenter(view.getSize().x / 2,
                        view.getSize().y / 2); // <- only at startup
         view = getLetterboxView(view, size.width,
