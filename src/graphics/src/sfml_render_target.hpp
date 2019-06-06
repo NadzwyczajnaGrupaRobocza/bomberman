@@ -79,11 +79,8 @@ public:
 
     void set_view() override
     {
-        float map_width{100};
-        float map_height{100};
-
-        view.setSize(map_width,
-                     map_height); // <- it should be set once, at the startup
+        view.setSize(boost::numeric_cast<float>(area_size),
+                     boost::numeric_cast<float>(area_size)); // <- it should be set once, at the startup
         view.setCenter(view.getSize().x / 2,
                        view.getSize().y / 2); // <- only at startup
         view = getLetterboxView(view, size.width,
