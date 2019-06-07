@@ -20,3 +20,6 @@ target_compile_options(gtest PRIVATE ${GTEST_UNUSED_WARNINGS})
 target_compile_options(gmock PRIVATE ${GTEST_UNUSED_WARNINGS})
 target_compile_options(gtest_main PRIVATE ${GTEST_UNUSED_WARNINGS})
 target_compile_options(gmock_main PRIVATE ${GTEST_UNUSED_WARNINGS})
+
+add_compile_options(-fcolor-diagnostics)
+

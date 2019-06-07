@@ -16,3 +16,5 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
 if(TREAT_WARNING_AS_ERROR)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
 endif()
+
+add_compile_options (-fdiagnostics-color=always)

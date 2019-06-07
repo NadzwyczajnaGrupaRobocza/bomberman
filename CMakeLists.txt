@@ -52,6 +52,16 @@ include_directories(SYSTEM ${GSL_INCLUDE_DIR})
 include_directories(SYSTEM ${GLM_INCLUDE_DIR})
 include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 
+option(HOT_RELOAD "Enable jet-live library to compile at runtime" OFF)
+
+if(HOT_RELOAD)
+  include(external/jet-live/cmake/jet_live_setup.cmake)
+  set(JET_LIVE_BUILD_EXAMPLE OFF)
+  set(JET_LIVE_SHARED ON)
+  add_subdirectory(external/jet-live)
+  link_libraries(jet-live)
+endif()
+
 add_subdirectory(src)
 
 include(${CMAKE_SOURCE_DIR}/cmake/utils/PlantUml.cmake)
