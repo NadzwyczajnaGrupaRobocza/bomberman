@@ -7,10 +7,12 @@ SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
                      graphics::renderer_pool& rEngine, int map_s)
     : physics_engine(pEngine), graphics_engine{rEngine}, map_size{map_s}
 {
-    constexpr graphics::color map_grey{161, 161, 161};
+    // constexpr graphics::color map_grey{161, 161, 161};
     render_ids.push_back(graphics_engine.acquire(
         {static_cast<float>(map_size), static_cast<float>(map_size)},
-        {0.0f, 0.0f}, map_grey));
+        {0.0f, 0.0f}, graphics::colors::white));
+
+        graphics_engine.set_texture(render_ids.back(), "data/map.png");
 
     // constexpr graphics::color wall_bronze{205, 127, 50};
 

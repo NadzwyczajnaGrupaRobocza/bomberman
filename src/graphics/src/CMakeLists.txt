@@ -31,7 +31,8 @@ add_executable(graphics-ut
 
 target_compile_options(graphics-ut PRIVATE
   -Wno-used-but-marked-unused
-  -Wno-covered-switch-default)
+  -Wno-covered-switch-default
+  -Wno-deprecated)
 
 target_include_directories(graphics-ut SYSTEM BEFORE
   PRIVATE ${CMAKE_CURRENT_LIST_DIR}
