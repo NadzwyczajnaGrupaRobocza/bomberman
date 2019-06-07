@@ -8,11 +8,11 @@
 #include <chrono>
 #include <memory>
 
-#include "jet/live/Live.hpp"
+#include "editor/HotReload.hpp"
 
 int main()
 {
-    auto hot_reload{std::make_shared<jet::Live>()};
+    const auto hot_reload = editor::create_hot_reload();
 
     const math::Size2u window_size{800, 600};
 
@@ -23,7 +23,6 @@ int main()
     BombermanGameWorld world(std::move(p), std::move(r));
     auto last_frame{std::chrono::high_resolution_clock::now()};
 
-    bool reloading{false};
     while (window->is_open())
     {
         auto const now = std::chrono::high_resolution_clock::now();
@@ -35,14 +34,5 @@ int main()
         last_frame = now;
 
         hot_reload->update();
-        if (not reloading && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
-        {
-            hot_reload->tryReload();
-            reloading = true;
-        }
-        else if (not sf::Keyboard::isKeyPressed(sf::Keyboard::R))
-        {
-            reloading = false;
-        }
     }
 }
