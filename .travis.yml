@@ -6,6 +6,8 @@ matrix:
   include:
     - compiler: gcc
       addons:
+        sonarcloud:
+            organization: "nadzwyczajnagruparobocza"
         apt:
           update: true
           sources:
@@ -54,3 +56,4 @@ script:
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - sonar-scanner
