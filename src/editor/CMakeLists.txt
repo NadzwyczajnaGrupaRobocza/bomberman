@@ -2,6 +2,7 @@ find_package(SFML ${SFML_MINIMAL_VERSION} COMPONENTS window REQUIRED)
 
 if(HOT_RELOAD)
   add_library(editor src/JetLive.cpp)
+  target_link_libraries(editor PRIVATE jet-live)
 else()
   add_library(editor src/ColdReload.cpp)
 endif()

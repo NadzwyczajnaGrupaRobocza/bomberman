@@ -37,7 +37,6 @@ if(HOT_RELOAD)
   set(JET_LIVE_BUILD_EXAMPLE OFF)
   set(JET_LIVE_SHARED ON)
   add_subdirectory(external/jet-live)
-  link_libraries(jet-live)
 endif()
 
 if(${WIN32})
