@@ -58,8 +58,8 @@ template <typename BaseRenderTarget>
 class render_target : public context_renderer, public BaseRenderTarget
 {
 public:
-    render_target(const window_size& s, const int area_s)
-        : size{s}, area_size{area_s}
+    render_target(const window_size& s, const math::Size2u area_s)
+        : size{s}, area_size{std::move(area_s)}
     {
     }
 
@@ -81,9 +81,9 @@ public:
     void set_view() override
     {
         view.setSize(
-            boost::numeric_cast<float>(area_size),
+            boost::numeric_cast<float>(area_size.width),
             boost::numeric_cast<float>(
-                area_size)); // <- it should be set once, at the startup
+                area_size.height)); // <- it should be set once, at the startup
         view.setCenter(view.getSize().x / 2,
                        view.getSize().y / 2); // <- only at startup
         view = getLetterboxView(view, size.width,
@@ -104,7 +104,7 @@ public:
 
 protected:
     window_size size;
-    const int area_size;
+    const math::Size2u area_size;
     sf::View view;
 };
 

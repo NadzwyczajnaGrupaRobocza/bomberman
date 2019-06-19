@@ -1,6 +1,8 @@
 #include <boost/core/null_deleter.hpp>
 #include <experimental/map>
 
+#include "boost/numeric/conversion/cast.hpp"
+
 #include "Bomberman.hpp"
 #include "BombermanGameWorld.hpp"
 #include "BoundaryWallsPositionsGenerator.hpp"
@@ -11,11 +13,10 @@
 
 BombermanGameWorld::BombermanGameWorld(
     std::unique_ptr<physics::PhysicsEngine> a,
-    std::unique_ptr<graphics::renderer_pool> b,
-    int map_size)
+    std::unique_ptr<graphics::renderer_pool> b, const math::Size2u& map_size)
     : gen(std::make_unique<BoundaryWallsPositionsGenerator>()),
-      simpleMap{*a, *gen, *b, map_size}, ppool{std::move(a)}, rpool{
-                                                                  std::move(b)}
+      simpleMap{*a, *gen, *b, boost::numeric_cast<int>(map_size.width)},
+      ppool{std::move(a)}, rpool{std::move(b)}
 
 {
     std::shared_ptr<GameWorld> world(this, boost::null_deleter());
