@@ -12,7 +12,7 @@
 int main()
 {
     const math::Size2u window_size{800, 600};
-    const math::Size2u map_size{100, 100};
+    const math::Size2u map_size{125, 100};
 
     auto window = graphics::create_window(window_size, "Bomberman Remake");
     auto r = graphics::create_renderer_pool(window_size,
