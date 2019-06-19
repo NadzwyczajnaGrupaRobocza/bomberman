@@ -52,7 +52,7 @@ private:
 
     template <typename Distance>
     Distance get_range_in_increasing_direction(int start_point, int range,
-                                               unsigned limit) const
+                                               int limit) const
     {
         if (can_move_forward(start_point, range, limit))
         {

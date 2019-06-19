@@ -54,9 +54,9 @@ ExplosionRange SimpleMap::get_explosion_range(std::pair<int, int> start_point,
     const auto up = get_range_in_decreasing_direction<UpDistance>(
         start_point.second, range);
     const auto down = get_range_in_increasing_direction<DownDistance>(
-        start_point.second, range, map_size.height);
+        start_point.second, range, boost::numeric_cast<int>(map_size.height));
     const auto right = get_range_in_increasing_direction<RightDistance>(
-        start_point.first, range, map_size.width);
+        start_point.first, range, boost::numeric_cast<int>(map_size.width));
     return {left, right, up, down};
 }
 
