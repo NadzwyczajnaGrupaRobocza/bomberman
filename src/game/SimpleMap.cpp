@@ -14,7 +14,7 @@ SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
     constexpr graphics::color map_grey{161, 161, 161};
     const math::Size2f map_dimensions{
         boost::numeric_cast<float>(map_size.width),
-        boost::numeric_cast<float>(map_size.width)};
+        boost::numeric_cast<float>(map_size.height)};
 
     render_ids.push_back(graphics_engine.acquire(
         {scale_to_field_size(map_dimensions)}, {0.0f, 0.0f}, map_grey));

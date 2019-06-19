@@ -59,9 +59,11 @@ public:
     }
 
     const int edge_size{10};
-    const math::Size2u desired_map_size{10, 10};
-    const math::Size2f map_size{static_cast<float>(edge_size),
-                                static_cast<float>(edge_size)};
+    const unsigned width{10};
+    const unsigned height{20};
+    const math::Size2u desired_map_size{width, height};
+    const math::Size2f map_size{static_cast<float>(width),
+                                static_cast<float>(height)};
     const math::Position2f top_left_position{0, 0};
     const math::Size2f boundary_size{scale_to_field_size(map_size)};
     const std::vector<math::Size2f> generated_walls_sizes{
