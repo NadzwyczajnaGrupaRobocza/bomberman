@@ -6,10 +6,10 @@
 class WallPositionsGenerator
 {
 public:
-    using BaseType = int;
+    using BaseType = unsigned;
     using PositionInSpace = std::pair<BaseType, BaseType>;
     using WallSize = std::pair<BaseType, BaseType>;
-    using BoundarySize = int;
+    using BoundarySize = unsigned;
     using Wall = std::pair<PositionInSpace, WallSize>;
     using Walls = std::vector<Wall>;
 
