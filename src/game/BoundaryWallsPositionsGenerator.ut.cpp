@@ -64,3 +64,15 @@ TEST_F(BoundaryWallsPositionsGeneratorTest, For2SizeShouldReturnWalls)
     ASSERT_THAT(generator.generate_boundary_walls({2, 2}),
                 UnorderedElementsAreArray(expected_walls));
 }
+
+TEST_F(BoundaryWallsPositionsGeneratorTest, ForDifferentEdgesShouldReturnWalls)
+{
+    const WallPositionsGenerator::Walls expected_walls{
+        create_expected_walls({{{0, 0}, {1, 8}},
+                               {{0, 0}, {6, 1}},
+                               {{5, 0}, {1, 8}},
+                               {{0, 7}, {6, 1}}})};
+
+    ASSERT_THAT(generator.generate_boundary_walls({6, 8}),
+                UnorderedElementsAreArray(expected_walls));
+}

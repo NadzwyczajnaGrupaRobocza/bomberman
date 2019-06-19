@@ -48,16 +48,19 @@ BoundaryWallsPositionsGenerator::generate_empty_for_size_bigger_than_one(
 {
     constexpr auto start_position = 0;
     constexpr auto minimum_size = 1;
-    const auto just_before_end_position = boundary_size.width - 1;
+    const auto just_before_end_position_width =
+        boundary_size.width - minimum_size;
+    const auto just_before_end_position_height =
+        boundary_size.height - minimum_size;
     return {{scale_to_field_size(position(start_position, start_position)),
-             scale_to_field_size(size(minimum_size, boundary_size.width))},
+             scale_to_field_size(size(minimum_size, boundary_size.height))},
             {scale_to_field_size(position(start_position, start_position)),
              scale_to_field_size(size(boundary_size.width, minimum_size))},
             {scale_to_field_size(
-                 position(just_before_end_position, start_position)),
-             scale_to_field_size(size(minimum_size, boundary_size.width))},
+                 position(just_before_end_position_width, start_position)),
+             scale_to_field_size(size(minimum_size, boundary_size.height))},
             {scale_to_field_size(
-                 position(start_position, just_before_end_position)),
+                 position(start_position, just_before_end_position_height)),
              scale_to_field_size(size(boundary_size.width, minimum_size))}};
 }
 
