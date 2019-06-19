@@ -31,7 +31,7 @@ public:
                 deregistered_physics_ids.push_back(id);
             }));
         EXPECT_CALL(wall_positions_generator,
-                    generate_boundary_walls(edge_size))
+                    generate_boundary_walls(desired_map_size))
             .WillOnce(Return(generated_walls));
         {
             InSequence seq;
@@ -58,7 +58,6 @@ public:
                 [&](const auto id) { deregistered_render_ids.push_back(id); }));
     }
 
-    const int edge_size{10};
     const unsigned width{10};
     const unsigned height{20};
     const math::Size2u desired_map_size{width, height};

@@ -18,13 +18,13 @@ BoundaryWallsPositionsGenerator::generate_boundary_walls(
 
 bool BoundaryWallsPositionsGenerator::zero_size(BoundarySize boundary_size)
 {
-    constexpr auto zero_size = 0;
+    constexpr auto zero_size = math::Size2u{0, 0};
     return boundary_size == zero_size;
 }
 
 bool BoundaryWallsPositionsGenerator::size_one(BoundarySize boundary_size)
 {
-    constexpr auto size_one = 1;
+    constexpr auto size_one = math::Size2u{1, 1};
     return boundary_size == size_one;
 }
 
@@ -48,17 +48,17 @@ BoundaryWallsPositionsGenerator::generate_empty_for_size_bigger_than_one(
 {
     constexpr auto start_position = 0;
     constexpr auto minimum_size = 1;
-    const auto just_before_end_position = boundary_size - 1;
+    const auto just_before_end_position = boundary_size.width - 1;
     return {{scale_to_field_size(position(start_position, start_position)),
-             scale_to_field_size(size(minimum_size, boundary_size))},
+             scale_to_field_size(size(minimum_size, boundary_size.width))},
             {scale_to_field_size(position(start_position, start_position)),
-             scale_to_field_size(size(boundary_size, minimum_size))},
+             scale_to_field_size(size(boundary_size.width, minimum_size))},
             {scale_to_field_size(
                  position(just_before_end_position, start_position)),
-             scale_to_field_size(size(minimum_size, boundary_size))},
+             scale_to_field_size(size(minimum_size, boundary_size.width))},
             {scale_to_field_size(
                  position(start_position, just_before_end_position)),
-             scale_to_field_size(size(boundary_size, minimum_size))}};
+             scale_to_field_size(size(boundary_size.width, minimum_size))}};
 }
 
 BoundaryWallsPositionsGenerator::PositionInSpace

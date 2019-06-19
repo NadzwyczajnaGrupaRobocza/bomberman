@@ -22,7 +22,7 @@ SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
     constexpr graphics::color wall_bronze{205, 127, 50};
 
     for (const auto& generated_walls :
-         generated_walls_generator.generate_boundary_walls(map_size.width))
+         generated_walls_generator.generate_boundary_walls(map_size))
     {
         physics_ids.push_back(physics_engine.register_colider(
             {static_cast<float>(generated_walls.second.first),
