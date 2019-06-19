@@ -122,7 +122,7 @@ TEST_F(SimpleMapTest,
        get_explosion_range_shouldReturnMaxExplosion_WhenNoBoundaryWallHit)
 {
     ExplosionRange expected_range{1_left, 1_right, 1_up, 1_down};
-    ASSERT_THAT(map.get_explosion_range(std::make_pair(4, 4), 1),
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(4, 14), 1),
                 Eq(expected_range));
 }
 
@@ -130,7 +130,7 @@ TEST_F(SimpleMapTest,
        get_explosion_range_shouldReturnMaxExplosion_WhenBiggerRange)
 {
     ExplosionRange expected_range{2_left, 2_right, 2_up, 2_down};
-    ASSERT_THAT(map.get_explosion_range(std::make_pair(4, 4), 2),
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(4, 14), 2),
                 Eq(expected_range));
 }
 
@@ -154,7 +154,7 @@ TEST_F(SimpleMapTest,
        get_explosion_range_shouldReturnMaxExplosionLimited_WhenReachDownEnd)
 {
     ExplosionRange expected_range{3_left, 3_right, 3_up, 2_down};
-    ASSERT_THAT(map.get_explosion_range(std::make_pair(5, 6), 3),
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(5, 16), 3),
                 Eq(expected_range));
 }
 
@@ -162,7 +162,7 @@ TEST_F(SimpleMapTest,
        get_explosion_range_shouldReturnMaxExplosionLimited_WhenReachRightEnd)
 {
     ExplosionRange expected_range{3_left, 2_right, 3_up, 0_down};
-    ASSERT_THAT(map.get_explosion_range(std::make_pair(6, 9), 3),
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(6, 18), 3),
                 Eq(expected_range));
 }
 
