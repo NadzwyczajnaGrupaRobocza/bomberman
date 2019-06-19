@@ -125,7 +125,7 @@ private:
     std::unique_ptr<graphics::window> const main_window =
         graphics::create_window(available_region, "win");
     std::unique_ptr<graphics::renderer_pool> const shapes =
-        graphics::create_renderer_pool(available_region, {600, 800});
+        graphics::create_renderer_pool(available_region, available_region);
 
     double theta = 3 * pi / 2;
     double const angle_after_one_turn = theta + double_pi;
