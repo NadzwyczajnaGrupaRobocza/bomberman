@@ -59,6 +59,7 @@ public:
     }
 
     const int edge_size{10};
+    const math::Size2u desired_map_size{10, 10};
     const math::Size2f map_size{static_cast<float>(edge_size),
                                 static_cast<float>(edge_size)};
     const math::Position2f top_left_position{0, 0};
@@ -92,7 +93,7 @@ class SimpleMapTest : public SimpleMapConstructorExpectations
 {
 public:
     SimpleMap map{physics_engine, wall_positions_generator, render_engine,
-                  edge_size};
+                  desired_map_size};
 
     void verifyAllWallsArePlacedCorrectly()
     {
@@ -173,7 +174,7 @@ TEST_F(SimpleMapWithoutImplicitConstructionTest,
 {
     {
         SimpleMap map_destructor_test{physics_engine, wall_positions_generator,
-                                      render_engine, edge_size};
+                                      render_engine, desired_map_size};
     }
     ASSERT_THAT(deregistered_render_ids, UnorderedElementsAreArray(render_ids));
     ASSERT_THAT(deregistered_physics_ids,
