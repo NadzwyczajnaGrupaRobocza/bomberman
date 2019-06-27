@@ -3,8 +3,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <SFML/Window/Event.hpp>
-#include <SFML/Window/Window.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <range/v3/algorithm/for_each.hpp>
 

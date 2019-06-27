@@ -6,6 +6,7 @@ find_package(Boost 1.6 REQUIRED)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(TREAT_WARNING_AS_ERROR "" ON)
+option(HOT_RELOAD "Enable jet-live library to compile at runtime" OFF)
 
 if(TREAT_WARNING_AS_ERROR)
   message(STATUS "Treat warning as error ON")
@@ -26,12 +27,17 @@ set(GTEST_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/googletest/googletest/includ
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGSL_THROW_ON_CONTRACT_VIOLATION")
 
 set(CMAKE_CXX_STANDARD 20)
-
 set(SFML_MINIMAL_VERSION 2.5.1)
 
 enable_testing()
-
 add_subdirectory(external/googletest/)
+
+if(HOT_RELOAD)
+  include(external/jet-live/cmake/jet_live_setup.cmake)
+  set(JET_LIVE_BUILD_EXAMPLE OFF)
+  set(JET_LIVE_SHARED ON)
+  add_subdirectory(external/jet-live)
+endif()
 
 if(${WIN32})
   include(${CMAKE_SOURCE_DIR}/cmake/platforms/Windows.cmake)

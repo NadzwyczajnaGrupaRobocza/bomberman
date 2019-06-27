@@ -1,17 +1,16 @@
 message(STATUS "Detected system with clang compiler v"
   ${CMAKE_CXX_COMPILER_VERSION})
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything \
- -Wno-c++98-compat -Wno-c++98-compat-pedantic\
- -Wno-c++98-c++11-compat-pedantic -Wno-weak-vtables -Wno-padded\
- -Wno-global-constructors -Wno-extra-semi -Wno-disabled-macro-expansion")
+add_compile_options(-fcolor-diagnostics
+  -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-c++98-c++11-compat-pedantic
+  -Wno-weak-vtables -Wno-padded -Wno-global-constructors -Wno-extra-semi -Wno-disabled-macro-expansion)
 
 if(TREAT_WARNING_AS_ERROR)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+  add_compile_options(-Werror)
 endif()
 
 if(${CMAKE_CXX_COMPILER_VERSION} GREATER 4)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-zero-as-null-pointer-constant")
+  add_compile_options(-Wno-zero-as-null-pointer-constant)
 endif()
 
 set(GTEST_UNUSED_WARNINGS -Wno-deprecated-declarations)
