@@ -1,15 +1,19 @@
 #include "BombermanGameWorld.hpp"
 #include "SFML/Window/Event.hpp"
 #include "SFML/Window/Window.hpp"
-#include <memory>
-#include <chrono>
-#include "math/Size2u.hpp"
 #include "graphics/factory.hpp"
-#include "physics/PhysicsEngine.hpp"
+#include "math/Size2u.hpp"
 #include "physics/ConcretePhysicsEngine.hpp"
+#include "physics/PhysicsEngine.hpp"
+#include <chrono>
+#include <memory>
+
+#include "editor/HotReload.hpp"
 
 int main()
 {
+    const auto hot_reload = editor::create_hot_reload();
+
     const math::Size2u window_size{800, 600};
 
     auto window = graphics::create_window(window_size, "Bomberman Remake");
@@ -28,6 +32,7 @@ int main()
         window->display();
 
         last_frame = now;
+
+        hot_reload->update();
     }
 }
-

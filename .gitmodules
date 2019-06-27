@@ -13,3 +13,6 @@
 [submodule "external/glm"]
 	path = external/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "external/jet-live"]
+	path = external/jet-live
+	url = https://github.com/ddovod/jet-live.git
