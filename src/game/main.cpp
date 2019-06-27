@@ -1,13 +1,15 @@
-#include "BombermanGameWorld.hpp"
-#include "FieldSize.hpp"
+#include <chrono>
+#include <memory>
+
 #include "SFML/Window/Event.hpp"
 #include "SFML/Window/Window.hpp"
+
+#include "BombermanGameWorld.hpp"
+#include "FieldSize.hpp"
 #include "graphics/factory.hpp"
 #include "math/Size2u.hpp"
 #include "physics/ConcretePhysicsEngine.hpp"
 #include "physics/PhysicsEngine.hpp"
-#include <chrono>
-#include <memory>
 
 int main()
 {
