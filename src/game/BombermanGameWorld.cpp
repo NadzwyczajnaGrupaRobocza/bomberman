@@ -1,10 +1,9 @@
+#include "BombermanGameWorld.hpp"
+
 #include <boost/core/null_deleter.hpp>
 #include <experimental/map>
 
-#include "boost/numeric/conversion/cast.hpp"
-
 #include "Bomberman.hpp"
-#include "BombermanGameWorld.hpp"
 #include "BoundaryWallsPositionsGenerator.hpp"
 #include "DefaultBombFactory.hpp"
 #include "FieldSize.hpp"

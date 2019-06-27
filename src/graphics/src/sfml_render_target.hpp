@@ -1,12 +1,10 @@
 #pragma once
 
-#include <memory>
-
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/View.hpp>
+#include <memory>
 
 #include "boost/numeric/conversion/cast.hpp"
-
 #include "context_renderer.hpp"
 #include "window_size.hpp"
 
@@ -40,13 +38,13 @@ sf::View getLetterboxView(sf::View view, unsigned windowWidth,
     if (horizontalSpacing)
     {
         sizeX = viewRatio / windowRatio;
-        posX = (1 - sizeX) / 2.f;
+        posX = (1 - sizeX) * 0.5F;
     }
 
     else
     {
         sizeY = windowRatio / viewRatio;
-        posY = (1 - sizeY) / 2.f;
+        posY = (1 - sizeY) / 0.5F;
     }
 
     view.setViewport(sf::FloatRect(posX, posY, sizeX, sizeY));
