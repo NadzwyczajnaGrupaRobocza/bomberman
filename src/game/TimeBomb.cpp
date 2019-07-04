@@ -7,8 +7,7 @@ TimeBomb::TimeBomb(std::shared_ptr<physics::PhysicsEngine> pe,
     : physics_engine{std::move(pe)}, renderer_pool{std::move(rp)},
       bombLauncher{std::move(bl)}, physics_id{physics_engine->register_colider(
                                        bomb_size, bomb_position)},
-      renderer_id{renderer_pool->acquire(bomb_size, bomb_position,
-                                         graphics::colors::white)}
+      renderer_id{renderer_pool->acquire(bomb_size, bomb_position)}
 {
     renderer_pool->set_texture(renderer_id, "data/bomb.png");
 }

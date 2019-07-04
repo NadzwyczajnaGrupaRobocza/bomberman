@@ -1,13 +1,11 @@
-#include "sfml_renderer_pool.hpp"
-
+#include <boost/uuid/uuid_io.hpp>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-
-#include <boost/uuid/uuid_io.hpp>
 #include <range/v3/algorithm/for_each.hpp>
 
 #include "context_renderer.mock.hpp"
 #include "sfml_rectangle_shape.hpp"
+#include "sfml_renderer_pool.hpp"
 
 using namespace ::testing;
 
@@ -23,14 +21,14 @@ constexpr math::Position2f dummy_position{0, 10};
 class sfml_renderer_pool_test : public ::testing::Test
 {
 public:
-    auto create_renderer_pool()
+    std::unique_ptr<renderer_pool> create_renderer_pool()
     {
         return std::make_unique<sfml_renderer_pool>(
             std::unique_ptr<context_renderer>(
                 unique_context_renderer.release()));
     }
 
-    auto create_object(sfml_renderer_pool& shape_pool, const size2f& shape_size,
+    auto create_object(renderer_pool& shape_pool, const size2f& shape_size,
                        const position2f& shape_position,
                        const color& shape_color)
     {
@@ -62,12 +60,10 @@ TEST_F(sfml_renderer_pool_test, acquireTwoRenderableObject_positionShouldMatch)
 {
     auto renderer_pool = create_renderer_pool();
     auto const position1 = math::Position2f{30.f, 10.f};
-    auto const id1 =
-        renderer_pool->acquire(dummy_size, position1, graphics::colors::white);
+    auto const id1 = renderer_pool->acquire(dummy_size, position1);
 
     auto const position2 = math::Position2f{299.f, 1.f};
-    auto const id2 = renderer_pool->acquire(another_dummy_size, position2,
-                                            graphics::colors::white);
+    auto const id2 = renderer_pool->acquire(another_dummy_size, position2);
 
     expect_eq_position(position1, renderer_pool->get_position(id1));
     expect_eq_position(position2, renderer_pool->get_position(id2));
@@ -76,8 +72,7 @@ TEST_F(sfml_renderer_pool_test, acquireTwoRenderableObject_positionShouldMatch)
 TEST_F(sfml_renderer_pool_test, renderableObjectShouldBeMovable)
 {
     auto renderer_pool = create_renderer_pool();
-    auto const id = renderer_pool->acquire(dummy_size, dummy_position,
-                                           graphics::colors::white);
+    auto const id = renderer_pool->acquire(dummy_size, dummy_position);
 
     expect_eq_position(dummy_position, renderer_pool->get_position(id));
 
@@ -222,6 +217,14 @@ TEST_F(sfml_renderer_pool_test, createdObjectAfterReleaseOneShouldBeDrawn)
     EXPECT_CALL(*context, draw(third_shape));
 
     renderer_pool->render_all();
+}
+
+TEST_F(sfml_renderer_pool_test, acquiredObjectWithoutColorShouldSetWhite)
+{
+    auto renderer_pool = create_renderer_pool();
+    auto const id = renderer_pool->acquire(dummy_size, dummy_position);
+
+    EXPECT_EQ(graphics::colors::white, renderer_pool->get_color(id));
 }
 
 TEST_F(sfml_renderer_pool_test, acquiredObjectWithSelectedColor)

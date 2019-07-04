@@ -13,7 +13,7 @@ public:
     virtual ~renderer_pool() noexcept = default;
 
     virtual renderer_id acquire(const math::Size2f&, const math::Position2f&,
-                                const color&) = 0;
+                                const color& = graphics::colors::white) = 0;
     virtual void release(const renderer_id&) = 0;
 
     // TODO: extract functions below to another abstraction
