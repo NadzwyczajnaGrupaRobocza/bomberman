@@ -8,11 +8,10 @@ else()
   string(REPLACE "/MD" "/MT" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
+add_compile_options(/EHsc)
 
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
   set(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "/imsvc ")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 endif()
 
 # It is a workaround for boost uuid issue #78

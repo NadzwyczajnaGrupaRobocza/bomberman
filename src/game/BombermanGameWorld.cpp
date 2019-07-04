@@ -1,16 +1,18 @@
+#include "BombermanGameWorld.hpp"
+
 #include <boost/core/null_deleter.hpp>
 #include <experimental/map>
 
 #include "Bomberman.hpp"
-#include "BombermanGameWorld.hpp"
 #include "BoundaryWallsPositionsGenerator.hpp"
 #include "DefaultBombFactory.hpp"
+#include "FieldSize.hpp"
 #include "HumanPlayerSfml.hpp"
 #include "LimitedBombLauncher.hpp"
 
 BombermanGameWorld::BombermanGameWorld(
     std::unique_ptr<physics::PhysicsEngine> a,
-    std::unique_ptr<graphics::renderer_pool> b)
+    std::unique_ptr<graphics::renderer_pool> b, const math::Size2u& map_size)
     : gen(std::make_unique<BoundaryWallsPositionsGenerator>()),
       simpleMap{*a, *gen, *b, map_size}, ppool{std::move(a)}, rpool{
                                                                   std::move(b)}
@@ -23,9 +25,8 @@ BombermanGameWorld::BombermanGameWorld(
     auto bl = std::make_unique<LimitedBombLauncher>(world, std::move(bf), 10);
 
     physics::PhysicsId pid{};
-    auto rid = rpool->acquire(math::Size2f{60, 60}, math::Position2f{70, 70},
+    auto rid = rpool->acquire(field_size_f, math::Position2f{10, 10},
                               graphics::colors::white);
-
     rpool->set_texture(rid, "data/bomberman.png");
 
     entity.emplace_back(std::make_unique<Bomberman>(

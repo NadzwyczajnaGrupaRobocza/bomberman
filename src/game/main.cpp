@@ -1,22 +1,31 @@
-#include "BombermanGameWorld.hpp"
+#include <chrono>
+#include <memory>
+
 #include "SFML/Window/Event.hpp"
 #include "SFML/Window/Window.hpp"
-#include <memory>
-#include <chrono>
-#include "math/Size2u.hpp"
+
+#include "BombermanGameWorld.hpp"
+#include "FieldSize.hpp"
+#include "editor/HotReload.hpp"
 #include "graphics/factory.hpp"
-#include "physics/PhysicsEngine.hpp"
+#include "math/Size2u.hpp"
 #include "physics/ConcretePhysicsEngine.hpp"
+#include "physics/PhysicsEngine.hpp"
 
 int main()
 {
+    const auto hot_reload = editor::create_hot_reload();
+
     const math::Size2u window_size{800, 600};
+    const math::Size2u map_size{20, 15};
 
     auto window = graphics::create_window(window_size, "Bomberman Remake");
-    auto r = graphics::create_renderer_pool(window_size);
+    auto r = graphics::create_renderer_pool(window_size,
+                                            scale_to_field_size(map_size));
+
     auto p = std::make_unique<physics::ConcretePhysicsEngine>();
 
-    BombermanGameWorld world(std::move(p), std::move(r));
+    BombermanGameWorld world(std::move(p), std::move(r), map_size);
     auto last_frame{std::chrono::high_resolution_clock::now()};
 
     while (window->is_open())
@@ -28,6 +37,7 @@ int main()
         window->display();
 
         last_frame = now;
+
+        hot_reload->update();
     }
 }
-

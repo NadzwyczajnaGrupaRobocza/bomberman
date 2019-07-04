@@ -37,7 +37,7 @@ private:
     std::unique_ptr<graphics::window> main_window{
         graphics::create_window(window_size, "My Window")};
     std::unique_ptr<graphics::renderer_pool> shapes{
-        graphics::create_renderer_pool(window_size)};
+        graphics::create_renderer_pool(window_size, {800, 600})};
 };
 
 int main()
