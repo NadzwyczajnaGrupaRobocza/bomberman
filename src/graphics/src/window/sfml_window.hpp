@@ -1,11 +1,11 @@
 #pragma once
 
-#include "graphics/window.hpp"
-
 #include <memory>
 
-#include "window_size.hpp"
 #include "sfml/window_proxy.hpp"
+
+#include "graphics/window.hpp"
+#include "window_size.hpp"
 
 namespace graphics
 {
@@ -18,6 +18,7 @@ public:
     bool is_open() const override;
     void display() override;
     void update() override;
+    window_size get_window_size() const override;
 
 private:
     std::unique_ptr<window_proxy> m_window;

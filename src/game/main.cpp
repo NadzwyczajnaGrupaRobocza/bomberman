@@ -19,7 +19,8 @@ int main()
     const math::Size2u initial_window_size{800, 600};
     const math::Size2u map_size{125, 100};
 
-    auto window = graphics::create_window(initial_window_size, "Bomberman Remake");
+    auto window =
+        graphics::create_window(initial_window_size, "Bomberman Remake");
     auto r = graphics::create_renderer_pool(initial_window_size,
                                             scale_to_field_size(map_size));
 
@@ -32,7 +33,8 @@ int main()
     {
         auto const now = std::chrono::high_resolution_clock::now();
 
-        world.update(DeltaTime{now - last_frame});
+        world.set_window_size(window -)
+            world.update(DeltaTime{now - last_frame});
         window->update();
         window->display();
 
