@@ -128,7 +128,7 @@ private:
     std::unique_ptr<graphics::window> const main_window{
         graphics::create_window(screen_size, "lerp")};
     std::unique_ptr<graphics::renderer_pool> const shapes{
-        graphics::create_renderer_pool(screen_size)};
+        graphics::create_renderer_pool(screen_size, screen_size)};
 
     graphics::renderer_id const left_box_id{shapes->acquire(
         box_size, math::Position2f{left_upper_corner.x, left_upper_corner.y},

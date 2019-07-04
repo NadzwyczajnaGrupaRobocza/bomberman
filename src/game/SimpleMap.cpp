@@ -1,16 +1,23 @@
 #include "SimpleMap.hpp"
 
+#include "FieldSize.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/range/algorithm.hpp"
 
 SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
                      const WallPositionsGenerator& generated_walls_generator,
-                     graphics::renderer_pool& rEngine, int map_s)
-    : physics_engine(pEngine), graphics_engine{rEngine}, map_size{map_s}
+                     graphics::renderer_pool& rEngine, math::Size2u map_s)
+    : physics_engine(pEngine), graphics_engine{rEngine}, map_size{
+                                                             std::move(map_s)}
 {
     constexpr graphics::color map_grey{161, 161, 161};
+    const math::Size2f map_dimensions{
+        boost::numeric_cast<float>(map_size.width),
+        boost::numeric_cast<float>(map_size.height)};
+
     render_ids.push_back(graphics_engine.acquire(
-        {static_cast<float>(map_size), static_cast<float>(map_size)},
-        {0.0f, 0.0f}, map_grey));
+        math::Size2f{scale_to_field_size(map_dimensions)},
+        math::Position2f{0.0f, 0.0f}, map_grey));
 
     constexpr graphics::color wall_bronze{205, 127, 50};
 
@@ -47,9 +54,9 @@ ExplosionRange SimpleMap::get_explosion_range(std::pair<int, int> start_point,
     const auto up = get_range_in_decreasing_direction<UpDistance>(
         start_point.second, range);
     const auto down = get_range_in_increasing_direction<DownDistance>(
-        start_point.second, range);
+        start_point.second, range, boost::numeric_cast<int>(map_size.height));
     const auto right = get_range_in_increasing_direction<RightDistance>(
-        start_point.first, range);
+        start_point.first, range, boost::numeric_cast<int>(map_size.width));
     return {left, right, up, down};
 }
 

@@ -2,8 +2,8 @@
 
 #include <gtest/gtest.h>
 
-#include "sfml_rectangle_shape.hpp"
 #include "renderer_id_generator.hpp"
+#include "sfml_rectangle_shape.hpp"
 
 namespace graphics
 {
@@ -47,6 +47,10 @@ public:
     {
         drawn = true;
         drawnShape = shape;
+    }
+
+    void setView(const sf::View&)
+    {
     }
 
     virtual sf::Vector2u getSize() const = 0;

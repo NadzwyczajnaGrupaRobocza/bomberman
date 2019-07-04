@@ -17,5 +17,6 @@ public:
     virtual void initialize() = 0;
     virtual void clear(const sf::Color&) = 0;
     virtual void draw(const sfml_rectangle_shape&) = 0;
+    virtual void set_view() = 0;
 };
 }

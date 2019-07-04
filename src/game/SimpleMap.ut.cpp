@@ -3,6 +3,7 @@
 #include "glm/glm.hpp"
 #include <vector>
 
+#include "FieldSize.hpp"
 #include "WallPositionsGenerator.mock.hpp"
 #include "graphics/renderer_pool.mock.hpp"
 #include "physics/PhysicsEngine.mock.hpp"
@@ -30,7 +31,7 @@ public:
                 deregistered_physics_ids.push_back(id);
             }));
         EXPECT_CALL(wall_positions_generator,
-                    generate_boundary_walls(edge_size))
+                    generate_boundary_walls(desired_map_size))
             .WillOnce(Return(generated_walls));
         {
             InSequence seq;
@@ -57,10 +58,13 @@ public:
                 [&](const auto id) { deregistered_render_ids.push_back(id); }));
     }
 
-    const int edge_size{10};
+    const unsigned width{10};
+    const unsigned height{20};
+    const math::Size2u desired_map_size{width, height};
+    const math::Size2f map_size{static_cast<float>(width),
+                                static_cast<float>(height)};
     const math::Position2f top_left_position{0, 0};
-    const math::Size2f boundary_size{static_cast<float>(edge_size),
-                                     static_cast<float>(edge_size)};
+    const math::Size2f boundary_size{scale_to_field_size(map_size)};
     const std::vector<math::Size2f> generated_walls_sizes{
         {1, 1}, {1, 2}, {4, 4}, {4, 67}};
 
@@ -90,7 +94,7 @@ class SimpleMapTest : public SimpleMapConstructorExpectations
 {
 public:
     SimpleMap map{physics_engine, wall_positions_generator, render_engine,
-                  edge_size};
+                  desired_map_size};
 
     void verifyAllWallsArePlacedCorrectly()
     {
@@ -117,7 +121,7 @@ TEST_F(SimpleMapTest,
        get_explosion_range_shouldReturnMaxExplosion_WhenNoBoundaryWallHit)
 {
     ExplosionRange expected_range{1_left, 1_right, 1_up, 1_down};
-    ASSERT_THAT(map.get_explosion_range(std::make_pair(4, 4), 1),
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(4, 14), 1),
                 Eq(expected_range));
 }
 
@@ -125,7 +129,7 @@ TEST_F(SimpleMapTest,
        get_explosion_range_shouldReturnMaxExplosion_WhenBiggerRange)
 {
     ExplosionRange expected_range{2_left, 2_right, 2_up, 2_down};
-    ASSERT_THAT(map.get_explosion_range(std::make_pair(4, 4), 2),
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(4, 14), 2),
                 Eq(expected_range));
 }
 
@@ -149,7 +153,7 @@ TEST_F(SimpleMapTest,
        get_explosion_range_shouldReturnMaxExplosionLimited_WhenReachDownEnd)
 {
     ExplosionRange expected_range{3_left, 3_right, 3_up, 2_down};
-    ASSERT_THAT(map.get_explosion_range(std::make_pair(5, 6), 3),
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(5, 16), 3),
                 Eq(expected_range));
 }
 
@@ -157,7 +161,7 @@ TEST_F(SimpleMapTest,
        get_explosion_range_shouldReturnMaxExplosionLimited_WhenReachRightEnd)
 {
     ExplosionRange expected_range{3_left, 2_right, 3_up, 0_down};
-    ASSERT_THAT(map.get_explosion_range(std::make_pair(6, 9), 3),
+    ASSERT_THAT(map.get_explosion_range(std::make_pair(6, 18), 3),
                 Eq(expected_range));
 }
 
@@ -171,7 +175,7 @@ TEST_F(SimpleMapWithoutImplicitConstructionTest,
 {
     {
         SimpleMap map_destructor_test{physics_engine, wall_positions_generator,
-                                      render_engine, edge_size};
+                                      render_engine, desired_map_size};
     }
     ASSERT_THAT(deregistered_render_ids, UnorderedElementsAreArray(render_ids));
     ASSERT_THAT(deregistered_physics_ids,

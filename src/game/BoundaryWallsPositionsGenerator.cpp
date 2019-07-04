@@ -1,4 +1,5 @@
 #include "BoundaryWallsPositionsGenerator.hpp"
+#include "FieldSize.hpp"
 
 BoundaryWallsPositionsGenerator::Walls
 BoundaryWallsPositionsGenerator::generate_boundary_walls(
@@ -17,13 +18,13 @@ BoundaryWallsPositionsGenerator::generate_boundary_walls(
 
 bool BoundaryWallsPositionsGenerator::zero_size(BoundarySize boundary_size)
 {
-    constexpr auto zero_size = 0;
+    constexpr auto zero_size = math::Size2u{0, 0};
     return boundary_size == zero_size;
 }
 
 bool BoundaryWallsPositionsGenerator::size_one(BoundarySize boundary_size)
 {
-    constexpr auto size_one = 1;
+    constexpr auto size_one = math::Size2u{1, 1};
     return boundary_size == size_one;
 }
 
@@ -37,9 +38,8 @@ BoundaryWallsPositionsGenerator::Walls
 BoundaryWallsPositionsGenerator::generate_walls_for_size_one()
 {
     constexpr auto start_position = 0;
-    constexpr auto wall_size = 1;
-    return {
-        {position(start_position, start_position), size(wall_size, wall_size)}};
+    return {{position(start_position, start_position),
+             size(field_size.width, field_size.height)}};
 }
 
 BoundaryWallsPositionsGenerator::BoundaryWallsPositionsGenerator::Walls
@@ -48,15 +48,20 @@ BoundaryWallsPositionsGenerator::generate_empty_for_size_bigger_than_one(
 {
     constexpr auto start_position = 0;
     constexpr auto minimum_size = 1;
-    const auto just_before_end_position = boundary_size - 1;
-    return {{position(start_position, start_position),
-             size(minimum_size, boundary_size)},
-            {position(start_position, start_position),
-             size(boundary_size, minimum_size)},
-            {position(just_before_end_position, start_position),
-             size(minimum_size, boundary_size)},
-            {position(start_position, just_before_end_position),
-             size(boundary_size, minimum_size)}};
+    const auto just_before_end_position_width =
+        boundary_size.width - minimum_size;
+    const auto just_before_end_position_height =
+        boundary_size.height - minimum_size;
+    return {{scale_to_field_size(position(start_position, start_position)),
+             scale_to_field_size(size(minimum_size, boundary_size.height))},
+            {scale_to_field_size(position(start_position, start_position)),
+             scale_to_field_size(size(boundary_size.width, minimum_size))},
+            {scale_to_field_size(
+                 position(just_before_end_position_width, start_position)),
+             scale_to_field_size(size(minimum_size, boundary_size.height))},
+            {scale_to_field_size(
+                 position(start_position, just_before_end_position_height)),
+             scale_to_field_size(size(boundary_size.width, minimum_size))}};
 }
 
 BoundaryWallsPositionsGenerator::PositionInSpace

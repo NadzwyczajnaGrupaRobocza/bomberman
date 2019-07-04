@@ -104,7 +104,8 @@ TEST_F(BombermanTest, update_without_bombs)
     Verify(Method(physics_engine, set_position).Using(physics_id, _));
 
     EXPECT_EQ(current_position, expected_current_renderer_position);
-    EXPECT_EQ(math::Position2f(20.3f, 120.3f), expected_next_physics_position);
+    EXPECT_EQ(math::Position2f(20.03f, 120.03f),
+              expected_next_physics_position);
 }
 
 class BombermanSpawnTest : public BombermanTest, public WithParamInterface<bool>
@@ -134,7 +135,8 @@ TEST_P(BombermanSpawnTest, update_with_bombs)
     Verify(Method(physics_engine, set_position).Using(physics_id, _));
 
     EXPECT_EQ(current_position, expected_current_renderer_position);
-    EXPECT_EQ(math::Position2f(20.3f, 120.3f), expected_next_physics_position);
+    EXPECT_EQ(math::Position2f(20.03f, 120.03f),
+              expected_next_physics_position);
 }
 
-INSTANTIATE_TEST_CASE_P(, BombermanSpawnTest, Values(true, false),);
+INSTANTIATE_TEST_CASE_P(, BombermanSpawnTest, Values(true, false), );

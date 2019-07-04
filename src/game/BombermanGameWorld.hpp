@@ -9,13 +9,15 @@
 #include "GameWorld.hpp"
 #include "SimpleMap.hpp"
 #include "graphics/renderer_pool.hpp"
+#include "math/Size2u.hpp"
 #include "physics/PhysicsEngine.hpp"
 
 class BombermanGameWorld : public GameWorld
 {
 public:
     BombermanGameWorld(std::unique_ptr<physics::PhysicsEngine>,
-                       std::unique_ptr<graphics::renderer_pool>);
+                       std::unique_ptr<graphics::renderer_pool>,
+                       const math::Size2u& map_size);
 
     bool is_bomb_at_pos(const BombPosition&) const override;
 
@@ -32,7 +34,6 @@ private:
     std::map<BombPosition, std::unique_ptr<Bomb>> bombs;
     std::map<ExplosionPosition, std::unique_ptr<Explosion>> explosions;
 
-    int map_size = 100;
     std::unique_ptr<WallPositionsGenerator> gen;
     SimpleMap simpleMap;
     std::shared_ptr<physics::PhysicsEngine> ppool;
