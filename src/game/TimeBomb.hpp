@@ -29,7 +29,7 @@ private:
     void markExploded();
     void deregister();
 
-    const math::Size2f bomb_size{40.0, 40.0};
+    const math::Size2f bomb_size{1.0, 1.0};
     bool exploded{false};
     const std::chrono::seconds bombTimer{3};
     std::shared_ptr<physics::PhysicsEngine> physics_engine;

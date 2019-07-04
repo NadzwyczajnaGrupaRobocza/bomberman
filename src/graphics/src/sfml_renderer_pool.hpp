@@ -47,7 +47,5 @@ private:
     std::unordered_set<renderer_id, boost::hash<renderer_id>> trash;
 
     std::map<std::string, sf::Texture> textures;
-
-    sf::Texture texture;
 };
 }
