@@ -32,4 +32,9 @@ inline bool operator==(const window_size& lhs, const ::sf::Vector2u& rhs)
 {
     return sf::Vector2u(lhs) == rhs;
 }
+
+inline bool operator==(const window_size& lhs, const window_size& rhs)
+{
+    return lhs == sf::Vector2u(rhs);
+}
 }

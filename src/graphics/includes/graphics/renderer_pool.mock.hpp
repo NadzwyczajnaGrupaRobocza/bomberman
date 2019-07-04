@@ -1,7 +1,6 @@
 #pragma once
 
 #include "gmock/gmock.h"
-
 #include "renderer_pool.hpp"
 
 namespace graphics
@@ -18,5 +17,6 @@ public:
     MOCK_METHOD1(get_position, math::Position2f(const renderer_id&));
     MOCK_METHOD2(set_color, void(const renderer_id&, const color&));
     MOCK_CONST_METHOD1(get_color, color(const renderer_id&));
+    MOCK_METHOD1(set_rendering_size, void(const math::Size2u&));
 };
 }

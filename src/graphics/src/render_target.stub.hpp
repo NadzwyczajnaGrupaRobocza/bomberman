@@ -53,6 +53,10 @@ public:
     {
     }
 
+    void set_view_size(const window_size&)
+    {
+    }
+
     sf::View getDefaultView()
     {
         return sf::View{};
