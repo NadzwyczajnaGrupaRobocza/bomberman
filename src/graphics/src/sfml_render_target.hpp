@@ -44,7 +44,7 @@ sf::View getLetterboxView(sf::View view, unsigned windowWidth,
     else
     {
         sizeY = windowRatio / viewRatio;
-        posY = (1 - sizeY) / 0.5F;
+        posY = (1 - sizeY) * 0.5F;
     }
 
     view.setViewport(sf::FloatRect(posX, posY, sizeX, sizeY));
