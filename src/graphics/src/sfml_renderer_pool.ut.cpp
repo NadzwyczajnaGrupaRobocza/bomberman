@@ -164,7 +164,7 @@ TEST_F(sfml_renderer_pool_test, onlyClearTheScreenIfNoObjectToDraw)
 {
     auto renderer_pool = create_renderer_pool();
 
-    EXPECT_CALL(*context, clear(sf::Color::Black));
+    EXPECT_CALL(*context, clear(sf::Color::White));
     EXPECT_CALL(*context, draw(_)).Times(0);
 
     renderer_pool->render_all();
@@ -175,7 +175,7 @@ TEST_F(sfml_renderer_pool_test, releaseNotExistingObjectShouldBeIngored)
     auto const not_existing_shape_id = renderer_id_generator::generate();
     auto renderer_pool = create_renderer_pool();
 
-    EXPECT_CALL(*context, clear(sf::Color::Black));
+    EXPECT_CALL(*context, clear(sf::Color::White));
     EXPECT_CALL(*context, draw(_)).Times(0);
 
     renderer_pool->release(not_existing_shape_id);
@@ -190,7 +190,7 @@ TEST_F(sfml_renderer_pool_test, clearScreenBeforeDraw)
 
     InSequence keep_order;
 
-    EXPECT_CALL(*context, clear(sf::Color::Black));
+    EXPECT_CALL(*context, clear(sf::Color::White));
     EXPECT_CALL(*context, draw(shape));
 
     renderer_pool->render_all();

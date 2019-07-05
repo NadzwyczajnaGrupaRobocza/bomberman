@@ -1,11 +1,10 @@
-#include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
 #include "BombLauncher.mock.hpp"
+#include "TimeBomb.hpp"
+#include "gmock/gmock.h"
 #include "graphics/renderer_pool.mock.hpp"
 #include "physics/PhysicsEngine.mock.hpp"
-
-#include "TimeBomb.hpp"
 
 using namespace ::testing;
 
@@ -15,10 +14,13 @@ public:
     ExpectRegistration()
     {
         EXPECT_CALL(*renderer_pool,
-                    acquire(bomb_size, bomb_position, graphics::colors::red))
+                    acquire(bomb_size, bomb_position, graphics::colors::white))
             .WillOnce(Return(bomb_render_id));
         EXPECT_CALL(*physics_engine, register_colider(bomb_size, bomb_position))
             .WillOnce(Return(bomb_physics_id));
+
+        EXPECT_CALL(*renderer_pool,
+                    set_texture(bomb_render_id, "data/bomb.png"));
     }
 
     void expect_deregistration()

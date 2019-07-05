@@ -1,14 +1,12 @@
-#include "gmock/gmock.h"
-
-#include "glm/glm.hpp"
 #include <vector>
 
 #include "FieldSize.hpp"
+#include "SimpleMap.hpp"
 #include "WallPositionsGenerator.mock.hpp"
+#include "glm/glm.hpp"
+#include "gmock/gmock.h"
 #include "graphics/renderer_pool.mock.hpp"
 #include "physics/PhysicsEngine.mock.hpp"
-
-#include "SimpleMap.hpp"
 
 using namespace ::testing;
 
@@ -35,11 +33,13 @@ public:
             .WillOnce(Return(generated_walls));
         {
             InSequence seq;
-            constexpr graphics::color map_grey{161, 161, 161};
-            EXPECT_CALL(render_engine,
-                        acquire(boundary_size, top_left_position, map_grey))
+            EXPECT_CALL(render_engine, acquire(boundary_size, top_left_position,
+                                               graphics::colors::white))
                 .WillOnce(Return(background_id));
+            EXPECT_CALL(render_engine,
+                        set_texture(background_id, "data/map.png"));
             render_ids.push_back(background_id);
+
             EXPECT_CALL(render_engine, acquire(_, _, _))
                 .WillRepeatedly(
                     Invoke([&](const auto& size, const auto& position,
@@ -50,6 +50,8 @@ public:
                         wall_colors.push_back(color);
                         const auto rid = graphics::renderer_id{{id++}};
                         render_ids.push_back(rid);
+                        EXPECT_CALL(render_engine,
+                                    set_texture(rid, "data/wall.png"));
                         return rid;
                     }));
         }
@@ -107,8 +109,7 @@ public:
         ASSERT_THAT(render_wall_sizes,
                     UnorderedElementsAreArray(generated_walls_sizes));
 
-        constexpr graphics::color wall_bronze{205, 127, 50};
-        ASSERT_THAT(wall_colors, Each(wall_bronze));
+        ASSERT_THAT(wall_colors, Each(graphics::colors::white));
     }
 };
 
