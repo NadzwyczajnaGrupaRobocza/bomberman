@@ -17,7 +17,6 @@ public:
 
     void run()
     {
-
         while (main_window->is_open())
         {
             display_frame();
