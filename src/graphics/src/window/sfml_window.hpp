@@ -5,7 +5,7 @@
 #include "sfml/window_proxy.hpp"
 
 #include "graphics/window.hpp"
-#include "window_size.hpp"
+#include "graphics/window_size.hpp"
 
 namespace graphics
 {

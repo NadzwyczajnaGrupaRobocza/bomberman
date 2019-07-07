@@ -3,6 +3,7 @@
 #include "BombPosition.hpp"
 #include "DeltaTime.hpp"
 #include "ExplosionPosition.hpp"
+#include "graphics/window_size.hpp"
 
 class Bomb;
 
@@ -21,5 +22,5 @@ public:
 
     virtual void update(DeltaTime) = 0;
 
-    virtual void set_window_size(const window_size&) = 0;
+    virtual void set_window_size(const graphics::window_size&) = 0;
 };

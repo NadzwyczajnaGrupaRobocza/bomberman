@@ -33,9 +33,9 @@ void sfml_window::update()
     }
 }
 
-window_size get_window_size() const
+window_size sfml_window::get_window_size() const
 {
-    m_window->get_window_size();
+    return m_window->get_window_size();
 }
 
 }

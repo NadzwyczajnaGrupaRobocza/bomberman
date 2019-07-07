@@ -4,7 +4,7 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/VideoMode.hpp>
 
-#include "window_size.hpp"
+#include "graphics/window_size.hpp"
 
 namespace graphics
 {
@@ -18,6 +18,6 @@ public:
     virtual bool poll_event(sf::Event&) = 0;
     virtual void close() = 0;
     virtual void create(sf::VideoMode, const sf::String& title) = 0;
-    virtual window_size get_size() const = 0;
+    virtual window_size get_window_size() const = 0;
 };
 }

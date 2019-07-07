@@ -31,7 +31,7 @@ void sfml_window_proxy::create(sf::VideoMode mode, const sf::String& title)
     return m_window.create(mode, title);
 }
 
-window_size sfml_window_proxy::get_size() const
+window_size sfml_window_proxy::get_window_size() const
 {
     return m_window.getSize();
 }

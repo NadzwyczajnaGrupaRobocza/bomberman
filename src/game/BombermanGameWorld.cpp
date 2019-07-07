@@ -79,7 +79,7 @@ void BombermanGameWorld::cleanBombs()
     });
 }
 
-void BombermanGameWorld::set_window_size(const window_size& size)
+void BombermanGameWorld::set_window_size(const graphics::window_size& size)
 {
     rpool->set_rendering_size(size);
 }

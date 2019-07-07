@@ -1,6 +1,6 @@
 #pragma once
 
-#include "window_size.hpp"
+#include "graphics/window_size.hpp"
 
 namespace graphics
 {

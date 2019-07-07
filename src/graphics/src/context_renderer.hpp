@@ -4,8 +4,8 @@
 #include <SFML/System/Vector2.hpp>
 #include <memory>
 
+#include "graphics/window_size.hpp"
 #include "sfml_rectangle_shape.hpp"
-#include "window_size.hpp"
 
 namespace graphics
 {
