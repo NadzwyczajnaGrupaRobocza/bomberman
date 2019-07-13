@@ -33,7 +33,7 @@ int main()
     {
         auto const now = std::chrono::high_resolution_clock::now();
 
-        // world.set_window_size(window -)
+        world.set_window_size(window->get_window_size());
         world.update(DeltaTime{now - last_frame});
         window->update();
         window->display();
