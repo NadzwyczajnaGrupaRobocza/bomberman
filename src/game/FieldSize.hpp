@@ -9,11 +9,14 @@ constexpr auto field_height = 1;
 constexpr auto field_size = math::Size2i{field_width, field_height};
 constexpr auto field_size_f = math::Size2f{field_width, field_height};
 
+namespace
+{
 template <typename>
 struct to_int_type
 {
     using type = int;
 };
+}
 
 template <typename Type, typename to_int_type<decltype(Type::first)>::type = 0>
 Type scale_to_field_size(Type val)
