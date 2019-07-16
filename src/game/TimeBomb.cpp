@@ -8,7 +8,7 @@ TimeBomb::TimeBomb(std::shared_ptr<physics::PhysicsEngine> pe,
       bombLauncher{std::move(bl)}, physics_id{physics_engine->register_colider(
                                        bomb_size, bomb_position)},
       renderer_id{
-          renderer_pool->acquire(bomb_size, bomb_position, "data/bomb.png")}
+          renderer_pool->acquire(bomb_size, bomb_position, "resources/bomb.png")}
 {
 }
 

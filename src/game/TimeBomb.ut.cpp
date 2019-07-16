@@ -14,7 +14,7 @@ public:
     ExpectRegistration()
     {
         EXPECT_CALL(*renderer_pool,
-                    acquire(bomb_size, bomb_position, "data/bomb.png"))
+                    acquire(bomb_size, bomb_position, "resources/bomb.png"))
             .WillOnce(Return(bomb_render_id));
         EXPECT_CALL(*physics_engine, register_colider(bomb_size, bomb_position))
             .WillOnce(Return(bomb_physics_id));

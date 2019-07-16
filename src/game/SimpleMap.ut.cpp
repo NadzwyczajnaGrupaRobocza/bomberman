@@ -34,12 +34,12 @@ public:
         {
             InSequence seq;
             EXPECT_CALL(render_engine, acquire(boundary_size, top_left_position,
-                                               "data/map.png"))
+                                               "resources/map.png"))
                 .WillOnce(Return(background_id));
 
             render_ids.push_back(background_id);
 
-            EXPECT_CALL(render_engine, acquire(_, _, "data/wall.png"))
+            EXPECT_CALL(render_engine, acquire(_, _, "resources/wall.png"))
                 .WillRepeatedly(
                     Invoke([&](const auto& size, const auto& position,
                                const auto& /*texture*/) {

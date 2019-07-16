@@ -16,7 +16,7 @@ SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
 
     render_ids.push_back(graphics_engine.acquire(
         math::Size2f{scale_to_field_size(map_dimensions)},
-        math::Position2f{0.0f, 0.0f}, "data/map.png"));
+        math::Position2f{0.0f, 0.0f}, "resources/map.png"));
 
     for (const auto& generated_walls :
          generated_walls_generator.generate_boundary_walls(map_size))
@@ -31,7 +31,7 @@ SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
              static_cast<float>(generated_walls.second.second)},
             {static_cast<float>(generated_walls.first.first),
              static_cast<float>(generated_walls.first.second)},
-            "data/wall.png"));
+            "resources/wall.png"));
     }
 }
 
