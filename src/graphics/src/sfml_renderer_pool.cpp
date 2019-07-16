@@ -43,10 +43,10 @@ renderer_id sfml_renderer_pool::acquire(const math::Size2f& size,
 
 renderer_id sfml_renderer_pool::acquire(const math::Size2f& size,
                                         const math::Position2f& position,
-                                        const std::string& texture_path)
+                                        const texture_path& path)
 {
     const auto id = acquire(size, position, graphics::colors::white);
-    set_texture(id, texture_path);
+    set_texture(id, path);
     return id;
 }
 
