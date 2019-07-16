@@ -12,15 +12,15 @@ public:
 TEST_F(sfml_texture_loader_test, loadRealImageToTextureShouldNotThrow)
 {
     sfml_texture_loader textures;
-    ASSERT_NO_THROW(textures.load("../data/bomb.png"));
+    ASSERT_NO_THROW(textures.load("../resources/bomb.png"));
 }
 
 TEST_F(sfml_texture_loader_test, createOnlyOneTextureForEachImageFile)
 {
     sfml_texture_loader textures;
     ASSERT_NO_THROW({
-        auto& first_bomb = textures.load("../data/bomb.png");
-        auto& second_bomb = textures.load("../data/bomb.png");
+        auto& first_bomb = textures.load("../resources/bomb.png");
+        auto& second_bomb = textures.load("../resources/bomb.png");
 
         EXPECT_EQ(&first_bomb, &second_bomb);
     });
@@ -31,8 +31,8 @@ TEST_F(sfml_texture_loader_test, eachTextureFromOtherImageFileShouldBeDifferent)
 {
     sfml_texture_loader textures;
     ASSERT_NO_THROW({
-        auto& bomb = textures.load("../data/bomb.png");
-        auto& bomberman = textures.load("../data/bomberman.png");
+        auto& bomb = textures.load("../resources/bomb.png");
+        auto& bomberman = textures.load("../resources/bomberman.png");
 
         EXPECT_NE(&bomb, &bomberman);
     });
