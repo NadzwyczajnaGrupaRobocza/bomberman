@@ -9,7 +9,6 @@ add_library(graphics
   window/sfml_window.cpp
   window/sfml_window_proxy.cpp
   sfml_texture_loader.cpp
-  # texture_allocator.cpp
   )
 
 target_include_directories(graphics
@@ -32,7 +31,6 @@ add_executable(graphics-ut
   sfml_rectangle_shape.ut.cpp
   window/sfml_window.ut.cpp
   sfml_texture_loader.ut.cpp
-  # texture_allocator.ut.cpp
   )
 
 target_compile_options(graphics-ut PRIVATE
