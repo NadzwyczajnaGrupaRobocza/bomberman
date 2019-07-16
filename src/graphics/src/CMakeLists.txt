@@ -47,4 +47,7 @@ target_include_directories(graphics-ut SYSTEM BEFORE
 target_link_libraries(graphics-ut
   PRIVATE graphics gmock_main ${SFML_LIBRARIES})
 
-add_test(graphics-ut ${EXECUTABLE_OUTPUT_PATH}/graphics-ut --gtest_color=yes)
+add_test(
+  NAME graphics-ut
+  COMMAND ${EXECUTABLE_OUTPUT_PATH}/graphics-ut --gtest_color=yes
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
