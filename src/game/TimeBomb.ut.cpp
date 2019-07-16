@@ -14,13 +14,10 @@ public:
     ExpectRegistration()
     {
         EXPECT_CALL(*renderer_pool,
-                    acquire(bomb_size, bomb_position, graphics::colors::white))
+                    acquire(bomb_size, bomb_position, "data/bomb.png"))
             .WillOnce(Return(bomb_render_id));
         EXPECT_CALL(*physics_engine, register_colider(bomb_size, bomb_position))
             .WillOnce(Return(bomb_physics_id));
-
-        EXPECT_CALL(*renderer_pool,
-                    set_texture(bomb_render_id, "data/bomb.png"));
     }
 
     void expect_deregistration()

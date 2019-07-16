@@ -34,24 +34,20 @@ public:
         {
             InSequence seq;
             EXPECT_CALL(render_engine, acquire(boundary_size, top_left_position,
-                                               graphics::colors::white))
+                                               "data/map.png"))
                 .WillOnce(Return(background_id));
-            EXPECT_CALL(render_engine,
-                        set_texture(background_id, "data/map.png"));
+
             render_ids.push_back(background_id);
 
-            EXPECT_CALL(render_engine, acquire(_, _, _))
+            EXPECT_CALL(render_engine, acquire(_, _, "data/wall.png"))
                 .WillRepeatedly(
                     Invoke([&](const auto& size, const auto& position,
-                               const auto& color) {
+                               const auto& /*texture*/) {
                         static uint8_t id = 80;
                         render_wall_positions.push_back(position);
                         render_wall_sizes.push_back(size);
-                        wall_colors.push_back(color);
                         const auto rid = graphics::renderer_id{{id++}};
                         render_ids.push_back(rid);
-                        EXPECT_CALL(render_engine,
-                                    set_texture(rid, "data/wall.png"));
                         return rid;
                     }));
         }
@@ -87,7 +83,6 @@ public:
     std::vector<graphics::renderer_id> render_ids;
     std::vector<math::Position2f> render_wall_positions;
     std::vector<math::Size2f> render_wall_sizes;
-    std::vector<graphics::color> wall_colors;
     std::vector<graphics::renderer_id> deregistered_render_ids;
     graphics::renderer_id background_id{{uint8_t(1024)}};
 };
@@ -108,8 +103,6 @@ public:
                     UnorderedElementsAreArray(generated_walls_positions));
         ASSERT_THAT(render_wall_sizes,
                     UnorderedElementsAreArray(generated_walls_sizes));
-
-        ASSERT_THAT(wall_colors, Each(graphics::colors::white));
     }
 };
 

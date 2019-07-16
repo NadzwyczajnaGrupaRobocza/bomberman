@@ -2,12 +2,11 @@
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <iostream>
 #include <range/v3/algorithm/for_each.hpp>
 
-#include <iostream>
-
 #include "boost/range/algorithm_ext/erase.hpp"
-#include <boost/uuid/uuid_io.hpp>
 
 namespace graphics
 {
@@ -25,8 +24,9 @@ struct is_shape_id_equal
 };
 }
 
-sfml_renderer_pool::sfml_renderer_pool(std::unique_ptr<context_renderer> r)
-    : renderer{std::move(r)}
+sfml_renderer_pool::sfml_renderer_pool(std::unique_ptr<context_renderer> r,
+                                       std::unique_ptr<texture_loader> loader)
+    : renderer{std::move(r)}, textures{std::move(loader)}
 {
     renderer->initialize();
     renderer->set_view();
@@ -41,17 +41,20 @@ renderer_id sfml_renderer_pool::acquire(const math::Size2f& size,
     return id;
 }
 
-void sfml_renderer_pool::set_texture(const renderer_id& id,
-                                     const std::string& texture_path)
+renderer_id sfml_renderer_pool::acquire(const math::Size2f& size,
+                                        const math::Position2f& position,
+                                        const std::string& texture_path)
 {
-    if (!textures[texture_path].loadFromFile(texture_path))
-    {
-        std::cerr << "cannot load textures\n";
-    }
-    else
-    {
-        get_shape(id).setTexture(&textures[texture_path]);
-    }
+    const auto id = acquire(size, position, graphics::colors::white);
+    set_texture(id, texture_path);
+    return id;
+}
+
+void sfml_renderer_pool::set_texture(const renderer_id& id,
+                                     const texture_path& path)
+{
+    const auto& texture = textures->load(path);
+    get_shape(id).setTexture(&texture);
 }
 
 void sfml_renderer_pool::release(const renderer_id& id)

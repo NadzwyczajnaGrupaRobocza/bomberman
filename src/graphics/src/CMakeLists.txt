@@ -7,7 +7,10 @@ add_library(graphics
   renderer_id_generator.cpp
   sfml_rectangle_shape.cpp
   window/sfml_window.cpp
-  window/sfml_window_proxy.cpp)
+  window/sfml_window_proxy.cpp
+  sfml_texture_loader.cpp
+  # texture_allocator.cpp
+  )
 
 target_include_directories(graphics
   PUBLIC ${CMAKE_CURRENT_LIST_DIR}/../includes
@@ -27,7 +30,10 @@ add_executable(graphics-ut
   sfml_renderer_pool.ut.cpp
   sfml_render_target.ut.cpp
   sfml_rectangle_shape.ut.cpp
-  window/sfml_window.ut.cpp)
+  window/sfml_window.ut.cpp
+  sfml_texture_loader.ut.cpp
+  # texture_allocator.ut.cpp
+  )
 
 target_compile_options(graphics-ut PRIVATE
   -Wno-used-but-marked-unused

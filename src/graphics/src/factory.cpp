@@ -2,6 +2,7 @@
 
 #include "sfml_render_target.hpp"
 #include "sfml_renderer_pool.hpp"
+#include "sfml_texture_loader.hpp"
 #include "window/sfml_window.hpp"
 #include "window/sfml_window_proxy.hpp"
 
@@ -13,7 +14,8 @@ create_renderer_pool(const math::Size2u& rendering_region_size,
 {
     return std::make_unique<sfml_renderer_pool>(
         std::make_unique<sfml_render_target>(rendering_region_size,
-                                             logical_region_size));
+                                             logical_region_size),
+        std::make_unique<sfml_texture_loader>());
 }
 
 std::unique_ptr<window> create_window(const math::Size2u& size,
