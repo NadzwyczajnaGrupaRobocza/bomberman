@@ -1,10 +1,11 @@
 #include "sfml_renderer_pool.hpp"
 
+#include <iostream>
+#include <range/v3/algorithm/for_each.hpp>
+
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <boost/uuid/uuid_io.hpp>
-#include <iostream>
-#include <range/v3/algorithm/for_each.hpp>
 
 #include "boost/range/algorithm_ext/erase.hpp"
 
@@ -25,8 +26,8 @@ struct is_shape_id_equal
 }
 
 sfml_renderer_pool::sfml_renderer_pool(std::unique_ptr<context_renderer> r,
-                                       std::unique_ptr<texture_loader> loader)
-    : renderer{std::move(r)}, textures{std::move(loader)}
+                                       std::unique_ptr<texture_warehous> t)
+    : renderer{std::move(r)}, textures{std::move(t)}
 {
     renderer->initialize();
     renderer->set_view();
@@ -53,7 +54,7 @@ renderer_id sfml_renderer_pool::acquire(const math::Size2f& size,
 void sfml_renderer_pool::set_texture(const renderer_id& id,
                                      const texture_path& path)
 {
-    const auto& texture = textures->load(path);
+    const auto& texture = textures->get_access(path);
     get_shape(id).setTexture(&texture);
 }
 

@@ -1,19 +1,18 @@
 #pragma once
 
-#include <memory>
-#include <unordered_map>
+#include <string>
 
-#include "texture_loader.hpp"
+#include <SFML/Graphics/Texture.hpp>
 
 namespace graphics
 {
+using texture_path = std::string;
 
-class sfml_texture_loader : public texture_loader
+class sfml_texture_loader
 {
 public:
-    sf::Texture& load(const texture_path&) override;
+    virtual ~sfml_texture_loader() = default;
 
-private:
-    std::unordered_map<texture_path, std::unique_ptr<sf::Texture>> textures;
+    virtual bool load(sf::Texture&, const texture_path&) = 0;
 };
 }

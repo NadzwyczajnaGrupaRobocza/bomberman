@@ -1,12 +1,14 @@
+#include <range/v3/algorithm/for_each.hpp>
+
 #include <boost/uuid/uuid_io.hpp>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <range/v3/algorithm/for_each.hpp>
 
 #include "context_renderer.mock.hpp"
+#include "texture_warehous.mock.hpp"
+
 #include "sfml_rectangle_shape.hpp"
 #include "sfml_renderer_pool.hpp"
-#include "texture_loader.mock.hpp"
 
 using namespace ::testing;
 
@@ -32,7 +34,8 @@ public:
         return std::make_unique<sfml_renderer_pool>(
             std::unique_ptr<context_renderer>(
                 unique_context_renderer.release()),
-            std::unique_ptr<texture_loader>(unique_texture_loader.release()));
+            std::unique_ptr<texture_warehous>(
+                unique_texture_warehous.release()));
     }
     auto create_object_with_color(renderer_pool& shape_pool,
                                   const size2f& shape_size,
@@ -73,14 +76,15 @@ public:
         std::make_unique<NiceMock<mock_context_renderer>>()};
     mock_context_renderer* context{unique_context_renderer.get()};
 
-    std::unique_ptr<mock_texture_loader> unique_texture_loader{
-        std::make_unique<StrictMock<mock_texture_loader>>()};
-    mock_texture_loader* textures{unique_texture_loader.get()};
+    std::unique_ptr<mock_texture_warehous> unique_texture_warehous{
+        std::make_unique<StrictMock<mock_texture_warehous>>()};
+    mock_texture_warehous* textures{unique_texture_warehous.get()};
 };
 
 TEST_F(sfml_renderer_pool_test, contextShouldBeInitializedByRendererPool)
 {
     EXPECT_CALL(*context, initialize());
+    EXPECT_CALL(*context, set_view());
     create_renderer_pool();
 }
 
@@ -151,6 +155,7 @@ TEST_F(sfml_renderer_pool_test, renderColoredObject)
         graphics::colors::red)};
 
     EXPECT_CALL(*context, draw(shape));
+    EXPECT_CALL(*context, set_view());
 
     renderer_pool->render_all();
 }
@@ -162,7 +167,7 @@ TEST_F(sfml_renderer_pool_test, renderTexturedObject)
     const auto red_texture_path{texture_path{"red_texture.png"}};
     auto red_texture{sf::Texture{}};
 
-    EXPECT_CALL(*textures, load(red_texture_path))
+    EXPECT_CALL(*textures, get_access(red_texture_path))
         .WillOnce(ReturnRef(red_texture));
 
     auto renderer_pool = create_renderer_pool();
@@ -171,6 +176,7 @@ TEST_F(sfml_renderer_pool_test, renderTexturedObject)
                                                 red_texture_path, red_texture)};
 
     EXPECT_CALL(*context, draw(shape));
+    EXPECT_CALL(*context, set_view());
 
     renderer_pool->render_all();
 }
@@ -188,6 +194,7 @@ TEST_F(sfml_renderer_pool_test, releasedObjectShouldNotBeDrawn)
     renderer_pool->release(first_shape.get_id());
 
     EXPECT_CALL(*context, draw(second_shape));
+    EXPECT_CALL(*context, set_view());
 
     renderer_pool->render_all();
 }
@@ -205,6 +212,7 @@ TEST_F(sfml_renderer_pool_test, renderAllObjectInOrderOfCreation)
 
     InSequence keep_order;
 
+    EXPECT_CALL(*context, set_view());
     EXPECT_CALL(*context, draw(first_shape));
     EXPECT_CALL(*context, draw(second_shape));
 
@@ -215,6 +223,7 @@ TEST_F(sfml_renderer_pool_test, onlyClearTheScreenIfNoObjectToDraw)
 {
     auto renderer_pool = create_renderer_pool();
 
+    EXPECT_CALL(*context, set_view());
     EXPECT_CALL(*context, clear(sf::Color::White));
     EXPECT_CALL(*context, draw(_)).Times(0);
 
@@ -226,6 +235,7 @@ TEST_F(sfml_renderer_pool_test, releaseNotExistingObjectShouldBeIngored)
     auto const not_existing_shape_id = renderer_id_generator::generate();
     auto renderer_pool = create_renderer_pool();
 
+    EXPECT_CALL(*context, set_view());
     EXPECT_CALL(*context, clear(sf::Color::White));
     EXPECT_CALL(*context, draw(_)).Times(0);
 
@@ -242,6 +252,7 @@ TEST_F(sfml_renderer_pool_test, clearScreenBeforeDraw)
     InSequence keep_order;
 
     EXPECT_CALL(*context, clear(sf::Color::White));
+    EXPECT_CALL(*context, set_view());
     EXPECT_CALL(*context, draw(shape));
 
     renderer_pool->render_all();
@@ -264,6 +275,7 @@ TEST_F(sfml_renderer_pool_test, createdObjectAfterReleaseOneShouldBeDrawn)
         *renderer_pool, math::Size2f{10.f, 12.f}, math::Position2f{100.f, 77.f},
         graphics::colors::red)};
 
+    EXPECT_CALL(*context, set_view());
     EXPECT_CALL(*context, draw(second_shape));
     EXPECT_CALL(*context, draw(third_shape));
 
@@ -295,7 +307,7 @@ TEST_F(sfml_renderer_pool_test, acquiredObjectWithTextureShouldSetColorToWhite)
     auto default_texture{sf::Texture{}};
     auto renderer_pool = create_renderer_pool();
 
-    EXPECT_CALL(*textures, load(default_texture_path))
+    EXPECT_CALL(*textures, get_access(default_texture_path))
         .WillOnce(ReturnRef(default_texture));
     auto const id = renderer_pool->acquire(dummy_size, dummy_position,
                                            default_texture_path);

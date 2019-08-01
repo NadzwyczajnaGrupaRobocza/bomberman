@@ -65,6 +65,16 @@ PenaltyReturnTypeOnItsOwnLine: 60
 PointerAlignment: Left
 ReflowComments:  true
 SortIncludes:    true
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex:           '^<(gtest|gmock|boost|SFML)/'
+    Priority:        2
+  - Regex:           '<.+>'
+    Priority:        1
+  - Regex:           '^".*mock.h'
+    Priority:        3
+  - Regex:           '".+"'
+    Priority:        10
 SpaceAfterCStyleCast: false
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeParens: ControlStatements
@@ -79,4 +89,3 @@ Standard:        Cpp11
 TabWidth:        4
 UseTab:          Never
 ...
-

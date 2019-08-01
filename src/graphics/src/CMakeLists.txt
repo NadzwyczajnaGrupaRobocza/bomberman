@@ -3,12 +3,13 @@ find_package(SFML ${SFML_MINIMAL_VERSION} COMPONENTS system graphics window REQU
 ########################### SRC ###########################
 add_library(graphics
   factory.cpp
-  sfml_renderer_pool.cpp
   renderer_id_generator.cpp
   sfml_rectangle_shape.cpp
+  sfml_renderer_pool.cpp
+  sfml_texture_warehous.cpp
+  simple_sfml_texture_loader.cpp
   window/sfml_window.cpp
   window/sfml_window_proxy.cpp
-  sfml_texture_loader.cpp
   )
 
 target_include_directories(graphics
@@ -26,11 +27,11 @@ target_link_libraries(graphics
 
 ########################### UT ###########################
 add_executable(graphics-ut
-  sfml_renderer_pool.ut.cpp
-  sfml_render_target.ut.cpp
   sfml_rectangle_shape.ut.cpp
+  sfml_render_target.ut.cpp
+  sfml_renderer_pool.ut.cpp
+  sfml_texture_warehous.ut.cpp
   window/sfml_window.ut.cpp
-  sfml_texture_loader.ut.cpp
   )
 
 target_compile_options(graphics-ut PRIVATE

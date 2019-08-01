@@ -1,27 +1,40 @@
 #include "sfml_texture_loader.hpp"
 
+#include <SFML/Graphics/Texture.hpp>
+
 namespace graphics
 {
-namespace
+sfml_texture_loader::sfml_texture_loader(
+    std::unique_ptr<sfml_texture_factory> factory)
+    : texture_factory{std::move(factory)}
 {
-auto create_texture(const texture_path& path)
-{
-    auto tx = std::make_unique<sf::Texture>();
-    if (tx->loadFromFile(path))
-    {
-        return tx;
-    }
-    throw texture_load_error{"cannot load: " + path};
 }
-}
-sf::Texture& sfml_texture_loader::load(const texture_path& path)
+
+texture& sfml_texture_loader::load(const texture_path& path)
 {
-    if (textures[path] == nullptr)
+    if (auto is_texture_not_loaded = allocate_texture_key(path))
     {
-        textures[path] = create_texture(path);
+        load_texture(path);
     }
 
     return *textures[path];
+}
+
+bool sfml_texture_loader::allocate_texture_key(const texture_path& path)
+{
+    return textures[path] == nullptr;
+}
+
+void sfml_texture_loader::load_texture(const texture_path& path)
+{
+    if (auto tx = texture_factory->create(); tx == nullptr or !tx->load(path))
+    {
+        throw texture_loader::load_error{"cannot load: " + path};
+    }
+    else
+    {
+        textures[path] = std::move(tx);
+    }
 }
 
 }
