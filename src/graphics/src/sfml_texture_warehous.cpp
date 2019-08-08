@@ -12,7 +12,8 @@ sfml_texture_warehous::sfml_texture_warehous(
 
 sf::Texture& sfml_texture_warehous::get_access(const texture_path& path)
 {
-    if (auto is_texture_not_loaded = allocate_texture_key(path))
+    constexpr auto texture_not_loaded{true};
+    if (allocate_texture_key(path) == texture_not_loaded)
     {
         load_texture(path);
     }
