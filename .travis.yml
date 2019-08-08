@@ -17,6 +17,7 @@ matrix:
           packages:
             - g++-8
             - boost1.68
+            - valgrind
       env:
       - C_COMPILER=gcc-8
       - CXX_COMPILER=g++-8
@@ -58,6 +59,8 @@ script:
   - ctest -j `nproc` -V
   - echo "xvfb time"
   - xvfb-run -e /dev/stdout -a ctest -j `nproc` -V
+  - echo "start valgrind"
+  - valgrind --leak-check=full ./bin/graphics-ut --gtest_filter=sfml_renderer_pool_test.renderTexturedObject
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
