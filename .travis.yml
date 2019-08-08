@@ -2,6 +2,9 @@ sudo: required
 dist: xenial
 language: cpp
 
+services:
+  - xvfb
+
 matrix:
   include:
     - compiler: gcc
@@ -50,7 +53,7 @@ script:
   - env CC=${C_COMPILER} CXX=${CXX_COMPILER} cmake .. -DENABLE_COVERAGE:BOOL=TRUE -DSFML_ROOT=$SFML
   - echo "We have" `nproc` "cores here"
   - make -j `nproc`
-  - ctest -j `nproc` -V
+  - xvfb-run ctest -j `nproc` -V
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
