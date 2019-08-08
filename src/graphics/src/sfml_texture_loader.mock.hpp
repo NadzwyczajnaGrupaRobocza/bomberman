@@ -4,7 +4,7 @@
 
 namespace graphics
 {
-class mock_sfml_texture_loader
+class mock_sfml_texture_loader : public sfml_texture_loader
 {
 public:
     virtual ~mock_sfml_texture_loader() = default;

@@ -13,8 +13,8 @@ namespace graphics
 class sfml_texture_warehous : public texture_warehous
 {
 public:
-    sfml_texture_warehous(std::unique_ptr<sfml_texture_factory>,
-                          std::unique_ptr<sfml_texture_loader>);
+    explicit sfml_texture_warehous(std::unique_ptr<sfml_texture_loader>);
+
     sf::Texture& get_access(const texture_path&) override;
 
 private:
@@ -22,7 +22,6 @@ private:
     bool allocate_texture_key(const texture_path&);
 
     std::unordered_map<texture_path, std::unique_ptr<sf::Texture>> textures;
-    std::unique_ptr<sfml_texture_factory> factory;
     std::unique_ptr<sfml_texture_loader> loader;
 };
 }

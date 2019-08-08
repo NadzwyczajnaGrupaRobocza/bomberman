@@ -17,7 +17,6 @@ create_renderer_pool(const math::Size2u& rendering_region_size,
         std::make_unique<sfml_render_target>(rendering_region_size,
                                              logical_region_size),
         std::make_unique<sfml_texture_warehous>(
-            std::make_unique<sfml_texture_factory>(),
             std::make_unique<simple_sfml_texture_loader>()));
 }
 

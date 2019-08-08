@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include "sfml_texture_factory.mock.hpp"
 #include "sfml_texture_loader.mock.hpp"
 
 #include "sfml_texture_warehous.hpp"
@@ -11,84 +10,81 @@ namespace graphics
 {
 class sfml_texture_warehous_test : public Test
 {
-public:
-    std::unique_ptr<mock_sfml_texture_factory> unique_factory{
-        std::make_unique<StrictMock<mock_sfml_texture_factory>>()};
-    mock_sfml_texture_factory* factory{unique_factory.get()};
+protected:
+    void SetUp() override
+    {
+        ON_CALL(*loader, load(_, _)).WillByDefault(Return(success));
+    }
+
+    const texture_path bomb_path{"destination/bomb.png"};
+    const texture_path ghost_path{"destination/ghost.png"};
+    const bool success{true};
+    const bool fail{false};
 
     std::unique_ptr<mock_sfml_texture_loader> unique_loader{
-        std::make_unique<StrictMock<mock_sfml_texture_loader>>()};
+        std::make_unique<NiceMock<mock_sfml_texture_loader>>()};
     mock_sfml_texture_loader* loader{unique_loader.get()};
+
+    sfml_texture_warehous texture_keeper{std::move(unique_loader)};
 };
 
-TEST_F(sfml_texture_warehous_test, loadRealImageToTextureShouldNotThrow)
+ACTION_P(SavePointerFirstArg, pointer)
 {
-    // EXPECT_CALL(*factory, create()).WillOnce(Return(ByMove(nullptr)));//TODO:
-    // should return mock texture
-
-    // sfml_texture_warehous textures{std::move(unique_factory)};
-    // ASSERT_THROW({textures.load("resources/bomb.png")}, );
+    *pointer = &arg0;
 }
 
-TEST_F(sfml_texture_warehous_test, createOnlyOneTextureForEachImageFile)
+TEST_F(sfml_texture_warehous_test, getAccesByFirstTyimeShouldAllocateTexture)
 {
-    // sfml_texture_warehous textures{std::move(unique_factory)};
-    // ASSERT_NO_THROW({
-    //     auto& first_bomb = textures.load("resources/bomb.png");
-    //     auto& second_bomb = textures.load("resources/bomb.png");
+    sf::Texture* loaded_texture{nullptr};
+    EXPECT_CALL(*loader, load(_, bomb_path))
+        .WillOnce(DoAll(SavePointerFirstArg(&loaded_texture), Return(success)));
 
-    //     EXPECT_EQ(&first_bomb, &second_bomb);
-    // });
+    auto& bomb_tx = texture_keeper.get_access(bomb_path);
+
+    ASSERT_TRUE(loaded_texture);
+    EXPECT_EQ(loaded_texture, &bomb_tx);
 }
 
 TEST_F(sfml_texture_warehous_test,
-       eachTextureFromOtherImageFileShouldBeDifferent)
+       getAccesSecondTimeShouldNotAllocateButReturnSameTexture)
 {
-    // sfml_texture_warehous textures{std::move(unique_factory)};
-    // ASSERT_NO_THROW({
-    //     auto& bomb = textures.load("resources/bomb.png");
-    //     auto& bomberman = textures.load("resources/bomberman.png");
+    auto& first_bomb_tx = texture_keeper.get_access(bomb_path);
 
-    //     EXPECT_NE(&bomb, &bomberman);
-    // });
+    EXPECT_CALL(*loader, load(_, _)).Times(0);
+
+    auto& second_bomb_tx = texture_keeper.get_access(bomb_path);
+
+    EXPECT_EQ(&first_bomb_tx, &second_bomb_tx);
 }
 
-TEST_F(sfml_texture_warehous_test, shouldThrowIfCanotCreateTexture)
+TEST_F(sfml_texture_warehous_test,
+       getAccesSecondTimeButWithNewFileShouldAllocateNewTexture)
 {
-    // sfml_texture_warehous textures{std::move(unique_factory)};
+    auto& bomb_tx = texture_keeper.get_access(bomb_path);
 
-    // EXPECT_CALL(*factory, create()).WillOnce(Return(ByMove(nullptr)));
-    // ASSERT_THROW(
-    //     {
-    //         try
-    //         {
-    //             textures.load("somepath.png");
-    //         }
-    //         catch (const texture_warehous::cannot_access& error)
-    //         {
-    //             EXPECT_STREQ("cannot load: somepath.png", error.what());
-    //             throw;
-    //         }
-    //     },
-    //     texture_warehous::cannot_access);
+    EXPECT_CALL(*loader, load(_, ghost_path)).WillOnce(Return(success));
+
+    auto& ghost_tx = texture_keeper.get_access(ghost_path);
+
+    EXPECT_NE(&bomb_tx, &ghost_tx);
 }
 
-TEST_F(sfml_texture_warehous_test, shouldThrowIfloadInvalidImage)
+TEST_F(sfml_texture_warehous_test, ifTextureNotLoadedProperlyItShouldThrow)
 {
-    // sfml_texture_warehous textures{std::move(unique_factory)};
-    // EXPECT_CALL(*factory, create()).WillOnce(Return(ByMove(nullptr))); //
-    // TODO ASSERT_THROW(
-    //     {
-    //         try
-    //         {
-    //             textures.load("somepath.png");
-    //         }
-    //         catch (const texture_warehous::cannot_access& error)
-    //         {
-    //             EXPECT_STREQ("cannot load: somepath.png", error.what());
-    //             throw;
-    //         }
-    //     },
-    //     texture_warehous::cannot_access);
+    EXPECT_CALL(*loader, load(_, bomb_path)).WillOnce(Return(fail));
+
+    ASSERT_THROW(
+        {
+            try
+            {
+                texture_keeper.get_access(bomb_path);
+            }
+            catch (const std::exception& ex)
+            {
+                EXPECT_STREQ("cannot load: destination/bomb.png", ex.what());
+                throw;
+            }
+        },
+        texture_warehous::cannot_access);
 }
 }
