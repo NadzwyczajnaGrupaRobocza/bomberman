@@ -53,7 +53,7 @@ script:
   - env CC=${C_COMPILER} CXX=${CXX_COMPILER} cmake .. -DENABLE_COVERAGE:BOOL=TRUE -DSFML_ROOT=$SFML
   - echo "We have" `nproc` "cores here"
   - make -j `nproc`
-  - xvfb-run -e /dev/stdout ctest -j `nproc` -V
+  - xvfb-run -e /dev/stdout -a ctest -j `nproc` -V
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
