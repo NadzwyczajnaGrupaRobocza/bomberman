@@ -55,15 +55,7 @@ script:
   - echo "We have" `nproc` "cores here"
   - make -j `nproc`
   - export DISPLAY=':99.0'
-  - echo "cmake time"
   - ctest -j `nproc` -V
-  - echo "xvfb time"
-  - xvfb-run -e /dev/stdout -a ctest -j `nproc` -V
-  - echo "start valgrind"
-  - export DISPLAY=:99.0
-  - valgrind --leak-check=full ./bin/graphics-ut --gtest_filter=sfml_renderer_pool_test.renderTexturedObject
-  - echo 'start valgrind again'
-  - xvfb-run -e /dev/stdout -a valgrind --leak-check=full ./bin/graphics-ut --gtest_filter=sfml_renderer_pool_test.renderTexturedObject
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
