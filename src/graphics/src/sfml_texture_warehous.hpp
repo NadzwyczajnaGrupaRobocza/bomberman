@@ -3,7 +3,6 @@
 #include <memory>
 #include <unordered_map>
 
-#include "sfml_texture_factory.hpp"
 #include "sfml_texture_loader.hpp"
 #include "texture_warehous.hpp"
 

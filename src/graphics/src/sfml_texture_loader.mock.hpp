@@ -1,5 +1,7 @@
 #pragma once
 
+#include <gmock/gmock.h>
+
 #include "sfml_texture_loader.hpp"
 
 namespace graphics
