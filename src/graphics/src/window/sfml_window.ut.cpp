@@ -90,10 +90,10 @@ TEST_F(sfml_window_test, updateAndCloseWindow)
 TEST_F(sfml_window_test, getWindowSize)
 {
     auto window = create_window();
-    math::Size2u size{2, 88};
+    math::Size2u window_size{2, 88};
 
-    EXPECT_CALL(*proxy, get_window_size()).WillOnce(Return(size));
+    EXPECT_CALL(*proxy, get_window_size()).WillOnce(Return(window_size));
 
-    EXPECT_THAT(window.get_window_size(), Eq(size));
+    EXPECT_THAT(window.get_window_size(), Eq(window_size));
 }
 }
