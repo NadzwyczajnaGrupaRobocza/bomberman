@@ -121,7 +121,6 @@ TEST_F(sfml_window_test, updateSize_whenNoObserver_shouldNotCallObserver)
     sf::Event resized_event;
     const auto resized_event_type = sf::Event::Resized;
     resized_event.type = resized_event_type;
-    math::Size2u size_read{2, 88};
     window_size window_size{2, 88};
 
     EXPECT_CALL(*proxy, poll_event(_))
