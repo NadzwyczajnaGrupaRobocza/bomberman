@@ -1,9 +1,8 @@
-#include "BombermanGameWorld.hpp"
-
 #include <boost/core/null_deleter.hpp>
 #include <experimental/map>
 
 #include "Bomberman.hpp"
+#include "BombermanGameWorld.hpp"
 #include "BoundaryWallsPositionsGenerator.hpp"
 #include "DefaultBombFactory.hpp"
 #include "FieldSize.hpp"
@@ -79,7 +78,7 @@ void BombermanGameWorld::cleanBombs()
     });
 }
 
-void BombermanGameWorld::set_window_size(const graphics::window_size& size)
+void BombermanGameWorld::window_size_changed(const graphics::window_size& size)
 {
     rpool->set_rendering_size(size);
 }

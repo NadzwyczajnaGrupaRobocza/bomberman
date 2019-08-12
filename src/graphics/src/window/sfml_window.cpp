@@ -1,12 +1,13 @@
-#include "sfml_window.hpp"
-
 #include <iostream>
+
+#include "sfml_window.hpp"
 
 namespace graphics
 {
 sfml_window::sfml_window(const window_size& size, const std::string& title,
-                         std::unique_ptr<window_proxy> w)
-    : m_window{std::move(w)}
+                         std::unique_ptr<window_proxy> w,
+                         window_change_observer& observer)
+    : m_window{std::move(w)}, change_observer{observer}
 {
     m_window->create(sf::VideoMode{size.width, size.height}, title);
 }
@@ -29,6 +30,10 @@ void sfml_window::update()
         if (event.type == sf::Event::Closed)
         {
             m_window->close();
+        }
+        if (event.type == sf::Event::Resized)
+        {
+            change_observer.window_size_changed(get_window_size());
         }
     }
 }

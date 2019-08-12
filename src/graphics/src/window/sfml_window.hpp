@@ -5,6 +5,7 @@
 #include "sfml/window_proxy.hpp"
 
 #include "graphics/window.hpp"
+#include "graphics/window_change_observer.hpp"
 #include "graphics/window_size.hpp"
 
 namespace graphics
@@ -13,7 +14,7 @@ class sfml_window : public window
 {
 public:
     sfml_window(const window_size&, const std::string&,
-                std::unique_ptr<window_proxy>);
+                std::unique_ptr<window_proxy>, window_change_observer&);
 
     bool is_open() const override;
     void display() override;
@@ -22,5 +23,6 @@ public:
 
 private:
     std::unique_ptr<window_proxy> m_window;
+    window_change_observer& change_observer;
 };
 }

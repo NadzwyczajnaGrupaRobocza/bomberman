@@ -4,6 +4,7 @@
 
 #include "sfml/window_proxy.mock.hpp"
 
+#include "graphics/window_change_observer.mock.hpp"
 #include "sfml_window.hpp"
 
 using namespace ::testing;
@@ -22,12 +23,14 @@ public:
     {
         return sfml_window{
             size, window_title,
-            std::unique_ptr<window_proxy>(unique_window_proxy.release())};
+            std::unique_ptr<window_proxy>(unique_window_proxy.release()),
+            observer};
     }
 
     const std::string window_title = "My Window";
     const window_size size{300, 400};
     const sf::VideoMode mode{size.width, size.height};
+    window_change_observer_mock observer;
 
     std::unique_ptr<mock_window_proxy> unique_window_proxy{
         std::make_unique<NiceMock<mock_window_proxy>>()};
@@ -87,13 +90,22 @@ TEST_F(sfml_window_test, updateAndCloseWindow)
     window.update();
 }
 
-TEST_F(sfml_window_test, getWindowSize)
+TEST_F(sfml_window_test, updateSize_shouldCallObserver)
 {
+    sf::Event resized_event;
+    const auto resized_event_type = sf::Event::Resized;
+    resized_event.type = resized_event_type;
+    math::Size2u size_read{2, 88};
+    window_size window_size{2, 88};
+
+    EXPECT_CALL(*proxy, poll_event(_))
+        .Times(2)
+        .WillOnce(DoAll(SetArgReferee<0>(resized_event), Return(true)))
+        .WillOnce(Return(false));
+    EXPECT_CALL(*proxy, get_window_size()).WillOnce(Return(size_read));
+    EXPECT_CALL(observer, window_size_changed(window_size));
+
     auto window = create_window();
-    math::Size2u window_size{2, 88};
-
-    EXPECT_CALL(*proxy, get_window_size()).WillOnce(Return(window_size));
-
-    EXPECT_THAT(window.get_window_size(), Eq(window_size));
+    window.update();
 }
 }

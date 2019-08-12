@@ -19,21 +19,20 @@ int main()
     const math::Size2u initial_window_size{800, 600};
     const math::Size2u map_size{125, 100};
 
-    auto window =
-        graphics::create_window(initial_window_size, "Bomberman Remake");
+    auto p = std::make_unique<physics::ConcretePhysicsEngine>();
     auto r = graphics::create_renderer_pool(initial_window_size,
                                             scale_to_field_size(map_size));
-
-    auto p = std::make_unique<physics::ConcretePhysicsEngine>();
-
     BombermanGameWorld world(std::move(p), std::move(r), map_size);
+    auto window =
+        graphics::create_window(initial_window_size, "Bomberman Remake", world);
+
     auto last_frame{std::chrono::high_resolution_clock::now()};
 
     while (window->is_open())
     {
         auto const now = std::chrono::high_resolution_clock::now();
 
-        world.set_window_size(window->get_window_size());
+        // world.set_window_size(window->get_window_size());
         world.update(DeltaTime{now - last_frame});
         window->update();
         window->display();
