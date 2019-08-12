@@ -23,4 +23,11 @@ std::unique_ptr<window> create_window(const math::Size2u& size,
         size, title, std::make_unique<sfml_window_proxy>(size, title),
         observer);
 }
+
+std::unique_ptr<window> create_window(const math::Size2u& size,
+                                      const std::string& title)
+{
+    return std::make_unique<sfml_window>(
+        size, title, std::make_unique<sfml_window_proxy>(size, title));
+}
 }

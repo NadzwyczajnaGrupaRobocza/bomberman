@@ -16,4 +16,6 @@ create_renderer_pool(const math::Size2u& rendering_region_size,
 std::unique_ptr<window> create_window(const math::Size2u&,
                                       const std::string& title,
                                       window_change_observer&);
+std::unique_ptr<window> create_window(const math::Size2u&,
+                                      const std::string& title);
 }
