@@ -28,8 +28,4 @@ struct window_size : ::math::Size2u, boost::totally_ordered<window_size>
     }
 };
 
-inline bool operator==(const window_size& lhs, const ::sf::Vector2u& rhs)
-{
-    return sf::Vector2u(lhs) == rhs;
-}
 }

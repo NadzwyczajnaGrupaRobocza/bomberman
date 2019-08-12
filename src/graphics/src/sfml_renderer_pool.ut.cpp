@@ -1,13 +1,11 @@
-#include "sfml_renderer_pool.hpp"
-
+#include <boost/uuid/uuid_io.hpp>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-
-#include <boost/uuid/uuid_io.hpp>
 #include <range/v3/algorithm/for_each.hpp>
 
 #include "context_renderer.mock.hpp"
 #include "sfml_rectangle_shape.hpp"
+#include "sfml_renderer_pool.hpp"
 
 using namespace ::testing;
 
@@ -241,5 +239,15 @@ TEST_F(sfml_renderer_pool_test, beAbleToChangeColor)
 
     renderer_pool->set_color(id, graphics::colors::blue);
     EXPECT_EQ(graphics::colors::blue, renderer_pool->get_color(id));
+}
+
+TEST_F(sfml_renderer_pool_test, setSize_shouldChangeSizeInTarget)
+{
+    math::Size2u new_size{2, 8};
+    window_size new_window_size{2, 8};
+    EXPECT_CALL(*context, set_view_size(new_window_size));
+
+    auto renderer_pool = create_renderer_pool();
+    renderer_pool->set_rendering_size(new_size);
 }
 }

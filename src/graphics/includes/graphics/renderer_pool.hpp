@@ -3,6 +3,7 @@
 #include "graphics/color.hpp"
 #include "math/Position2f.hpp"
 #include "math/Size2f.hpp"
+#include "math/Size2u.hpp"
 #include "renderer_id.hpp"
 
 namespace graphics
@@ -24,5 +25,7 @@ public:
 
     virtual void set_color(const renderer_id&, const color&) = 0;
     virtual color get_color(const renderer_id&) const = 0;
+
+    virtual void set_rendering_size(const math::Size2u&) = 0;
 };
 }

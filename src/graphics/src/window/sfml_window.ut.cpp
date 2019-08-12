@@ -3,6 +3,7 @@
 #include <range/v3/algorithm/for_each.hpp>
 
 #include "sfml/window_proxy.mock.hpp"
+
 #include "sfml_window.hpp"
 
 using namespace ::testing;
@@ -84,5 +85,15 @@ TEST_F(sfml_window_test, updateAndCloseWindow)
     EXPECT_CALL(*proxy, close());
 
     window.update();
+}
+
+TEST_F(sfml_window_test, getWindowSize)
+{
+    auto window = create_window();
+    math::Size2u window_size{2, 88};
+
+    EXPECT_CALL(*proxy, get_window_size()).WillOnce(Return(window_size));
+
+    EXPECT_THAT(window.get_window_size(), Eq(window_size));
 }
 }

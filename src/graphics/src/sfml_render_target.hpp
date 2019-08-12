@@ -6,13 +6,13 @@
 
 #include "boost/numeric/conversion/cast.hpp"
 #include "context_renderer.hpp"
-#include "window_size.hpp"
 
 namespace graphics
 {
 namespace
 {
 // https://github.com/SFML/SFML/wiki/Source:-Letterbox-effect-using-a-view
+
 sf::View getLetterboxView(sf::View view, unsigned windowWidth,
                           unsigned windowHeight)
 {
@@ -51,6 +51,7 @@ sf::View getLetterboxView(sf::View view, unsigned windowWidth,
 
     return view;
 }
+
 }
 template <typename BaseRenderTarget>
 class render_target : public context_renderer, public BaseRenderTarget
@@ -86,8 +87,13 @@ public:
                        view.getSize().y / 2); // <- only at startup
         view = getLetterboxView(view, size.width,
                                 size.height); // <- at startup and every time
-                                              // the window size is change
+                                              // //the window size is change
         BaseRenderTarget::setView(view);
+    }
+
+    void set_view_size(const window_size& new_size) override
+    {
+        size = new_size;
     }
 
     sf::Vector2u getSize() const override

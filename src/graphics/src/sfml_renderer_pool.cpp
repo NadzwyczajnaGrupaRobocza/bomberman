@@ -2,10 +2,10 @@
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <boost/uuid/uuid_io.hpp>
 #include <range/v3/algorithm/for_each.hpp>
 
 #include "boost/range/algorithm_ext/erase.hpp"
-#include <boost/uuid/uuid_io.hpp>
 
 namespace graphics
 {
@@ -99,4 +99,10 @@ sfml_renderer_pool::get_shape(const renderer_id& shape_id) const
 
     return *shape_it;
 }
+
+void sfml_renderer_pool::set_rendering_size(const math::Size2u& size)
+{
+    renderer->set_view_size(size);
+}
+
 }

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "graphics/renderer_pool.hpp"
-
 #include <boost/functional/hash.hpp>
 #include <memory>
 #include <unordered_map>
@@ -9,6 +7,7 @@
 #include <vector>
 
 #include "context_renderer.hpp"
+#include "graphics/renderer_pool.hpp"
 #include "renderer_id_generator.hpp"
 
 namespace graphics
@@ -29,6 +28,8 @@ public:
 
     void set_color(const renderer_id&, const color&) override;
     color get_color(const renderer_id&) const override;
+
+    void set_rendering_size(const math::Size2u&) override;
 
 private:
     void cleanup_unused();

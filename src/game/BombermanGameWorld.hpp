@@ -26,6 +26,7 @@ public:
                             std::unique_ptr<Explosion>) override;
 
     void update(DeltaTime) override;
+    void set_window_size(const graphics::window_size&) override;
 
 private:
     void cleanBombs();
