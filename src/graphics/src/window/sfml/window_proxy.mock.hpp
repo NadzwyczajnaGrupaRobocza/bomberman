@@ -14,5 +14,6 @@ public:
     MOCK_METHOD1(poll_event, bool(sf::Event&));
     MOCK_METHOD0(close, void());
     MOCK_METHOD2(create, void(sf::VideoMode, const sf::String&));
+    MOCK_CONST_METHOD0(get_window_size, window_size());
 };
 }

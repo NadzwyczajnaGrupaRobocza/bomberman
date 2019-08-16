@@ -314,4 +314,14 @@ TEST_F(sfml_renderer_pool_test, acquiredObjectWithTextureShouldSetColorToWhite)
 
     EXPECT_EQ(graphics::colors::white, renderer_pool->get_color(id));
 }
+
+TEST_F(sfml_renderer_pool_test, setSize_shouldChangeSizeInTarget)
+{
+    math::Size2u new_size{2, 8};
+    window_size new_window_size{2, 8};
+    EXPECT_CALL(*context, set_view_size(new_window_size));
+
+    auto renderer_pool = create_renderer_pool();
+    renderer_pool->set_rendering_size(new_size);
+}
 }

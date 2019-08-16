@@ -53,6 +53,15 @@ public:
     {
     }
 
+    void set_view_size(const window_size&)
+    {
+    }
+
+    sf::View getDefaultView()
+    {
+        return sf::View{};
+    }
+
     virtual sf::Vector2u getSize() const = 0;
     virtual bool setActive(bool) = 0;
 

@@ -9,10 +9,12 @@
 #include "GameWorld.hpp"
 #include "SimpleMap.hpp"
 #include "graphics/renderer_pool.hpp"
+#include "graphics/window_change_observer.hpp"
 #include "math/Size2u.hpp"
 #include "physics/PhysicsEngine.hpp"
 
-class BombermanGameWorld : public GameWorld
+class BombermanGameWorld : public GameWorld,
+                           public graphics::window_change_observer
 {
 public:
     BombermanGameWorld(std::unique_ptr<physics::PhysicsEngine>,
@@ -26,6 +28,7 @@ public:
                             std::unique_ptr<Explosion>) override;
 
     void update(DeltaTime) override;
+    void window_size_changed(const graphics::window_size&) override;
 
 private:
     void cleanBombs();

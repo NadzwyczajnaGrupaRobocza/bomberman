@@ -1,8 +1,8 @@
 #pragma once
 
 #include <boost/operators.hpp>
-#include <tuple>
 #include <ostream>
+#include <tuple>
 #include <typeinfo>
 
 namespace math
@@ -33,6 +33,28 @@ bool operator==(const Size2<T>& lhs, const Size2<T>& rhs)
         return std::tie(size.width, size.height);
     };
     return tie(lhs) == tie(rhs);
+}
+
+namespace
+{
+template <typename>
+struct to_int_type
+{
+    using type = int;
+};
+}
+
+template <typename T, typename CompareType,
+          typename to_int_type<decltype(CompareType::x)>::type = 0>
+bool operator==(const Size2<T>& lhs, const CompareType& rhs)
+{
+    const auto tie = [](const Size2<T>& size) {
+        return std::tie(size.width, size.height);
+    };
+    const auto tieCompare = [](const CompareType& size) {
+        return std::tie(size.x, size.y);
+    };
+    return tie(lhs) == tieCompare(rhs);
 }
 }
 

@@ -1,12 +1,29 @@
-#include "sfml_window.hpp"
-
+#include <boost/optional/optional.hpp>
 #include <iostream>
+#include <utility>
+
+#include "sfml_window.hpp"
 
 namespace graphics
 {
 sfml_window::sfml_window(const window_size& size, const std::string& title,
+                         std::unique_ptr<window_proxy> w,
+                         window_change_observer& observer)
+    : sfml_window{size, title, std::move(w),
+                  boost::optional<window_change_observer&>(observer)}
+{
+}
+
+sfml_window::sfml_window(const window_size& size, const std::string& title,
                          std::unique_ptr<window_proxy> w)
-    : m_window{std::move(w)}
+    : sfml_window{size, title, std::move(w), boost::none}
+{
+}
+
+sfml_window::sfml_window(const window_size& size, const std::string& title,
+                         std::unique_ptr<window_proxy> w,
+                         boost::optional<window_change_observer&> observer)
+    : m_window{std::move(w)}, change_observer{observer}
 {
     m_window->create(sf::VideoMode{size.width, size.height}, title);
 }
@@ -30,6 +47,16 @@ void sfml_window::update()
         {
             m_window->close();
         }
+        if (event.type == sf::Event::Resized && change_observer)
+        {
+            change_observer->window_size_changed(get_window_size());
+        }
     }
 }
+
+window_size sfml_window::get_window_size() const
+{
+    return m_window->get_window_size();
+}
+
 }

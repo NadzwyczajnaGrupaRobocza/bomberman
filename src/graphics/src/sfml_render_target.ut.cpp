@@ -64,4 +64,5 @@ TEST(RenderTargetOverridedFuncionsTest,
     EXPECT_TRUE(renderTarget.setActive(false));
     EXPECT_TRUE(renderTarget.setActive(true));
 }
+
 }

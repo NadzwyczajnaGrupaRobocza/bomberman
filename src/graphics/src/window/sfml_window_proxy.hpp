@@ -1,8 +1,8 @@
-#include "sfml/window_proxy.hpp"
-
 #include <SFML/Window/Window.hpp>
 
-#include "window_size.hpp"
+#include "sfml/window_proxy.hpp"
+
+#include "graphics/window_size.hpp"
 
 namespace graphics
 {
@@ -15,6 +15,7 @@ public:
     bool poll_event(sf::Event&) override;
     void close() override;
     void create(sf::VideoMode, const sf::String& title) override;
+    window_size get_window_size() const override;
 
 private:
     sf::Window m_window;

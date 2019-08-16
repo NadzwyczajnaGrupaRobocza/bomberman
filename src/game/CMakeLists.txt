@@ -33,6 +33,7 @@ add_executable(game-ut
 
 target_include_directories(game-ut SYSTEM PRIVATE
   ${UT_INCLUDES}
+  ${SFML_INCLUDE_DIR}
   )
 
 target_compile_options(game-ut PRIVATE

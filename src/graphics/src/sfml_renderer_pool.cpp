@@ -118,4 +118,10 @@ sfml_renderer_pool::get_shape(const renderer_id& shape_id) const
 
     return *shape_it;
 }
+
+void sfml_renderer_pool::set_rendering_size(const math::Size2u& size)
+{
+    renderer->set_view_size(size);
+}
+
 }

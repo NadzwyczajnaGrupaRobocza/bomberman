@@ -3,6 +3,8 @@
 #include <range/v3/algorithm/for_each.hpp>
 
 #include "sfml/window_proxy.mock.hpp"
+
+#include "graphics/window_change_observer.mock.hpp"
 #include "sfml_window.hpp"
 
 using namespace ::testing;
@@ -17,6 +19,14 @@ ACTION_P(SetEventType, event_type)
 class sfml_window_test : public Test
 {
 public:
+    auto create_window(window_change_observer& window_observer)
+    {
+        return sfml_window{
+            size, window_title,
+            std::unique_ptr<window_proxy>(unique_window_proxy.release()),
+            window_observer};
+    }
+
     auto create_window()
     {
         return sfml_window{
@@ -27,6 +37,7 @@ public:
     const std::string window_title = "My Window";
     const window_size size{300, 400};
     const sf::VideoMode mode{size.width, size.height};
+    window_change_observer_mock observer;
 
     std::unique_ptr<mock_window_proxy> unique_window_proxy{
         std::make_unique<NiceMock<mock_window_proxy>>()};
@@ -85,4 +96,40 @@ TEST_F(sfml_window_test, updateAndCloseWindow)
 
     window.update();
 }
+
+TEST_F(sfml_window_test, updateSize_shouldCallObserver)
+{
+    sf::Event resized_event;
+    const auto resized_event_type = sf::Event::Resized;
+    resized_event.type = resized_event_type;
+    math::Size2u size_read{2, 88};
+    window_size window_size{2, 88};
+
+    EXPECT_CALL(*proxy, poll_event(_))
+        .Times(2)
+        .WillOnce(DoAll(SetArgReferee<0>(resized_event), Return(true)))
+        .WillOnce(Return(false));
+    EXPECT_CALL(*proxy, get_window_size()).WillOnce(Return(size_read));
+    EXPECT_CALL(observer, window_size_changed(window_size));
+
+    auto window = create_window(observer);
+    window.update();
+}
+
+TEST_F(sfml_window_test, updateSize_whenNoObserver_shouldNotCallObserver)
+{
+    sf::Event resized_event;
+    const auto resized_event_type = sf::Event::Resized;
+    resized_event.type = resized_event_type;
+    window_size window_size{2, 88};
+
+    EXPECT_CALL(*proxy, poll_event(_))
+        .Times(2)
+        .WillOnce(DoAll(SetArgReferee<0>(resized_event), Return(true)))
+        .WillOnce(Return(false));
+
+    auto window = create_window();
+    window.update();
+}
+
 }

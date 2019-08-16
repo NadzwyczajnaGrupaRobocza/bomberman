@@ -1,6 +1,5 @@
 #pragma once
 
-#include <map>
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
@@ -37,6 +36,7 @@ public:
     color get_color(const renderer_id&) const override;
 
     void set_texture(const renderer_id&, const texture_path&) override;
+    void set_rendering_size(const math::Size2u&) override;
 
 private:
     void cleanup_unused();

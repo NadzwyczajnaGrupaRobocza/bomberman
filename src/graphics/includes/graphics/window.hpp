@@ -1,5 +1,7 @@
 #pragma once
 
+#include "graphics/window_size.hpp"
+
 namespace graphics
 {
 class window
