@@ -21,6 +21,4 @@ public:
                                     std::unique_ptr<Explosion>) = 0;
 
     virtual void update(DeltaTime) = 0;
-
-    virtual void set_window_size(const graphics::window_size&) = 0;
 };
