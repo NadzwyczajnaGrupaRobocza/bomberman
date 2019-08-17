@@ -11,7 +11,7 @@
 #include "context_renderer.hpp"
 #include "graphics/renderer_pool.hpp"
 #include "renderer_id_generator.hpp"
-#include "texture_warehous.hpp"
+#include "texture_warehouse.hpp"
 
 namespace graphics
 {
@@ -19,7 +19,7 @@ class sfml_renderer_pool : public renderer_pool
 {
 public:
     sfml_renderer_pool(std::unique_ptr<context_renderer>,
-                       std::unique_ptr<texture_warehous>);
+                       std::unique_ptr<texture_warehouse>);
 
     renderer_id acquire(const math::Size2f&, const math::Position2f&,
                         const color&) override;
@@ -49,6 +49,6 @@ private:
     std::vector<sfml_rectangle_shape> shapes;
     std::unordered_set<renderer_id, boost::hash<renderer_id>> trash;
 
-    std::unique_ptr<texture_warehous> textures;
+    std::unique_ptr<texture_warehouse> textures;
 };
 }

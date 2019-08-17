@@ -6,7 +6,7 @@ add_library(graphics
   renderer_id_generator.cpp
   sfml_rectangle_shape.cpp
   sfml_renderer_pool.cpp
-  sfml_texture_warehous.cpp
+  sfml_texture_warehouse.cpp
   simple_sfml_texture_loader.cpp
   window/sfml_window.cpp
   window/sfml_window_proxy.cpp
@@ -30,7 +30,7 @@ add_executable(graphics-ut
   sfml_rectangle_shape.ut.cpp
   sfml_render_target.ut.cpp
   sfml_renderer_pool.ut.cpp
-  sfml_texture_warehous.ut.cpp
+  sfml_texture_warehouse.ut.cpp
   window/sfml_window.ut.cpp
   )
 

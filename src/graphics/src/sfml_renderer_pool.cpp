@@ -26,7 +26,7 @@ struct is_shape_id_equal
 }
 
 sfml_renderer_pool::sfml_renderer_pool(std::unique_ptr<context_renderer> r,
-                                       std::unique_ptr<texture_warehous> t)
+                                       std::unique_ptr<texture_warehouse> t)
     : renderer{std::move(r)}, textures{std::move(t)}
 {
     renderer->initialize();

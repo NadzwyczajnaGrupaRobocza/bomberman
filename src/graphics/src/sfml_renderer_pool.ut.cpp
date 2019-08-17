@@ -5,7 +5,7 @@
 #include <gtest/gtest.h>
 
 #include "context_renderer.mock.hpp"
-#include "texture_warehous.mock.hpp"
+#include "texture_warehouse.mock.hpp"
 
 #include "sfml_rectangle_shape.hpp"
 #include "sfml_renderer_pool.hpp"
@@ -34,8 +34,8 @@ public:
         return std::make_unique<sfml_renderer_pool>(
             std::unique_ptr<context_renderer>(
                 unique_context_renderer.release()),
-            std::unique_ptr<texture_warehous>(
-                unique_texture_warehous.release()));
+            std::unique_ptr<texture_warehouse>(
+                unique_texture_warehouse.release()));
     }
     auto create_object_with_color(renderer_pool& shape_pool,
                                   const size2f& shape_size,
@@ -76,9 +76,9 @@ public:
         std::make_unique<NiceMock<mock_context_renderer>>()};
     mock_context_renderer* context{unique_context_renderer.get()};
 
-    std::unique_ptr<mock_texture_warehous> unique_texture_warehous{
-        std::make_unique<StrictMock<mock_texture_warehous>>()};
-    mock_texture_warehous* textures{unique_texture_warehous.get()};
+    std::unique_ptr<mock_texture_warehouse> unique_texture_warehouse{
+        std::make_unique<StrictMock<mock_texture_warehouse>>()};
+    mock_texture_warehouse* textures{unique_texture_warehouse.get()};
 };
 
 TEST_F(sfml_renderer_pool_test, contextShouldBeInitializedByRendererPool)

@@ -2,13 +2,13 @@
 
 #include "sfml_texture_loader.mock.hpp"
 
-#include "sfml_texture_warehous.hpp"
+#include "sfml_texture_warehouse.hpp"
 
 using namespace ::testing;
 
 namespace graphics
 {
-class sfml_texture_warehous_test : public Test
+class sfml_texture_warehouse_test : public Test
 {
 protected:
     void SetUp() override
@@ -25,7 +25,7 @@ protected:
         std::make_unique<NiceMock<mock_sfml_texture_loader>>()};
     mock_sfml_texture_loader* loader{unique_loader.get()};
 
-    sfml_texture_warehous texture_keeper{std::move(unique_loader)};
+    sfml_texture_warehouse texture_keeper{std::move(unique_loader)};
 };
 
 ACTION_P(SavePointerFirstArg, pointer)
@@ -33,7 +33,7 @@ ACTION_P(SavePointerFirstArg, pointer)
     *pointer = &arg0;
 }
 
-TEST_F(sfml_texture_warehous_test, getAccesByFirstTyimeShouldAllocateTexture)
+TEST_F(sfml_texture_warehouse_test, getAccesByFirstTyimeShouldAllocateTexture)
 {
     sf::Texture* loaded_texture{nullptr};
     EXPECT_CALL(*loader, load(_, bomb_path))
@@ -45,7 +45,7 @@ TEST_F(sfml_texture_warehous_test, getAccesByFirstTyimeShouldAllocateTexture)
     EXPECT_EQ(loaded_texture, &bomb_tx);
 }
 
-TEST_F(sfml_texture_warehous_test,
+TEST_F(sfml_texture_warehouse_test,
        getAccesSecondTimeShouldNotAllocateButReturnSameTexture)
 {
     auto& first_bomb_tx = texture_keeper.get_access(bomb_path);
@@ -57,7 +57,7 @@ TEST_F(sfml_texture_warehous_test,
     EXPECT_EQ(&first_bomb_tx, &second_bomb_tx);
 }
 
-TEST_F(sfml_texture_warehous_test,
+TEST_F(sfml_texture_warehouse_test,
        getAccesSecondTimeButWithNewFileShouldAllocateNewTexture)
 {
     auto& bomb_tx = texture_keeper.get_access(bomb_path);
@@ -69,7 +69,7 @@ TEST_F(sfml_texture_warehous_test,
     EXPECT_NE(&bomb_tx, &ghost_tx);
 }
 
-TEST_F(sfml_texture_warehous_test, ifTextureNotLoadedProperlyItShouldThrow)
+TEST_F(sfml_texture_warehouse_test, ifTextureNotLoadedProperlyItShouldThrow)
 {
     EXPECT_CALL(*loader, load(_, bomb_path)).WillOnce(Return(fail));
 
@@ -85,6 +85,6 @@ TEST_F(sfml_texture_warehous_test, ifTextureNotLoadedProperlyItShouldThrow)
                 throw;
             }
         },
-        texture_warehous::cannot_access);
+        texture_warehouse::cannot_access);
 }
 }
