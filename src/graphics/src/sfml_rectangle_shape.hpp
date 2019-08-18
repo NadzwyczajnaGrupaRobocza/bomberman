@@ -35,7 +35,8 @@ inline bool operator==(const sfml_rectangle_shape& lhs,
 {
     return lhs.getPosition() == rhs.getPosition() &&
            lhs.getSize() == rhs.getSize() &&
-           lhs.get_color() == rhs.get_color() && lhs.get_id() ==
-           rhs.get_id();
+           lhs.get_color() == rhs.get_color() &&
+           lhs.get_id() == rhs.get_id() &&
+           lhs.getTexture() == rhs.getTexture();
 }
 }

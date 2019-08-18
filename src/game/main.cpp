@@ -1,11 +1,10 @@
 #include <chrono>
 #include <memory>
 
-#include "SFML/Window/Event.hpp"
-#include "SFML/Window/Window.hpp"
-
 #include "BombermanGameWorld.hpp"
 #include "FieldSize.hpp"
+#include "SFML/Window/Event.hpp"
+#include "SFML/Window/Window.hpp"
 #include "editor/HotReload.hpp"
 #include "graphics/factory.hpp"
 #include "math/Size2u.hpp"
@@ -16,8 +15,8 @@ int main()
 {
     const auto hot_reload = editor::create_hot_reload();
 
-    const math::Size2u initial_window_size{800, 600};
-    const math::Size2u map_size{125, 100};
+    const math::Size2u initial_window_size{800, 800};
+    const math::Size2u map_size{15, 15};
 
     auto p = std::make_unique<physics::ConcretePhysicsEngine>();
     auto r = graphics::create_renderer_pool(initial_window_size,

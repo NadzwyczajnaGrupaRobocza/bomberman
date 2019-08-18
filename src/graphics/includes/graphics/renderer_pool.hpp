@@ -8,6 +8,8 @@
 
 namespace graphics
 {
+using texture_path = std::string;
+
 class renderer_pool
 {
 public:
@@ -15,6 +17,8 @@ public:
 
     virtual renderer_id acquire(const math::Size2f&, const math::Position2f&,
                                 const color&) = 0;
+    virtual renderer_id acquire(const math::Size2f&, const math::Position2f&,
+                                const std::string& texture_path) = 0;
     virtual void release(const renderer_id&) = 0;
 
     // TODO: extract functions below to another abstraction
@@ -26,6 +30,7 @@ public:
     virtual void set_color(const renderer_id&, const color&) = 0;
     virtual color get_color(const renderer_id&) const = 0;
 
+    virtual void set_texture(const renderer_id&, const texture_path&) = 0;
     virtual void set_rendering_size(const math::Size2u&) = 0;
 };
 }

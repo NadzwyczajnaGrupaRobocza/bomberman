@@ -2,6 +2,9 @@ sudo: required
 dist: xenial
 language: cpp
 
+services:
+  - xvfb
+
 matrix:
   include:
     - compiler: gcc
@@ -14,6 +17,7 @@ matrix:
           packages:
             - g++-8
             - boost1.68
+            - valgrind
       env:
       - C_COMPILER=gcc-8
       - CXX_COMPILER=g++-8
@@ -50,6 +54,7 @@ script:
   - env CC=${C_COMPILER} CXX=${CXX_COMPILER} cmake .. -DENABLE_COVERAGE:BOOL=TRUE -DSFML_ROOT=$SFML
   - echo "We have" `nproc` "cores here"
   - make -j `nproc`
+  - export DISPLAY=':99.0'
   - ctest -j `nproc` -V
 
 after_success:

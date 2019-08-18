@@ -1,9 +1,11 @@
 #include "sfml_renderer_pool.hpp"
 
+#include <iostream>
+#include <range/v3/algorithm/for_each.hpp>
+
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <boost/uuid/uuid_io.hpp>
-#include <range/v3/algorithm/for_each.hpp>
 
 #include "boost/range/algorithm_ext/erase.hpp"
 
@@ -23,8 +25,9 @@ struct is_shape_id_equal
 };
 }
 
-sfml_renderer_pool::sfml_renderer_pool(std::unique_ptr<context_renderer> r)
-    : renderer{std::move(r)}
+sfml_renderer_pool::sfml_renderer_pool(std::unique_ptr<context_renderer> r,
+                                       std::unique_ptr<texture_warehouse> t)
+    : renderer{std::move(r)}, textures{std::move(t)}
 {
     renderer->initialize();
     renderer->set_view();
@@ -37,6 +40,22 @@ renderer_id sfml_renderer_pool::acquire(const math::Size2f& size,
     auto id = renderer_id_generator::generate();
     shapes.emplace_back(id, size, position, shape_color);
     return id;
+}
+
+renderer_id sfml_renderer_pool::acquire(const math::Size2f& size,
+                                        const math::Position2f& position,
+                                        const texture_path& path)
+{
+    const auto id = acquire(size, position, graphics::colors::white);
+    set_texture(id, path);
+    return id;
+}
+
+void sfml_renderer_pool::set_texture(const renderer_id& id,
+                                     const texture_path& path)
+{
+    const auto& texture = textures->get_access(path);
+    get_shape(id).setTexture(&texture);
 }
 
 void sfml_renderer_pool::release(const renderer_id& id)
@@ -54,7 +73,7 @@ void sfml_renderer_pool::cleanup_unused()
 void sfml_renderer_pool::render_all()
 {
     cleanup_unused();
-    renderer->clear(sf::Color::Black);
+    renderer->clear(sf::Color::White);
 
     renderer->set_view();
 

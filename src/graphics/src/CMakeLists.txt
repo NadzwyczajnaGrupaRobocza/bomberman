@@ -3,11 +3,14 @@ find_package(SFML ${SFML_MINIMAL_VERSION} COMPONENTS system graphics window REQU
 ########################### SRC ###########################
 add_library(graphics
   factory.cpp
-  sfml_renderer_pool.cpp
   renderer_id_generator.cpp
   sfml_rectangle_shape.cpp
+  sfml_renderer_pool.cpp
+  sfml_texture_warehouse.cpp
+  simple_sfml_texture_loader.cpp
   window/sfml_window.cpp
-  window/sfml_window_proxy.cpp)
+  window/sfml_window_proxy.cpp
+  )
 
 target_include_directories(graphics
   PUBLIC ${CMAKE_CURRENT_LIST_DIR}/../includes
@@ -24,10 +27,12 @@ target_link_libraries(graphics
 
 ########################### UT ###########################
 add_executable(graphics-ut
-  sfml_renderer_pool.ut.cpp
-  sfml_render_target.ut.cpp
   sfml_rectangle_shape.ut.cpp
-  window/sfml_window.ut.cpp)
+  sfml_render_target.ut.cpp
+  sfml_renderer_pool.ut.cpp
+  sfml_texture_warehouse.ut.cpp
+  window/sfml_window.ut.cpp
+  )
 
 target_compile_options(graphics-ut PRIVATE
   -Wno-used-but-marked-unused
@@ -43,4 +48,7 @@ target_include_directories(graphics-ut SYSTEM BEFORE
 target_link_libraries(graphics-ut
   PRIVATE graphics gmock_main ${SFML_LIBRARIES})
 
-add_test(graphics-ut ${EXECUTABLE_OUTPUT_PATH}/graphics-ut --gtest_color=yes)
+add_test(
+  NAME graphics-ut
+  COMMAND ${EXECUTABLE_OUTPUT_PATH}/graphics-ut --gtest_color=yes
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

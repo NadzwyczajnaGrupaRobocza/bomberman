@@ -25,7 +25,7 @@ BombermanGameWorld::BombermanGameWorld(
 
     physics::PhysicsId pid{};
     auto rid = rpool->acquire(field_size_f, math::Position2f{10, 10},
-                              graphics::colors::cyan);
+                              "resources/bomberman.png");
 
     entity.emplace_back(std::make_unique<Bomberman>(
         pid, rid, std::move(hp), ppool, rpool, std::move(bl)));

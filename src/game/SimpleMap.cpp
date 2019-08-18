@@ -10,16 +10,13 @@ SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
     : physics_engine(pEngine), graphics_engine{rEngine}, map_size{
                                                              std::move(map_s)}
 {
-    constexpr graphics::color map_grey{161, 161, 161};
     const math::Size2f map_dimensions{
         boost::numeric_cast<float>(map_size.width),
         boost::numeric_cast<float>(map_size.height)};
 
     render_ids.push_back(graphics_engine.acquire(
         math::Size2f{scale_to_field_size(map_dimensions)},
-        math::Position2f{0.0f, 0.0f}, map_grey));
-
-    constexpr graphics::color wall_bronze{205, 127, 50};
+        math::Position2f{0.0f, 0.0f}, "resources/map.png"));
 
     for (const auto& generated_walls :
          generated_walls_generator.generate_boundary_walls(map_size))
@@ -34,7 +31,7 @@ SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
              static_cast<float>(generated_walls.second.second)},
             {static_cast<float>(generated_walls.first.first),
              static_cast<float>(generated_walls.first.second)},
-            wall_bronze));
+            "resources/wall.png"));
     }
 }
 
