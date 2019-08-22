@@ -19,7 +19,7 @@ SimpleMap::SimpleMap(physics::PhysicsEngine& pEngine,
         math::Position2f{0.0f, 0.0f}, "resources/map.png"));
 
     for (const auto& generated_walls :
-         generated_walls_generator.generate_boundary_walls(map_size))
+         generated_walls_generator.generate_walls(map_size))
     {
         physics_ids.push_back(physics_engine.register_colider(
             {static_cast<float>(generated_walls.second.first),

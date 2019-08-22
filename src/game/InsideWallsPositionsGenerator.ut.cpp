@@ -1,17 +1,16 @@
 #include "gmock/gmock.h"
-#include "gtest/gtest.h"
 
-#include "range/v3/all.hpp"
-
-#include "BoundaryWallsPositionsGenerator.hpp"
 #include "FieldSize.hpp"
+#include "InsideWallsPositionsGenerator.hpp"
+#include "gtest/gtest.h"
+#include "range/v3/all.hpp"
 
 using namespace ::testing;
 
-class BoundaryWallsPositionsGeneratorTest : public Test
+class InsideWallsPositionsGeneratorTest : public Test
 {
 public:
-    BoundaryWallsPositionsGenerator generator;
+    InsideWallsPositionsGenerator generator;
 
     WallPositionsGenerator::Walls
     create_expected_walls(const WallPositionsGenerator::Walls& raw_walls)
@@ -27,12 +26,12 @@ public:
     };
 };
 
-TEST_F(BoundaryWallsPositionsGeneratorTest, For0SizeShouldReturnNowWalls)
+TEST_F(InsideWallsPositionsGeneratorTest, For0SizeShouldReturnNowWalls)
 {
     ASSERT_THAT(generator.generate_walls({0, 0}), IsEmpty());
 }
 
-TEST_F(BoundaryWallsPositionsGeneratorTest, For1SizeShouldReturnOneWall)
+TEST_F(InsideWallsPositionsGeneratorTest, For1SizeShouldReturnOneWall)
 {
     const WallPositionsGenerator::Walls expected_walls{
         {{0, 0}, {field_size.width, field_size.height}}};
@@ -41,7 +40,7 @@ TEST_F(BoundaryWallsPositionsGeneratorTest, For1SizeShouldReturnOneWall)
                 UnorderedElementsAreArray(expected_walls));
 }
 
-TEST_F(BoundaryWallsPositionsGeneratorTest, For5SizeShouldReturnWalls)
+TEST_F(InsideWallsPositionsGeneratorTest, For5SizeShouldReturnWalls)
 {
     const WallPositionsGenerator::Walls expected_walls =
         create_expected_walls({{{0, 0}, {1, 5}},
@@ -53,7 +52,7 @@ TEST_F(BoundaryWallsPositionsGeneratorTest, For5SizeShouldReturnWalls)
                 UnorderedElementsAreArray(expected_walls));
 }
 
-TEST_F(BoundaryWallsPositionsGeneratorTest, For2SizeShouldReturnWalls)
+TEST_F(InsideWallsPositionsGeneratorTest, For2SizeShouldReturnWalls)
 {
     const WallPositionsGenerator::Walls expected_walls{
         create_expected_walls({{{0, 0}, {1, 2}},
@@ -65,7 +64,7 @@ TEST_F(BoundaryWallsPositionsGeneratorTest, For2SizeShouldReturnWalls)
                 UnorderedElementsAreArray(expected_walls));
 }
 
-TEST_F(BoundaryWallsPositionsGeneratorTest, ForDifferentEdgesShouldReturnWalls)
+TEST_F(InsideWallsPositionsGeneratorTest, ForDifferentEdgesShouldReturnWalls)
 {
     const WallPositionsGenerator::Walls expected_walls{
         create_expected_walls({{{0, 0}, {1, 8}},

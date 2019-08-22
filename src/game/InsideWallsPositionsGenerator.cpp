@@ -1,8 +1,9 @@
-#include "BoundaryWallsPositionsGenerator.hpp"
+#include "InsideWallsPositionsGenerator.hpp"
+
 #include "FieldSize.hpp"
 
-BoundaryWallsPositionsGenerator::Walls
-BoundaryWallsPositionsGenerator::generate_walls(
+InsideWallsPositionsGenerator::Walls
+InsideWallsPositionsGenerator::generate_walls(
     BoundarySize boundary_size) const
 {
     if (zero_size(boundary_size))
@@ -16,34 +17,34 @@ BoundaryWallsPositionsGenerator::generate_walls(
     return generate_empty_for_size_bigger_than_one(boundary_size);
 }
 
-bool BoundaryWallsPositionsGenerator::zero_size(BoundarySize boundary_size)
+bool InsideWallsPositionsGenerator::zero_size(BoundarySize boundary_size)
 {
     constexpr auto zero_size = math::Size2u{0, 0};
     return boundary_size == zero_size;
 }
 
-bool BoundaryWallsPositionsGenerator::size_one(BoundarySize boundary_size)
+bool InsideWallsPositionsGenerator::size_one(BoundarySize boundary_size)
 {
     constexpr auto size_one = math::Size2u{1, 1};
     return boundary_size == size_one;
 }
 
-BoundaryWallsPositionsGenerator::Walls
-BoundaryWallsPositionsGenerator::generate_empty_walls()
+InsideWallsPositionsGenerator::Walls
+InsideWallsPositionsGenerator::generate_empty_walls()
 {
     return {};
 }
 
-BoundaryWallsPositionsGenerator::Walls
-BoundaryWallsPositionsGenerator::generate_walls_for_size_one()
+InsideWallsPositionsGenerator::Walls
+InsideWallsPositionsGenerator::generate_walls_for_size_one()
 {
     constexpr auto start_position = 0;
     return {{position(start_position, start_position),
              size(field_size.width, field_size.height)}};
 }
 
-BoundaryWallsPositionsGenerator::BoundaryWallsPositionsGenerator::Walls
-BoundaryWallsPositionsGenerator::generate_empty_for_size_bigger_than_one(
+InsideWallsPositionsGenerator::InsideWallsPositionsGenerator::Walls
+InsideWallsPositionsGenerator::generate_empty_for_size_bigger_than_one(
     BoundarySize boundary_size)
 {
     constexpr auto start_position = 0;
@@ -64,14 +65,14 @@ BoundaryWallsPositionsGenerator::generate_empty_for_size_bigger_than_one(
              scale_to_field_size(size(boundary_size.width, minimum_size))}};
 }
 
-BoundaryWallsPositionsGenerator::PositionInSpace
-BoundaryWallsPositionsGenerator::position(BaseType x, BaseType y)
+InsideWallsPositionsGenerator::PositionInSpace
+InsideWallsPositionsGenerator::position(BaseType x, BaseType y)
 {
     return {x, y};
 }
 
-BoundaryWallsPositionsGenerator::WallSize
-BoundaryWallsPositionsGenerator::size(BaseType x, BaseType y)
+InsideWallsPositionsGenerator::WallSize
+InsideWallsPositionsGenerator::size(BaseType x, BaseType y)
 {
     return {x, y};
 }

@@ -2,7 +2,7 @@
 
 #include "WallPositionsGenerator.hpp"
 
-class BoundaryWallsPositionsGenerator : public WallPositionsGenerator
+class InsideWallsPositionsGenerator : public WallPositionsGenerator
 {
 public:
     Walls generate_walls(BoundarySize) const;

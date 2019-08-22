@@ -1,12 +1,13 @@
 #include <vector>
 
-#include "FieldSize.hpp"
-#include "SimpleMap.hpp"
 #include "WallPositionsGenerator.mock.hpp"
-#include "glm/glm.hpp"
 #include "gmock/gmock.h"
 #include "graphics/renderer_pool.mock.hpp"
 #include "physics/PhysicsEngine.mock.hpp"
+
+#include "FieldSize.hpp"
+#include "SimpleMap.hpp"
+#include "glm/glm.hpp"
 
 using namespace ::testing;
 
@@ -28,8 +29,7 @@ public:
             .WillRepeatedly(Invoke([&](const auto id) {
                 deregistered_physics_ids.push_back(id);
             }));
-        EXPECT_CALL(wall_positions_generator,
-                    generate_boundary_walls(desired_map_size))
+        EXPECT_CALL(wall_positions_generator, generate_walls(desired_map_size))
             .WillOnce(Return(generated_walls));
         {
             InSequence seq;

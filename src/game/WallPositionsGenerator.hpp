@@ -16,5 +16,5 @@ public:
     using Walls = std::vector<Wall>;
 
     virtual ~WallPositionsGenerator() = default;
-    virtual Walls generate_boundary_walls(BoundarySize) const = 0;
+    virtual Walls generate_walls(BoundarySize) const = 0;
 };
