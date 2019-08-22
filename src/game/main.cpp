@@ -31,8 +31,8 @@ int main()
     {
         auto const now = std::chrono::high_resolution_clock::now();
 
-        world.update(DeltaTime{now - last_frame});
         window->update();
+        world.update(DeltaTime{now - last_frame});
         window->display();
 
         last_frame = now;

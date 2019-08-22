@@ -47,7 +47,7 @@ void sfml_window::update()
         {
             m_window->close();
         }
-        if (event.type == sf::Event::Resized && change_observer)
+        else if (event.type == sf::Event::Resized && change_observer)
         {
             change_observer->window_size_changed(get_window_size());
         }

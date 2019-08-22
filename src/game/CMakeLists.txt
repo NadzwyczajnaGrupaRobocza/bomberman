@@ -1,15 +1,16 @@
 find_package(SFML ${SFML_MINIMAL_VERSION} COMPONENTS window REQUIRED)
 
 add_library(game
+  Bomberman.cpp
   BombermanGameWorld.cpp
   BoundaryWallsPositionsGenerator.cpp
+  DefaultBombFactory.cpp
   ExplosionRange.cpp
   HumanPlayerSfml.cpp
   LimitedBombLauncher.cpp
+  SfmlKeyStates.cpp
   SimpleMap.cpp
   TimeBomb.cpp
-  DefaultBombFactory.cpp
-  Bomberman.cpp
   )
 
 target_include_directories(game SYSTEM
@@ -21,13 +22,14 @@ target_link_libraries(game
   )
 
 add_executable(game-ut
+  Bomberman.ut.cpp
   BoundaryWallsPositionsGenerator.ut.cpp
   Entity.ut.cpp
   LimitedBombLauncher.ut.cpp
   Map.ut.cpp
+  SfmlKeyStates.ut.cpp
   SimpleMap.ut.cpp
   TimeBomb.ut.cpp
-  Bomberman.ut.cpp
   )
 
 
