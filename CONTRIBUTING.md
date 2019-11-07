@@ -13,9 +13,9 @@ All updates should be done on dedicated branch, so please don't use master for c
 
 We prefer TDD (https://en.wikipedia.org/wiki/Test-driven_development), so You should cover code as much as possible by UTs.
 
-To write tests we are using gtest library (https://github.com/google/googletest)
+To write tests we are using googletest (or simplier gtest) library (https://github.com/google/googletest)
 
-For mocking classes we are using FakeIt (https://github.com/eranpeer/FakeIt)
+For mocking classes we were using FakeIt (https://github.com/eranpeer/FakeIt), but we are migrating to googlemock (or simplier gmock) library (https://github.com/google/googletest)
 
 ## 4 Recompiling
 
@@ -72,4 +72,8 @@ There should be at least one "Ship it" to close review. If someone start new thr
 
 ## 6 Merging branch to master
 
-... #ToDo (this will be added just after my branch will be merged)
+On Github go to "Pull requests" tab and select Your pull request. Scroll to the bottom of the site. There You should press "Squash and merge" button to merge master with Your branch.
+
+Sometimes this button won't be active. In such case You should probably update Your branch (do this manually or by pressing "Update branch" button). After branch update wait until required jobs will pass. If everything will be ok then "Squash and merge" button should be active.
+
+Your changes should be now on master. You can remove Your branch and start working on new task :)

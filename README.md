@@ -74,5 +74,34 @@ simple-moving-rectangle (You should see some moving white rectangles)
 
 # 4 Running UTs
 
-...
+Running UTs is very simple. If You look at available targets:
+```sh
+cmake --build <build_directory> --target help"
+```
+You will find all UT binaries (thay have postfix "-ut"). Just build binary You want:
+```sh
+cmake --build <build_directory> --target <ut_target>
+```
+and run it:
+```sh
+<build_directory>\bin\<ut_target>
+```
 
+You can also run UTs with cmake. In such case build UT for all targets
+```sh
+cmake --build <build_directory>
+```
+and inside <build_directory> run
+```
+ctest
+```
+If You want to run only specified tests You can use -R:
+```sh
+ctest -R <regex>
+```
+Ctest will run tests that matches <regex>.
+
+For more ctest options run
+```
+ctest --help
+```
