@@ -21,6 +21,9 @@ target_link_libraries(game
   PRIVATE graphics
   )
 
+target_compile_options(game PUBLIC
+  -Wno-switch-enum)
+
 add_executable(game-ut
   Bomberman.ut.cpp
   BoundaryWallsPositionsGenerator.ut.cpp

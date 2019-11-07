@@ -4,7 +4,8 @@
 
 enum class KeyboardKey
 {
-    W,
+    Unknown = -1,
+    W = 0,
     S,
     A,
     D,
@@ -20,6 +21,7 @@ class KeyStates
 public:
     virtual ~KeyStates() = default;
     virtual bool is_pressed(KeyboardKey) = 0;
+    virtual bool is_released(KeyboardKey) = 0;
     virtual bool was_pressed(KeyboardKey) = 0;
     virtual bool was_released(KeyboardKey) = 0;
 };

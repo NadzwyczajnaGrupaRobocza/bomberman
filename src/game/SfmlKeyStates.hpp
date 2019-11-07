@@ -1,15 +1,31 @@
 #pragma once
 
-#include "KeyStates.hpp"
-#include "SfmlWindowEventObserver.hpp"
+#include <map>
+#include <optional>
 
-class SfmlKeyStates : public KeyStates, public SfmlWindowEventObserver
+#include "KeyStates.hpp"
+#include "SfmlWindowEventTarget.hpp"
+
+enum class KeyState
+{
+    Released,
+    Pressed,
+    Unknown
+};
+
+class SfmlKeyStates : public KeyStates, public SfmlWindowEventTarget
 {
 public:
-    void next_frame() override;
-    void update(sf::Event) override;
+    void update();
 
     bool is_pressed(KeyboardKey) override;
+    bool is_released(KeyboardKey) override;
     bool was_pressed(KeyboardKey) override;
     bool was_released(KeyboardKey) override;
+
+    void on_event(sf::Event) override;
+
+private:
+    std::map<KeyboardKey, KeyState> current_key_states{};
+    std::map<KeyboardKey, std::optional<KeyState>> last_frame_key_states{};
 };
