@@ -1,8 +1,10 @@
-#include <boost/core/null_deleter.hpp>
+#include "BombermanGameWorld.hpp"
+
 #include <experimental/map>
 
+#include <boost/core/null_deleter.hpp>
+
 #include "Bomberman.hpp"
-#include "BombermanGameWorld.hpp"
 #include "BoundaryWallsPositionsGenerator.hpp"
 #include "DefaultBombFactory.hpp"
 #include "FieldSize.hpp"
@@ -11,7 +13,7 @@
 
 BombermanGameWorld::BombermanGameWorld(
     std::unique_ptr<physics::PhysicsEngine> a,
-    std::unique_ptr<graphics::renderer_pool> b, const math::Size2u& map_size)
+    std::shared_ptr<graphics::renderer_pool> b, const math::Size2u& map_size)
     : gen(std::make_unique<BoundaryWallsPositionsGenerator>()),
       simpleMap{*a, *gen, *b, map_size}, ppool{std::move(a)}, rpool{
                                                                   std::move(b)}
@@ -76,9 +78,4 @@ void BombermanGameWorld::cleanBombs()
     std::experimental::erase_if(bombs, [](const auto& element) {
         return element.second->hasExploded();
     });
-}
-
-void BombermanGameWorld::window_size_changed(const graphics::window_size& size)
-{
-    rpool->set_rendering_size(size);
 }

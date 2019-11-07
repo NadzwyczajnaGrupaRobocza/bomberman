@@ -13,12 +13,11 @@
 #include "math/Size2u.hpp"
 #include "physics/PhysicsEngine.hpp"
 
-class BombermanGameWorld : public GameWorld,
-                           public graphics::window_change_observer
+class BombermanGameWorld : public GameWorld
 {
 public:
     BombermanGameWorld(std::unique_ptr<physics::PhysicsEngine>,
-                       std::unique_ptr<graphics::renderer_pool>,
+                       std::shared_ptr<graphics::renderer_pool>,
                        const math::Size2u& map_size);
 
     bool is_bomb_at_pos(const BombPosition&) const override;
@@ -28,7 +27,6 @@ public:
                             std::unique_ptr<Explosion>) override;
 
     void update(DeltaTime) override;
-    void window_size_changed(const graphics::window_size&) override;
 
 private:
     void cleanBombs();
