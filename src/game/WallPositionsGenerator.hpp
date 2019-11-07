@@ -9,10 +9,6 @@
 class WallPositionsGenerator
 {
 public:
-    struct unable_to_generate : std::runtime_error
-    {
-        using std::runtime_error::runtime_error;
-    };
     using BaseType = unsigned;
     using PositionInSpace = std::pair<BaseType, BaseType>;
     using WallSize = std::pair<BaseType, BaseType>;
