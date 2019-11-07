@@ -1,10 +1,8 @@
 #include "gmock/gmock.h"
-#include "gtest/gtest.h"
-
-#include "range/v3/all.hpp"
 
 #include "BoundaryWallsPositionsGenerator.hpp"
-#include "FieldSize.hpp"
+#include "WallsPositionGeneratorCommon.ut.hpp"
+#include "gtest/gtest.h"
 
 using namespace ::testing;
 
@@ -12,19 +10,6 @@ class BoundaryWallsPositionsGeneratorTest : public Test
 {
 public:
     BoundaryWallsPositionsGenerator generator;
-
-    WallPositionsGenerator::Walls
-    create_expected_walls(const WallPositionsGenerator::Walls& raw_walls)
-    {
-        const auto scale_with_field_size = [](const auto& wall) {
-            return WallPositionsGenerator::Wall{
-                {wall.first.first * field_size.width,
-                 wall.first.second * field_size.height},
-                {wall.second.first * field_size.width,
-                 wall.second.second * field_size.height}};
-        };
-        return raw_walls | ranges::view::transform(scale_with_field_size);
-    };
 };
 
 TEST_F(BoundaryWallsPositionsGeneratorTest, For0SizeShouldReturnNowWalls)
