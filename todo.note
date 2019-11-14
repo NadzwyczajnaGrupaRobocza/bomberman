@@ -1,0 +1,4 @@
+Next thing to do is:
+- replace windows size observer by event callback
+- in event callback change window size
+- in event callback update sfml key states

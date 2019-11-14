@@ -17,9 +17,14 @@ struct temporary_observer : graphics::window_change_observer
     {
     }
 
+    // void notify(internal_event)
+    // {
+    //     rpool->set_rendering_size(size);
+    // }
+
     void window_size_changed(const graphics::window_size& size)
     {
-        rpool->set_rendering_size(size);
+        // rpool->set_rendering_size(size);
     }
 
     std::shared_ptr<graphics::renderer_pool> rpool;

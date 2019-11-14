@@ -32,6 +32,7 @@ add_executable(graphics-ut
   sfml_renderer_pool.ut.cpp
   sfml_texture_warehouse.ut.cpp
   window/sfml_window.ut.cpp
+  window/window_event.ut.cpp
   )
 
 target_compile_options(graphics-ut PRIVATE

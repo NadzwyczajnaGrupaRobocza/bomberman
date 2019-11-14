@@ -1,8 +1,9 @@
-#include <boost/optional/optional.hpp>
+#include "sfml_window.hpp"
+
 #include <iostream>
 #include <utility>
 
-#include "sfml_window.hpp"
+#include <boost/optional/optional.hpp>
 
 namespace graphics
 {
@@ -59,4 +60,7 @@ window_size sfml_window::get_window_size() const
     return m_window->get_window_size();
 }
 
+void sfml_window::subscribe(window_event_callback)
+{
+}
 }

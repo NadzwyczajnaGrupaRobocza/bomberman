@@ -1,11 +1,13 @@
-#include <SFML/Window/Event.hpp>
-#include <gtest/gtest.h>
 #include <range/v3/algorithm/for_each.hpp>
 
-#include "sfml/window_proxy.mock.hpp"
+#include <SFML/Window/Event.hpp>
+#include <gtest/gtest.h>
 
 #include "graphics/window_change_observer.mock.hpp"
+#include "sfml/window_proxy.mock.hpp"
+
 #include "sfml_window.hpp"
+#include "graphics/window_event.hpp"
 
 using namespace ::testing;
 
@@ -32,6 +34,14 @@ public:
         return sfml_window{
             size, window_title,
             std::unique_ptr<window_proxy>(unique_window_proxy.release())};
+    }
+
+    void expect_poll_event(sf::Event event)
+    {
+        EXPECT_CALL(*proxy, poll_event(_))
+            .Times(2)
+            .WillOnce(DoAll(SetArgReferee<0>(event), Return(true)))
+            .WillOnce(Return(false));
     }
 
     const std::string window_title = "My Window";
@@ -88,27 +98,30 @@ TEST_F(sfml_window_test, updateAndCloseWindow)
     const auto closed_event_type = sf::Event::Closed;
     close_event.type = closed_event_type;
 
-    EXPECT_CALL(*proxy, poll_event(_))
-        .Times(2)
-        .WillOnce(DoAll(SetArgReferee<0>(close_event), Return(true)))
-        .WillOnce(Return(false));
+    expect_poll_event(close_event);
     EXPECT_CALL(*proxy, close());
 
     window.update();
 }
 
-TEST_F(sfml_window_test, updateSize_shouldCallObserver)
-{
-    sf::Event resized_event;
-    const auto resized_event_type = sf::Event::Resized;
-    resized_event.type = resized_event_type;
-    math::Size2u size_read{2, 88};
-    window_size window_size{2, 88};
+// --------------------------- UPDATE_SIZE  ---------------------------
 
-    EXPECT_CALL(*proxy, poll_event(_))
-        .Times(2)
-        .WillOnce(DoAll(SetArgReferee<0>(resized_event), Return(true)))
-        .WillOnce(Return(false));
+struct sfml_window_test_update_size : sfml_window_test
+{
+    void SetUp() override
+    {
+        sf::Event resized_event;
+        resized_event.type = sf::Event::Resized;
+        expect_poll_event(resized_event);
+    }
+
+    window_size window_size{2, 88};
+};
+
+TEST_F(sfml_window_test_update_size, shouldCallObserver)
+{
+    math::Size2u size_read{2, 88};
+
     EXPECT_CALL(*proxy, get_window_size()).WillOnce(Return(size_read));
     EXPECT_CALL(observer, window_size_changed(window_size));
 
@@ -116,20 +129,61 @@ TEST_F(sfml_window_test, updateSize_shouldCallObserver)
     window.update();
 }
 
-TEST_F(sfml_window_test, updateSize_whenNoObserver_shouldNotCallObserver)
+TEST_F(sfml_window_test_update_size, whenNoObserver_shouldNotCallObserver)
 {
-    sf::Event resized_event;
-    const auto resized_event_type = sf::Event::Resized;
-    resized_event.type = resized_event_type;
-    window_size window_size{2, 88};
-
-    EXPECT_CALL(*proxy, poll_event(_))
-        .Times(2)
-        .WillOnce(DoAll(SetArgReferee<0>(resized_event), Return(true)))
-        .WillOnce(Return(false));
-
     auto window = create_window();
     window.update();
+}
+
+// --------------------------- NOTIFY  ---------------------------
+
+struct sfml_window_test_notify : sfml_window_test
+{
+    void SetUp() override
+    {
+        unexpected_event.type = sf::Event::GainedFocus;
+
+        screen_event.type = sf::Event::Resized;
+
+        keyboard_event.type = sf::Event::KeyReleased;
+        keyboard_event.key.code = sf::Keyboard::Key::S;
+    }
+
+    void expect_poll_unexpected_event()
+    {
+        expect_poll_event(unexpected_event);
+    }
+
+    void expect_poll_keyboard_event()
+    {
+        expect_poll_event(keyboard_event);
+    }
+
+    sf::Event unexpected_event{};
+    sf::Event keyboard_event{};
+    sf::Event screen_event{};
+
+    sfml_window window{create_window()};
+};
+
+// TEST_F(sfml_window_test_notify, unexpected_event_is_not_pass_to_subscriber)
+// {
+//     // window_event event;
+//     expect_poll_unexpected_event();
+
+//     window.subscribe({}(){});
+// }
+
+TEST_F(sfml_window_test_notify, screen_event_pass_to_subscriber)
+{
+    // window_event event;
+    bool lambda_called{false};
+    window.subscribe(
+        [&lambda_called](const window_event) { lambda_called = true; });
+
+    // expect_poll_event(screen_event);
+
+    EXPECT_TRUE(lambda_called);
 }
 
 }

@@ -22,6 +22,7 @@ public:
     bool is_open() const override;
     void display() override;
     void update() override;
+    void subscribe(window_event_callback) override;
 
 private:
     sfml_window(const window_size&, const std::string&,
