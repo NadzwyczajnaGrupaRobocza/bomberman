@@ -52,6 +52,11 @@ void sfml_window::update()
         {
             change_observer->window_size_changed(get_window_size());
         }
+
+        if(callback)
+        {
+            callback(window_event{});
+        }
     }
 }
 
@@ -60,7 +65,8 @@ window_size sfml_window::get_window_size() const
     return m_window->get_window_size();
 }
 
-void sfml_window::subscribe(window_event_callback)
+void sfml_window::subscribe(window_event_callback subscriber)
 {
+    callback = subscriber;
 }
 }

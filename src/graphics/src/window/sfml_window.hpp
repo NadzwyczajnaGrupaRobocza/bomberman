@@ -33,5 +33,7 @@ private:
 
     std::unique_ptr<window_proxy> m_window;
     boost::optional<window_change_observer&> change_observer;
+
+    boost::optional<window_event_callback> callback;
 };
 }

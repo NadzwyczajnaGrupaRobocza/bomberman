@@ -115,7 +115,7 @@ struct sfml_window_test_update_size : sfml_window_test
         expect_poll_event(resized_event);
     }
 
-    window_size window_size{2, 88};
+    window_size tested_window_size{2, 88};
 };
 
 TEST_F(sfml_window_test_update_size, shouldCallObserver)
@@ -123,7 +123,7 @@ TEST_F(sfml_window_test_update_size, shouldCallObserver)
     math::Size2u size_read{2, 88};
 
     EXPECT_CALL(*proxy, get_window_size()).WillOnce(Return(size_read));
-    EXPECT_CALL(observer, window_size_changed(window_size));
+    EXPECT_CALL(observer, window_size_changed(tested_window_size));
 
     auto window = create_window(observer);
     window.update();
@@ -176,12 +176,13 @@ struct sfml_window_test_notify : sfml_window_test
 
 TEST_F(sfml_window_test_notify, screen_event_pass_to_subscriber)
 {
-    // window_event event;
+    window_event event;
     bool lambda_called{false};
     window.subscribe(
-        [&lambda_called](const window_event) { lambda_called = true; });
+        [&lambda_called](const window_event&) { lambda_called = true; });
+    expect_poll_event(screen_event);
 
-    // expect_poll_event(screen_event);
+    window.update();
 
     EXPECT_TRUE(lambda_called);
 }

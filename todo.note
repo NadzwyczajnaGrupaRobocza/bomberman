@@ -1,4 +1,8 @@
 Next thing to do is:
+
+- finish test for subcribe in  window (TEST_F(sfml_window_test_notify, screen_event_pass_to_subscriber))
+
+old notes:
 - replace windows size observer by event callback
 - in event callback change window size
 - in event callback update sfml key states

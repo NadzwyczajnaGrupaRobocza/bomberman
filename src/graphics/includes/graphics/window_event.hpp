@@ -7,15 +7,15 @@ namespace graphics
 {
 enum class key_state
 {
+    Unknown,
     Released,
-    Pressed,
-    Unknown
+    Pressed
 };
 
 enum class keyboard_key
 {
-    Unknown = -1,
-    W = 0,
+    Unknown,
+    W,
     S,
     A,
     D,
@@ -27,6 +27,20 @@ struct keyboard_event
     key_state state;
     keyboard_key key;
 };
+
+constexpr bool operator==(const keyboard_event& lhs, const keyboard_event& rhs)
+{
+    constexpr auto tie = [](const auto& event) {
+        return std::tie(event.state, event.key);
+    };
+
+    return tie(lhs) == tie(rhs);
+}
+
+constexpr bool operator!=(const keyboard_event& lhs, const keyboard_event& rhs)
+{
+    return not(lhs == rhs);
+}
 
 enum class screen_event
 {
@@ -43,18 +57,30 @@ struct overloaded : Ts...
 template <class... Ts>
 overloaded(Ts...)->overloaded<Ts...>;
 
-class window_event
+struct window_event
 {
 public:
-    template <typename Lambda>
-    void dispatch(Lambda lambda)
+    window_event() = default;
+
+    template <typename Event>
+    window_event(Event&& event) : concrete_event{std::forward<Event>(event)}
     {
-        std::visit(overloaded{[](auto) {}, lambda}, concrete_event);
+    }
+
+    template <typename... Lambda>
+    void dispatch(Lambda... lambda)
+    {
+        std::visit(overloaded{[](auto) {}, std::move(lambda)...},
+                   concrete_event);
     }
 
 private:
-    std::variant<keyboard_event, screen_event> concrete_event;
+    struct uninitialized_event
+    {
+    };
+    std::variant<uninitialized_event, keyboard_event, screen_event>
+        concrete_event;
 };
 
-using window_event_callback = std::function<void(window_event)>;
+using window_event_callback = std::function<void(const window_event&)>;
 }

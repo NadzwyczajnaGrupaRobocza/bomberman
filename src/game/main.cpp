@@ -47,6 +47,11 @@ int main()
     auto window = graphics::create_window(
         initial_window_size, "Bomberman Remake", window_size_changer);
 
+    window.subscribe([r](const auto& window_event)
+                     {
+                         r->set_rendering_size(size);
+                     });
+
     auto last_frame{std::chrono::high_resolution_clock::now()};
 
     while (window->is_open())
