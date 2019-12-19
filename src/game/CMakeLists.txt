@@ -11,6 +11,7 @@ add_library(game
   LimitedBombLauncher.cpp
   SimpleMap.cpp
   TimeBomb.cpp
+  WallPositionsGeneratorComposite.cpp
   )
 
 target_include_directories(game SYSTEM
@@ -30,6 +31,7 @@ add_executable(game-ut
   Map.ut.cpp
   SimpleMap.ut.cpp
   TimeBomb.ut.cpp
+  WallPositionsGeneratorComposite.ut.cpp
   )
 
 
