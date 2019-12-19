@@ -35,6 +35,7 @@ TEST_F(inside_walls_positions_generator_test, given6_shuoldReturnOneWall)
 
 TEST_F(inside_walls_positions_generator_test, given7And8_shuoldReturnFourWalls)
 {
-    const auto expected_walls = create_expected_one_square_walls({{2, 2}});
-    ASSERT_THAT(generator.generate_walls({6, 6}), Eq(expected_walls));
+    const auto expected_walls =
+        create_expected_one_square_walls({{2, 2}, {2, 4}, {4, 2}, {4, 4}});
+    ASSERT_THAT(generator.generate_walls({7, 8}), Eq(expected_walls));
 }
