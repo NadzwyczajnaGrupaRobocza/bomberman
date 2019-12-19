@@ -23,10 +23,15 @@ TEST_F(inside_walls_positions_generator_test,
     ASSERT_THAT(generator.generate_walls({4, 4}), IsEmpty());
 }
 
-TEST_F(inside_walls_positions_generator_test,
-       shouldReturnInsideWallEveryTwoFields)
+TEST_F(inside_walls_positions_generator_test, given5_shouldReturnOneWall)
 {
     const auto expected_walls =
         create_expected_walls({{{2, 2}, one_field_wall}});
     ASSERT_THAT(generator.generate_walls({5, 5}), Eq(expected_walls));
+}
+TEST_F(inside_walls_positions_generator_test, given6_shuoldReturnOneWall)
+{
+    const auto expected_walls =
+        create_expected_walls({{{2, 2}, one_field_wall}});
+    ASSERT_THAT(generator.generate_walls({6, 6}), Eq(expected_walls));
 }
