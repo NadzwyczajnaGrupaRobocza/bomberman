@@ -1,17 +1,23 @@
 #include "gmock/gmock.h"
 
-#include "WallsPositionGeneratorComposite.hpp"
+#include "WallPositionsGeneratorComposite.hpp"
 
 using namespace ::testing;
 
-class WallsPositionGeneratorCompositeTest
+class wall_positions_generator_composite_test : public Test
 {
 public:
-    WallsPositionGeneratorComposite generator
-    {
-    }
+    WallPositionsGenerator::BoundarySize some_size{1, 2};
 };
 
-TEST_F(WallsPositionGeneratorCompositeTest, shouldCallInsideGenerators)
+class empty_wall_positions_generator_composite_test
+    : public wall_positions_generator_composite_test
 {
+public:
+    wall_positions_generator_composite generator{};
+};
+
+TEST_F(empty_wall_positions_generator_composite_test, shouldNotThrow)
+{
+    ASSERT_NO_THROW(generator.generate_walls(some_size));
 }
