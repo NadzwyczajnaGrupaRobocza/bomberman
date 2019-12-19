@@ -29,7 +29,8 @@ class wall_positions_generator_composite_with_one_generator_test
     : public wall_positions_generator_composite_test
 {
 public:
-    std::shared_ptr<MockWallPositionsGenerator> other_generator = std::make_shared<MockWallPositionsGenerator>());
+    std::shared_ptr<MockWallPositionsGenerator> other_generator =
+        std::make_shared<MockWallPositionsGenerator>();
     wall_positions_generator_composite generator{{other_generator}};
 };
 

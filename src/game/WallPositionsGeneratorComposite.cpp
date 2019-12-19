@@ -1,12 +1,17 @@
 #include "WallPositionsGeneratorComposite.hpp"
 
 wall_positions_generator_composite::wall_positions_generator_composite(
-    Generators)
+    Generators g)
+    : generators{std::move(g)}
 {
 }
 
-auto wall_positions_generator_composite::generate_walls(BoundarySize) const
+auto wall_positions_generator_composite::generate_walls(BoundarySize size) const
     -> Walls
 {
-    return {};
+    if (generators.empty())
+    {
+        return {};
+    }
+    return generators.front()->generate_walls(size);
 }
