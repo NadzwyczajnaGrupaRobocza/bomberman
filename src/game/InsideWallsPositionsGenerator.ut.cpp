@@ -11,8 +11,6 @@ class inside_walls_positions_generator_test : public Test
 {
 public:
     inside_walls_positions_generator generator;
-
-    WallPositionsGenerator::WallSize one_field_wall{1, 1};
 };
 
 TEST_F(inside_walls_positions_generator_test,
@@ -25,13 +23,18 @@ TEST_F(inside_walls_positions_generator_test,
 
 TEST_F(inside_walls_positions_generator_test, given5_shouldReturnOneWall)
 {
-    const auto expected_walls =
-        create_expected_walls({{{2, 2}, one_field_wall}});
+    const auto expected_walls = create_expected_one_square_walls({{2, 2}});
     ASSERT_THAT(generator.generate_walls({5, 5}), Eq(expected_walls));
 }
+
 TEST_F(inside_walls_positions_generator_test, given6_shuoldReturnOneWall)
 {
-    const auto expected_walls =
-        create_expected_walls({{{2, 2}, one_field_wall}});
+    const auto expected_walls = create_expected_one_square_walls({{2, 2}});
+    ASSERT_THAT(generator.generate_walls({6, 6}), Eq(expected_walls));
+}
+
+TEST_F(inside_walls_positions_generator_test, given7And8_shuoldReturnFourWalls)
+{
+    const auto expected_walls = create_expected_one_square_walls({{2, 2}});
     ASSERT_THAT(generator.generate_walls({6, 6}), Eq(expected_walls));
 }
