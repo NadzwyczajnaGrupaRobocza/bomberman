@@ -12,7 +12,7 @@ LimitedBombLauncher::LimitedBombLauncher(std::shared_ptr<GameWorld> gw,
 {
 }
 
-bool LimitedBombLauncher::try_spawn_bomb(const math::Position2f pos)
+auto LimitedBombLauncher::try_spawn_bomb(const math::Position2f pos) -> bool
 {
     const auto bombCanBeSpawned = can_spawn_bomb(pos);
     if (bombCanBeSpawned)
@@ -22,7 +22,7 @@ bool LimitedBombLauncher::try_spawn_bomb(const math::Position2f pos)
     return bombCanBeSpawned;
 }
 
-bool LimitedBombLauncher::can_spawn_bomb(const math::Position2f pos) const
+auto LimitedBombLauncher::can_spawn_bomb(const math::Position2f pos) const -> bool
 {
     return max_bombs > bombs && !game_world->is_bomb_at_pos(BombPosition{pos});
 }
@@ -42,12 +42,12 @@ void LimitedBombLauncher::notify_exploded()
     }
 }
 
-void LimitedBombLauncher::retrieve_bomb()
+auto LimitedBombLauncher::retrieve_bomb() -> void
 {
     --bombs;
 }
 
-bool LimitedBombLauncher::can_retrieve_bomb() const
+auto LimitedBombLauncher::can_retrieve_bomb() const -> bool
 {
     return bombs > 0;
 }

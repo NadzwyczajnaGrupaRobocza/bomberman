@@ -45,7 +45,8 @@ constexpr bool operator!=(const keyboard_event& lhs, const keyboard_event& rhs)
 enum class screen_event
 {
     Unknown = -1,
-    Resize = 0
+    Resize = 0,
+    Close
 };
 
 template <class... Ts>

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "BombPosition.hpp"
 #include "DeltaTime.hpp"
 #include "ExplosionPosition.hpp"
@@ -14,7 +16,7 @@ class GameWorld
 public:
     virtual ~GameWorld() = default;
 
-    virtual bool is_bomb_at_pos(const BombPosition&) const = 0;
+    [[nodiscard]] virtual auto is_bomb_at_pos(const BombPosition&) const -> bool = 0;
 
     virtual void register_bomb(BombPosition, std::unique_ptr<Bomb>) = 0;
     virtual void register_explosion(ExplosionPosition,

@@ -3,5 +3,5 @@
 class Bomb : public Entity
 {
 public:
-    virtual bool hasExploded() const = 0;
+    [[nodiscard]] virtual auto hasExploded() const -> bool = 0;
 };

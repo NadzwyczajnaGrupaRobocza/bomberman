@@ -1,13 +1,15 @@
 #include "Bomberman.hpp"
 
+#include <utility>
+
 Bomberman::Bomberman(physics::PhysicsId phys_id, graphics::renderer_id rend_id,
                      std::unique_ptr<HumanPlayer> player,
                      std::shared_ptr<physics::PhysicsEngine> physics,
                      std::shared_ptr<graphics::renderer_pool> pool,
                      std::shared_ptr<BombLauncher> launcher)
     : physics_id{phys_id}, renderer_id{rend_id}, input{std::move(player)},
-      bomb_launcher{std::move(launcher)}, physics_engine{physics},
-      renderer_pool{pool}
+      bomb_launcher{std::move(launcher)}, physics_engine{std::move(physics)},
+      renderer_pool{std::move(pool)}
 {
 }
 
@@ -17,10 +19,13 @@ void Bomberman::update(DeltaTime dt)
     auto position = physics_engine->get_position(physics_id);
     renderer_pool->set_position(renderer_id, position);
 
+
     if (input->wants_bomb())
     {
         bomb_launcher->try_spawn_bomb(position);
     }
+
+    std::shared_ptr<int> ala{ new int(23)};
 
     const auto new_direction = input->get_direction();
     position.x += speedup_factor * new_direction.x * dt.count();
@@ -29,7 +34,7 @@ void Bomberman::update(DeltaTime dt)
     physics_engine->set_position(physics_id, position);
 }
 
-bool Bomberman::areYouDead() const
+auto Bomberman::areYouDead() const -> bool
 {
     return false;
 }

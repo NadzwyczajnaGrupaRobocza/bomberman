@@ -29,7 +29,7 @@ sfml_window::sfml_window(const window_size& size, const std::string& title,
     m_window->create(sf::VideoMode{size.width, size.height}, title);
 }
 
-bool sfml_window::is_open() const
+auto sfml_window::is_open() const -> bool
 {
     return m_window->is_open();
 }
@@ -46,21 +46,22 @@ void sfml_window::update()
     {
         if (event.type == sf::Event::Closed)
         {
+            (*callback)(window_event{screen_event::Close});
             m_window->close();
         }
         else if (event.type == sf::Event::Resized && change_observer)
         {
+            (*callback)(window_event{screen_event::Resize});
             change_observer->window_size_changed(get_window_size());
         }
-
-        if(callback)
+        else if (event.type == sf::Event::Resized)
         {
-            callback(window_event{});
+            (*callback)(window_event{screen_event::Resize});
         }
     }
 }
 
-window_size sfml_window::get_window_size() const
+auto sfml_window::get_window_size() const -> window_size
 {
     return m_window->get_window_size();
 }

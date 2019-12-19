@@ -21,7 +21,7 @@ public:
                        std::shared_ptr<BombLauncher>);
 
     void update(DeltaTime) override;
-    bool areYouDead() const override;
+    [[nodiscard]] auto areYouDead() const -> bool override;
 
 private:
     physics::PhysicsId physics_id;

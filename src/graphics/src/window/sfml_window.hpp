@@ -19,7 +19,7 @@ public:
     sfml_window(const window_size&, const std::string&,
                 std::unique_ptr<window_proxy>);
 
-    bool is_open() const override;
+    [[nodiscard]] auto is_open() const -> bool override;
     void display() override;
     void update() override;
     void subscribe(window_event_callback) override;
@@ -29,7 +29,7 @@ private:
                 std::unique_ptr<window_proxy>,
                 boost::optional<window_change_observer&>);
 
-    window_size get_window_size() const;
+    [[nodiscard]] auto get_window_size() const -> window_size;
 
     std::unique_ptr<window_proxy> m_window;
     boost::optional<window_change_observer&> change_observer;

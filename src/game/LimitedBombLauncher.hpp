@@ -5,8 +5,9 @@
 #include "BombFactory.hpp"
 
 #include "BombLauncher.hpp"
+#include "GameWorld.hpp"
 
-class GameWorld;
+// class GameWorld;
 
 class LimitedBombLauncher
     : public BombLauncher,
@@ -16,7 +17,7 @@ public:
     LimitedBombLauncher(std::shared_ptr<GameWorld>,
                         std::shared_ptr<BombFactory>, int);
 
-    bool try_spawn_bomb(math::Position2f) override;
+    auto try_spawn_bomb(math::Position2f) -> bool override;
     void notify_exploded() override;
 
 private:
@@ -25,8 +26,8 @@ private:
     const int max_bombs;
     int bombs{0};
 
-    bool can_spawn_bomb(math::Position2f) const;
+    auto can_spawn_bomb(math::Position2f) const -> bool;
     void launch_bomb(math::Position2f);
-    bool can_retrieve_bomb() const;
+    auto can_retrieve_bomb() const -> bool;
     void retrieve_bomb();
 };

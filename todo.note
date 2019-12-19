@@ -1,8 +1,13 @@
 Next thing to do is:
 
-- finish test for subcribe in  window (TEST_F(sfml_window_test_notify, screen_event_pass_to_subscriber))
+- remove it from sfml_window and finish use of callback
+
+            (*callback)(window_event{screen_event::Resize});
+            change_observer->window_size_changed(get_window_size());
+
 
 old notes:
+- finish test for subcribe in  window (TEST_F(sfml_window_test_notify, screen_event_pass_to_subscriber))
 - replace windows size observer by event callback
 - in event callback change window size
 - in event callback update sfml key states

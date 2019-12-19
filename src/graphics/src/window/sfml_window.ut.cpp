@@ -6,8 +6,8 @@
 #include "graphics/window_change_observer.mock.hpp"
 #include "sfml/window_proxy.mock.hpp"
 
-#include "sfml_window.hpp"
 #include "graphics/window_event.hpp"
+#include "sfml_window.hpp"
 
 using namespace ::testing;
 
@@ -137,54 +137,42 @@ TEST_F(sfml_window_test_update_size, whenNoObserver_shouldNotCallObserver)
 
 // --------------------------- NOTIFY  ---------------------------
 
-struct sfml_window_test_notify : sfml_window_test
+struct sfml_window_test_notify : sfml_window_test,
+                                 WithParamInterface<std::pair<sf::Event, bool>>
 {
     void SetUp() override
     {
-        unexpected_event.type = sf::Event::GainedFocus;
-
-        screen_event.type = sf::Event::Resized;
-
-        keyboard_event.type = sf::Event::KeyReleased;
-        keyboard_event.key.code = sf::Keyboard::Key::S;
+        window.subscribe([this](const window_event&) { lambda_called = true; });
     }
 
-    void expect_poll_unexpected_event()
+    void expect_poll(sf::Event event)
     {
-        expect_poll_event(unexpected_event);
+        expect_poll_event(event);
     }
-
-    void expect_poll_keyboard_event()
-    {
-        expect_poll_event(keyboard_event);
-    }
-
-    sf::Event unexpected_event{};
-    sf::Event keyboard_event{};
-    sf::Event screen_event{};
 
     sfml_window window{create_window()};
+    bool lambda_called = false;
 };
 
-// TEST_F(sfml_window_test_notify, unexpected_event_is_not_pass_to_subscriber)
-// {
-//     // window_event event;
-//     expect_poll_unexpected_event();
-
-//     window.subscribe({}(){});
-// }
-
-TEST_F(sfml_window_test_notify, screen_event_pass_to_subscriber)
+TEST_P(sfml_window_test_notify, not_pass_to_subscriber)
 {
-    window_event event;
-    bool lambda_called{false};
-    window.subscribe(
-        [&lambda_called](const window_event&) { lambda_called = true; });
-    expect_poll_event(screen_event);
+    const auto param = GetParam();
+    const auto& event = param.first;
+    const auto expected_result = param.second;
+
+    expect_poll(event);
 
     window.update();
 
-    EXPECT_TRUE(lambda_called);
+    EXPECT_EQ(expected_result, lambda_called);
 }
 
+INSTANTIATE_TEST_CASE_P(
+    sfml_window_test_notify_unexpected_events, sfml_window_test_notify,
+    Values(std::make_pair(sf::Event{sf::Event::GainedFocus, {}}, false)));
+
+INSTANTIATE_TEST_CASE_P(
+    sfml_window_test_notify_expected_events, sfml_window_test_notify,
+    Values(std::make_pair(sf::Event{sf::Event::Resized, {}}, true),
+           std::make_pair(sf::Event{sf::Event::Closed, {}}, true)));
 }
