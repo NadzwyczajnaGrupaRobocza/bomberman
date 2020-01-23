@@ -69,7 +69,7 @@ public:
     }
 
     template <typename... Lambda>
-    void dispatch(Lambda... lambda)
+    void dispatch(Lambda... lambda) const
     {
         std::visit(overloaded{[](auto) {}, std::move(lambda)...},
                    concrete_event);

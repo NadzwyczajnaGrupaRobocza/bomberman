@@ -5,6 +5,8 @@
 
 #include <boost/optional/optional.hpp>
 
+#include "graphics/window_event.hpp"
+
 namespace graphics
 {
 sfml_window::sfml_window(const window_size& size, const std::string& title,
@@ -39,26 +41,32 @@ void sfml_window::display()
     m_window->display();
 }
 
+auto to_internal(const sf::Event external_event) -> window_event
+{
+    switch (external_event.type)
+    {
+    case sf::Event::Closed: return {screen_event::Close};
+    case sf::Event::Resized: return {screen_event::Resize};
+    default: return {};
+    }
+}
+
 void sfml_window::update()
 {
     sf::Event event;
     while (m_window->poll_event(event))
     {
-        if (event.type == sf::Event::Closed)
+        if (callback)
         {
-            (*callback)(window_event{screen_event::Close});
-            m_window->close();
-        }
-        else if (event.type == sf::Event::Resized && change_observer)
-        {
-            (*callback)(window_event{screen_event::Resize});
-            change_observer->window_size_changed(get_window_size());
-        }
-        else if (event.type == sf::Event::Resized)
-        {
-            (*callback)(window_event{screen_event::Resize});
+
+            (*callback)(to_internal(event));
         }
     }
+}
+
+auto sfml_window::close() -> void
+{
+    m_window->close();
 }
 
 auto sfml_window::get_window_size() const -> window_size

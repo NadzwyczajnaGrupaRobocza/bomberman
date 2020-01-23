@@ -21,14 +21,6 @@ ACTION_P(SetEventType, event_type)
 class sfml_window_test : public Test
 {
 public:
-    auto create_window(window_change_observer& window_observer)
-    {
-        return sfml_window{
-            size, window_title,
-            std::unique_ptr<window_proxy>(unique_window_proxy.release()),
-            window_observer};
-    }
-
     auto create_window()
     {
         return sfml_window{
@@ -91,7 +83,7 @@ TEST_F(sfml_window_test, updateDoNothingIfNoPollEvents)
     window.update();
 }
 
-TEST_F(sfml_window_test, updateAndCloseWindow)
+TEST_F(sfml_window_test, closeEventShouldNotCloseWindow)
 {
     auto window = create_window();
     sf::Event close_event;
@@ -99,43 +91,18 @@ TEST_F(sfml_window_test, updateAndCloseWindow)
     close_event.type = closed_event_type;
 
     expect_poll_event(close_event);
-    EXPECT_CALL(*proxy, close());
 
     window.update();
 }
 
-// --------------------------- UPDATE_SIZE  ---------------------------
-
-struct sfml_window_test_update_size : sfml_window_test
-{
-    void SetUp() override
-    {
-        sf::Event resized_event;
-        resized_event.type = sf::Event::Resized;
-        expect_poll_event(resized_event);
-    }
-
-    window_size tested_window_size{2, 88};
-};
-
-TEST_F(sfml_window_test_update_size, shouldCallObserver)
-{
-    math::Size2u size_read{2, 88};
-
-    EXPECT_CALL(*proxy, get_window_size()).WillOnce(Return(size_read));
-    EXPECT_CALL(observer, window_size_changed(tested_window_size));
-
-    auto window = create_window(observer);
-    window.update();
-}
-
-TEST_F(sfml_window_test_update_size, whenNoObserver_shouldNotCallObserver)
+TEST_F(sfml_window_test, closeWindow)
 {
     auto window = create_window();
-    window.update();
-}
 
-// --------------------------- NOTIFY  ---------------------------
+    EXPECT_CALL(*proxy, close());
+
+    window.close();
+}
 
 struct sfml_window_test_notify : sfml_window_test,
                                  WithParamInterface<std::pair<sf::Event, bool>>
@@ -154,7 +121,7 @@ struct sfml_window_test_notify : sfml_window_test,
     bool lambda_called = false;
 };
 
-TEST_P(sfml_window_test_notify, not_pass_to_subscriber)
+TEST_P(sfml_window_test_notify, handle_events)
 {
     const auto param = GetParam();
     const auto& event = param.first;

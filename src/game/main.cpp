@@ -7,6 +7,7 @@
 #include "SFML/Window/Window.hpp"
 #include "editor/HotReload.hpp"
 #include "graphics/factory.hpp"
+#include "graphics/window_event.hpp"
 #include "math/Size2u.hpp"
 #include "physics/ConcretePhysicsEngine.hpp"
 #include "physics/PhysicsEngine.hpp"
@@ -47,8 +48,17 @@ int main()
     auto window = graphics::create_window(
         initial_window_size, "Bomberman Remake", window_size_changer);
 
-    window->subscribe([r](const auto& // window_event
-                      ) {             // r->set_rendering_size(size);
+    window->subscribe([&](const auto& some_window_event) {
+        some_window_event.dispatch([&](graphics::screen_event event) {
+            if (event == graphics::screen_event::Resize)
+            {
+                r->set_rendering_size(window->get_window_size());
+            }
+            else if(event == graphics::screen_event::Close)
+            {
+                window->close();
+            }
+        });
     });
 
     auto last_frame{std::chrono::high_resolution_clock::now()};
