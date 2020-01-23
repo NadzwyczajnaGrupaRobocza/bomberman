@@ -1,5 +1,7 @@
 #include "WallPositionsGeneratorComposite.hpp"
+#include "range/v3/action.hpp"
 #include "range/v3/algorithm.hpp"
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/view.hpp"
 
 wall_positions_generator_composite::wall_positions_generator_composite(
@@ -12,8 +14,8 @@ auto wall_positions_generator_composite::generate_walls(BoundarySize size) const
     -> Walls
 {
     using namespace ranges;
-    return views::transform(
-               generators,
-               [&](auto& generator) { generator->generate_walls(size); }) |
-           views::join | to<std::vector>();
+    return actions::join(generators |
+                         views::transform([&](const auto& generator) {
+                             return generator->generate_walls(size);
+                         }));
 }
