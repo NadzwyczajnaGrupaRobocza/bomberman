@@ -15,7 +15,7 @@ create_expected_walls(const WallPositionsGenerator::Walls& raw_walls)
     };
     return raw_walls | ranges::views::transform(scale_with_field_size) |
            ranges::to<std::vector>();
-};
+}
 
 inline WallPositionsGenerator::Walls create_expected_one_square_walls(
     const std::initializer_list<WallPositionsGenerator::PositionInSpace>&
@@ -30,4 +30,4 @@ inline WallPositionsGenerator::Walls create_expected_one_square_walls(
     };
     return raw_walls | ranges::views::transform(scale_with_field_size) |
            ranges::to<std::vector>();
-};
+}
