@@ -1,5 +1,6 @@
-#include <boost/core/null_deleter.hpp>
 #include <experimental/map>
+
+#include <boost/core/null_deleter.hpp>
 
 #include "Bomberman.hpp"
 #include "BombermanGameWorld.hpp"
@@ -7,12 +8,17 @@
 #include "DefaultBombFactory.hpp"
 #include "FieldSize.hpp"
 #include "HumanPlayerSfml.hpp"
+#include "InsideWallsPositionsGenerator.hpp"
 #include "LimitedBombLauncher.hpp"
+#include "WallPositionsGeneratorComposite.hpp"
 
 BombermanGameWorld::BombermanGameWorld(
     std::unique_ptr<physics::PhysicsEngine> a,
     std::unique_ptr<graphics::renderer_pool> b, const math::Size2u& map_size)
-    : gen(std::make_unique<BoundaryWallsPositionsGenerator>()),
+    : gen(std::make_unique<wall_positions_generator_composite>(
+          wall_positions_generator_composite::Generators{
+              std::make_shared<inside_walls_positions_generator>(),
+              std::make_shared<BoundaryWallsPositionsGenerator>()})),
       simpleMap{*a, *gen, *b, map_size}, ppool{std::move(a)}, rpool{
                                                                   std::move(b)}
 
