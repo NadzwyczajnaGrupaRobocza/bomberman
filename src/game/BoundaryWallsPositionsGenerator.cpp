@@ -2,7 +2,7 @@
 #include "FieldSize.hpp"
 
 BoundaryWallsPositionsGenerator::Walls
-BoundaryWallsPositionsGenerator::generate_boundary_walls(
+BoundaryWallsPositionsGenerator::generate_walls(
     BoundarySize boundary_size) const
 {
     if (zero_size(boundary_size))

@@ -1,10 +1,8 @@
 #include "gmock/gmock.h"
-#include "gtest/gtest.h"
-
-#include "range/v3/all.hpp"
 
 #include "BoundaryWallsPositionsGenerator.hpp"
-#include "FieldSize.hpp"
+#include "WallsPositionGeneratorCommon.ut.hpp"
+#include "gtest/gtest.h"
 
 using namespace ::testing;
 
@@ -12,24 +10,11 @@ class BoundaryWallsPositionsGeneratorTest : public Test
 {
 public:
     BoundaryWallsPositionsGenerator generator;
-
-    WallPositionsGenerator::Walls
-    create_expected_walls(const WallPositionsGenerator::Walls& raw_walls)
-    {
-        const auto scale_with_field_size = [](const auto& wall) {
-            return WallPositionsGenerator::Wall{
-                {wall.first.first * field_size.width,
-                 wall.first.second * field_size.height},
-                {wall.second.first * field_size.width,
-                 wall.second.second * field_size.height}};
-        };
-        return raw_walls | ranges::view::transform(scale_with_field_size);
-    };
 };
 
 TEST_F(BoundaryWallsPositionsGeneratorTest, For0SizeShouldReturnNowWalls)
 {
-    ASSERT_THAT(generator.generate_boundary_walls({0, 0}), IsEmpty());
+    ASSERT_THAT(generator.generate_walls({0, 0}), IsEmpty());
 }
 
 TEST_F(BoundaryWallsPositionsGeneratorTest, For1SizeShouldReturnOneWall)
@@ -37,7 +22,7 @@ TEST_F(BoundaryWallsPositionsGeneratorTest, For1SizeShouldReturnOneWall)
     const WallPositionsGenerator::Walls expected_walls{
         {{0, 0}, {field_size.width, field_size.height}}};
 
-    ASSERT_THAT(generator.generate_boundary_walls({1, 1}),
+    ASSERT_THAT(generator.generate_walls({1, 1}),
                 UnorderedElementsAreArray(expected_walls));
 }
 
@@ -49,7 +34,7 @@ TEST_F(BoundaryWallsPositionsGeneratorTest, For5SizeShouldReturnWalls)
                                {{4, 0}, {1, 5}},
                                {{0, 4}, {5, 1}}});
 
-    ASSERT_THAT(generator.generate_boundary_walls({5, 5}),
+    ASSERT_THAT(generator.generate_walls({5, 5}),
                 UnorderedElementsAreArray(expected_walls));
 }
 
@@ -61,7 +46,7 @@ TEST_F(BoundaryWallsPositionsGeneratorTest, For2SizeShouldReturnWalls)
                                {{1, 0}, {1, 2}},
                                {{0, 1}, {2, 1}}})};
 
-    ASSERT_THAT(generator.generate_boundary_walls({2, 2}),
+    ASSERT_THAT(generator.generate_walls({2, 2}),
                 UnorderedElementsAreArray(expected_walls));
 }
 
@@ -73,6 +58,6 @@ TEST_F(BoundaryWallsPositionsGeneratorTest, ForDifferentEdgesShouldReturnWalls)
                                {{5, 0}, {1, 8}},
                                {{0, 7}, {6, 1}}})};
 
-    ASSERT_THAT(generator.generate_boundary_walls({6, 8}),
+    ASSERT_THAT(generator.generate_walls({6, 8}),
                 UnorderedElementsAreArray(expected_walls));
 }
